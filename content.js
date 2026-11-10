@@ -19,7 +19,7 @@ const SITE = {
   credentials: "CPA, MBA",
 
   // The big line at the top of the home page: one sentence saying what readers get.
-  headline: "Complex finance topics, explained in simple English with examples.",
+  headline: "Finance, made simple.",
 
   // The smaller green line under it.
   // DRAFT written from the book listings. Change it to your own words.
