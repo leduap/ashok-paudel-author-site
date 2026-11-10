@@ -87,6 +87,29 @@
     ]));
   });
 
+  // Finance templates (sold on Gumroad)
+  var templates = SITE.templates || {};
+  var templateItems = (templates.items || []).filter(function (item) { return isRealUrl(item.url); });
+  showSection("templates", templateItems.length > 0);
+  templateItems.forEach(function (item) {
+    var free = /^free$/i.test(String(item.tag || "").trim());
+    var parts = [];
+    if (item.tag) { parts.push(el("p", { className: "book-status" }, item.tag)); }
+    parts.push(el("h3", {}, item.title));
+    if (item.subtitle) { parts.push(el("p", { className: "subtitle" }, item.subtitle)); }
+    if (item.blurb) { parts.push(el("p", { className: "blurb" }, item.blurb)); }
+    parts.push(el("div", { className: "buy" }, [
+      link(free ? "Get it free on Gumroad" : "Get it on Gumroad", item.url, "button button-small")
+    ]));
+    $("template-list").appendChild(el("article", { className: "book template" }, [
+      el("img", { src: item.image, alt: "Preview of " + item.title, loading: "lazy" }),
+      el("div", { className: "book-body" }, parts)
+    ]));
+  });
+  var hasStore = isRealUrl(templates.storeUrl);
+  if (hasStore) { $("store-link").href = templates.storeUrl; }
+  $("store-line").hidden = !hasStore;
+
   // Articles, newest first
   var articles = (SITE.articles || []).slice().sort(function (a, b) {
     return parseDate(b.date) - parseDate(a.date);

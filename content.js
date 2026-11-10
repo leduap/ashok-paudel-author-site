@@ -93,6 +93,69 @@ const SITE = {
     }
   ],
 
+  // Finance templates sold on Gumroad. Names, images and descriptions are taken
+  // from the public store listings (November 2026); descriptions are the opening
+  // lines of each listing. Prices are left off so they never go out of date.
+  // Optional: tag, a small label on the card such as "Free".
+  // Leave the list empty ([]) to hide the section and its menu link.
+  templates: {
+    storeUrl: "https://financea2z.gumroad.com/",
+    items: [
+      {
+        title: "The Wheel Strategy Guide",
+        subtitle: "Cash-Secured Puts & Covered Calls from Zero to Hero (98-page PDF)",
+        image: "assets/template-wheel-strategy-guide.png",
+        blurb: "Learn the wheel properly, from the first definition to a full year of trades, with numbers that reconcile.",
+        url: "https://financea2z.gumroad.com/l/intixr"
+      },
+      {
+        title: "Finance Templates Bundle",
+        subtitle: "8 Models",
+        image: "assets/template-finance-bundle.png",
+        blurb: "Eight finance models in one bundle.",
+        url: "https://financea2z.gumroad.com/l/nrjhuq"
+      },
+      {
+        title: "Retirement Millionaire Calculator",
+        subtitle: "How Much to Save Each Month to Reach $1 Million (Excel)",
+        image: "assets/template-retirement-calculator.png",
+        tag: "Free",
+        blurb: "How much do you need to save each month to have a million by the time you retire? This free Excel calculator answers that in seconds.",
+        url: "https://financea2z.gumroad.com/l/zxcrtz"
+      },
+      {
+        title: "Home Buyer Toolkit",
+        subtitle: "How Much House Can I Afford, Rent vs Buy, Closing Costs & Mortgage Amortization (Excel + Google Sheets)",
+        image: "assets/template-home-buyer-toolkit.png",
+        tag: "Free",
+        blurb: "Before you fall for a house, know the price you can carry, the cash you need and whether buying beats renting for you.",
+        url: "https://financea2z.gumroad.com/l/lnnfke"
+      },
+      {
+        title: "FP&A Command Center",
+        subtitle: "",
+        image: "assets/template-fpa-command-center.png",
+        blurb: "Paste one month of actuals and get the whole month-end story back.",
+        url: "https://financea2z.gumroad.com/l/xxbrrm"
+      },
+      {
+        title: "Small Business Acquisition & SBA Loan Model",
+        subtitle: "SDE Recast, Valuation, SBA 7(a) + Seller Note, DSCR, Cash-on-Cash & IRR (Excel + Google Sheets)",
+        image: "assets/template-sba-acquisition-model.png",
+        blurb: "Know what the business is really earning, what to offer and whether the loan works, before you sign a letter of intent.",
+        url: "https://financea2z.gumroad.com/l/bhcdrq"
+      },
+      {
+        title: "Month-End Close Starter Kit",
+        subtitle: "",
+        image: "assets/template-month-end-close-kit.png",
+        tag: "Free",
+        blurb: "A free, working starter kit for your month-end close. Download it, open it in Excel and see exactly what is due and what is late.",
+        url: "https://financea2z.gumroad.com/l/utrxle"
+      }
+    ]
+  },
+
   // -------------------------------------------------------------------------
   // The four parts below are SWITCHED OFF because there is nothing real to show
   // yet. Each one appears on the home page as soon as you fill it in.

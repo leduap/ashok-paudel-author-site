@@ -200,6 +200,9 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   text-transform: uppercase; letter-spacing: 0.07em;
   background: var(--mint-light); color: var(--green-label); border: 1px solid var(--green-bright);
 }
+/* Finance templates reuse the book cards; their preview images are square */
+.template img { aspect-ratio: 1; }
+.more-line { margin: 1.75rem 0 0; text-align: center; }
 /* Phones: cover on the left, text on the right, so the books do not make the page endless */
 @media (max-width: 34rem) {
   .book-grid { grid-template-columns: 1fr; }

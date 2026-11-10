@@ -70,7 +70,11 @@ The site is designed for GitHub Pages:
 
 The bot only needs permission to add files to the repository. It commits one new file to `posts/` each day and the workflow does the rest. If a build fails, the Actions tab on GitHub shows the message, and GitHub emails the repository owner.
 
-Note: the workflow has not yet been run, because this folder is not on GitHub yet. Check the first run on the Actions tab.
+This is already set up:
+
+- Repository (public): <https://github.com/leduap/ashok-paudel-author-site>
+- Copy it with: `git clone https://github.com/leduap/ashok-paudel-author-site.git`
+- Live site: <https://leduap.github.io/ashok-paudel-author-site/>
 
 ## Images
 
