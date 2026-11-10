@@ -152,5 +152,24 @@
   socials.forEach(function (social) {
     $("social-list").appendChild(el("li", {}, [link(social.label, social.url, "button button-quiet button-small")]));
   });
+  // Inquiry cards: each button opens an email with the subject filled in, or,
+  // while no email address is set, links to the first profile instead.
+  var inquiries = (hasEmail || socials.length > 0) ? (contact.inquiries || []) : [];
+  inquiries.forEach(function (inquiry) {
+    var button;
+    if (hasEmail) {
+      button = el("a", {
+        href: "mailto:" + contact.email + "?subject=" + encodeURIComponent(inquiry.subject || inquiry.title),
+        className: "button button-small"
+      }, "Send an email");
+    } else {
+      button = link("Message on " + socials[0].label, socials[0].url, "button button-small");
+    }
+    var parts = [el("h3", {}, inquiry.title)];
+    if (inquiry.text) { parts.push(el("p", {}, inquiry.text)); }
+    parts.push(button);
+    $("inquiry-list").appendChild(el("div", { className: "inquiry" }, parts));
+  });
+  $("inquiry-list").hidden = !inquiries.length;
   showSection("contact", hasEmail || socials.length > 0);
 })();

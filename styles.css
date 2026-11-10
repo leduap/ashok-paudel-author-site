@@ -247,6 +247,17 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 .note { color: var(--mint); font-size: 0.925rem; margin: 0.9rem 0 0; }
 
 /* Contact */
+.inquiries {
+  display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  margin: 1.5rem 0; text-align: left;
+}
+.inquiry {
+  display: flex; flex-direction: column; align-items: flex-start;
+  background: var(--card); border: 1px solid var(--mint-line);
+  border-top: 4px solid var(--band); border-radius: 8px; padding: 1.25rem;
+}
+.inquiry h3 { margin: 0 0 0.35rem; font-size: 1.1rem; }
+.inquiry p { margin: 0 0 1rem; color: var(--ink-soft); font-size: 0.95rem; flex: 1; }
 .socials { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
 
 /* Footer: the name band from the bottom of the cover */

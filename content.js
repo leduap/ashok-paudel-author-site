@@ -19,8 +19,7 @@ const SITE = {
   credentials: "CPA, MBA",
 
   // The big line at the top of the home page: one sentence saying what readers get.
-  // DRAFT, adapted from the last sentence of your back-cover bio. Change it to your own words.
-  headline: "Complex finance, in steps anyone can use.",
+  headline: "Complex finance topics, explained in simple English with examples.",
 
   // The smaller green line under it.
   // DRAFT written from the book listings. Change it to your own words.
@@ -138,6 +137,17 @@ const SITE = {
       { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela/" },
       // { label: "Goodreads", url: "https://www.goodreads.com/author/show/..." },
       // { label: "Amazon author page", url: "https://www.amazon.de/..." },
+    ],
+
+    // The kinds of request people can send you, shown as cards in the contact section.
+    // Each card's button opens an email with the subject filled in. While no email
+    // address is set above, the button links to your first profile (LinkedIn) instead.
+    // Remove a card by deleting its line; leave the list empty ([]) to show none.
+    inquiries: [
+      { title: "Press and media", text: "Interview requests, quotes and review copies.", subject: "Press inquiry" },
+      { title: "Speaking engagements", text: "Talks, workshops and panels on investing and corporate finance.", subject: "Speaking inquiry" },
+      { title: "Podcasts and guest articles", text: "Podcast appearances and guest contributions.", subject: "Podcast or guest article inquiry" },
+      { title: "Bulk orders and rights", text: "Bulk and corporate orders, translation and other rights.", subject: "Bulk order or rights inquiry" }
     ]
   }
 };
