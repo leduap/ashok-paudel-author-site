@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ashok Paudel | Finance author</title>
+  <meta name="description" content="Ashok Paudel, CPA, MBA, writes plain, practical guides to investing, options and corporate finance. Books, blog posts and book reviews.">
+  <meta property="og:title" content="Ashok Paudel | Finance author">
+  <meta property="og:description" content="Plain, practical guides to investing, options and corporate finance. Books, blog posts and book reviews.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="alternate" type="application/rss+xml" title="Ashok Paudel: blog" href="feed.xml">
+</head>
+<body>
+  <!-- The header and footer below are reused on every blog page by build.py. -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" data-text="name">Ashok Paudel</a>
+      <nav aria-label="Main">
+        <a href="#books" data-nav="books">Books</a>
+        <a href="blog/" data-nav="blog">Blog</a>
+        <a href="#about" data-nav="about">About</a>
+        <a href="#newsletter" data-nav="newsletter" hidden>Newsletter</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero: one-line promise, photo, and the two main actions -->
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <img class="portrait" id="photo" src="assets/author-photo.jpg" alt="Portrait of Ashok Paudel" width="280" height="280">
+        <div>
+          <p class="eyebrow" id="eyebrow">Ashok Paudel · CPA, MBA</p>
+          <h1 data-text="headline">Complex finance, in steps anyone can use.</h1>
+          <p class="tagline" data-text="tagline"></p>
+          <p class="hero-actions">
+            <a class="button" href="#books">See the books</a>
+            <a class="button button-quiet" href="blog/">Read the blog</a>
+            <a class="button button-quiet" href="#newsletter" data-nav="newsletter" hidden>Join the newsletter</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="books" class="band">
+      <div class="wrap">
+        <p class="eyebrow">Published work</p>
+        <h2>Books</h2>
+        <div id="book-list" class="book-grid"></div>
+      </div>
+    </section>
+
+    <!-- build.py puts the latest blog posts between these two markers. Leave them in place. -->
+    <!-- BUILD:LATEST --><!-- /BUILD:LATEST -->
+
+    <section id="about" class="band">
+      <div class="wrap narrow">
+        <p class="eyebrow">About the author</p>
+        <h2>About <span data-text="name">Ashok Paudel</span></h2>
+        <div id="bio"></div>
+      </div>
+    </section>
+
+    <section id="newsletter" class="band-dark" hidden>
+      <div class="wrap narrow">
+        <div class="signup center">
+          <p class="eyebrow">Stay in touch</p>
+          <h2>Newsletter</h2>
+          <p data-text="newsletter.blurb"></p>
+          <form id="signup-form" method="post">
+            <label class="visually-hidden" for="email">Email address</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            <button class="button" type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="writing" hidden>
+      <div class="wrap narrow">
+        <p class="eyebrow">Articles and essays</p>
+        <h2>Writing elsewhere</h2>
+        <ul id="article-list" class="rows"></ul>
+      </div>
+    </section>
+
+    <section id="events" class="band" hidden>
+      <div class="wrap narrow">
+        <p class="eyebrow">Appearances</p>
+        <h2>Events and Press</h2>
+        <div id="upcoming-block">
+          <h3>Upcoming</h3>
+          <ul id="upcoming-list" class="rows"></ul>
+        </div>
+        <div id="past-block">
+          <h3>Past</h3>
+          <ul id="past-list" class="rows"></ul>
+        </div>
+        <div id="press-block">
+          <h3>Press</h3>
+          <div id="press-list" class="quotes"></div>
+          <p id="kit-line"><a class="button button-quiet" id="kit-link" href="#">Download the media kit</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" hidden>
+      <div class="wrap narrow center">
+        <p class="eyebrow">Get in touch</p>
+        <h2>Contact</h2>
+        <p id="email-line">For rights, events and interviews, write to <a id="email-link" href="#"></a>.</p>
+        <ul id="social-list" class="socials"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="footer-name"><span data-text="name">Ashok Paudel</span><span class="footer-cred" data-text="credentials">CPA, MBA</span></p>
+      <p class="footer-links"><a href="#books">Books</a><a href="blog/">Blog</a><a href="#about">About</a><a href="feed.xml">RSS feed</a></p>
+      <p class="footer-legal" data-text="disclaimer">The views expressed on this site are the author's own. Nothing here is financial, investment, tax or legal advice.</p>
+      <p class="footer-legal">&copy; <span id="year"></span> <span data-text="name">Ashok Paudel</span>. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

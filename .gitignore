@@ -1,0 +1,9 @@
+# The built site. GitHub builds this itself on every push; it is never committed.
+_site/
+.DS_Store
+__pycache__/
+*.pyc
+# Leftovers from an interrupted earlier work session; safe to delete.
+.handover/
+# Screenshots taken while checking the site; not part of the site.
+screenshots/
