@@ -428,7 +428,7 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 .crumbs a:hover { text-decoration: underline; }
 .crumbs span { color: var(--mint-line); }
 .byline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0; }
-.byline > span + span::before { content: "·"; margin: 0 0.55rem; color: var(--green-bright); font-weight: 700; }
+.byline > span:not(:last-child)::after { content: "·"; margin: 0 0.55rem; color: var(--green-bright); font-weight: 700; }
 .byline-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 0.7rem; border: 2px solid #fff; }
 .post-lead { margin: 1.1rem 0 0; font-size: 1.15rem; line-height: 1.55; color: var(--navy); }
 
