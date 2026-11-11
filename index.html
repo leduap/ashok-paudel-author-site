@@ -9,6 +9,9 @@
   <meta property="og:description" content="Plain, practical guides to investing, options and corporate finance. Books, blog posts and book reviews.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/icons/monogram/favicon.ico" sizes="48x48">
+  <link rel="icon" href="assets/icons/monogram/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/monogram/apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Ashok Paudel: blog" href="feed.xml">
 </head>
 <body>
@@ -73,20 +76,10 @@
       </div>
     </section>
 
-    <section id="newsletter" class="band-dark" hidden>
-      <div class="wrap narrow">
-        <div class="signup center">
-          <p class="eyebrow">Stay in touch</p>
-          <h2>Newsletter</h2>
-          <p data-text="newsletter.blurb"></p>
-          <form id="signup-form" method="post">
-            <label class="visually-hidden" for="email">Email address</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required>
-            <button class="button" type="submit">Subscribe</button>
-          </form>
-        </div>
-      </div>
-    </section>
+    <!-- build.py puts the newsletter sign-up box between these two markers, but only once
+         newsletter.formAction is filled in in content.js. Until then nothing is written here
+         and the "Newsletter" links are removed from the page. Leave the markers in place. -->
+    <!-- BUILD:NEWSLETTER --><!-- /BUILD:NEWSLETTER -->
 
     <section id="writing" hidden>
       <div class="wrap narrow">
@@ -120,8 +113,8 @@
       <div class="wrap narrow center">
         <p class="eyebrow">Get in touch</p>
         <h2>Contact</h2>
-        <div id="inquiry-list" class="inquiries"></div>
-        <p id="email-line">For anything else, write to <a id="email-link" href="#"></a>.</p>
+        <p id="email-line" class="contact-email"><a id="email-link" class="button" href="#"></a></p>
+        <ul id="inquiry-list" class="inquiries"></ul>
         <ul id="social-list" class="socials"></ul>
       </div>
     </section>
@@ -139,5 +132,6 @@
 
   <script src="content.js"></script>
   <script src="main.js"></script>
+  <script src="signup.js"></script>
 </body>
 </html>

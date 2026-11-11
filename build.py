@@ -8,6 +8,7 @@ Uses only the Python 3 standard library. Nothing to install.
 
 What it does:
   * reads every markdown file in posts/ (one blog post or book review each),
+  * checks each one strictly (fields, dates, cover image, sections, no Amazon links),
   * writes a static HTML page for each one, a blog index with filters
     (all / posts / book reviews / each tag), an RSS feed and a sitemap,
   * puts the latest posts on the home page,
@@ -46,9 +47,31 @@ SITE_URL = ""
 
 TYPES = {"review": "Book review", "post": "Post"}
 TYPE_PAGES = {"post": ("posts", "Posts"), "review": ("reviews", "Book reviews")}
-FIELDS = ["title", "date", "type", "tags", "summary", "book_title", "book_author", "rating", "amazon_id"]
+FIELDS = ["title", "date", "updated", "type", "tags", "summary", "book_title", "book_author", "rating",
+          "amazon_id", "cover", "cover_source"]
 REQUIRED = ["title", "date", "type", "tags", "summary"]
-REVIEW_ONLY = ["book_title", "book_author", "rating", "amazon_id"]
+REVIEW_ONLY = ["book_title", "book_author", "rating", "amazon_id", "cover", "cover_source"]
+# A review must show the book's cover: a JPEG or PNG saved in assets/covers/.
+COVER_PATH = re.compile(r"^assets/covers/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png)$")
+COVER_MIN_WIDTH, COVER_MIN_HEIGHT, COVER_MAX_BYTES = 120, 160, 400_000
+# Sections with a fixed meaning. The build gives each its own look (see BOT_GUIDE.md).
+SECTION_KINDS = {
+    "the short answer": "answer", "who it is for": "for", "who it is not for": "notfor",
+    "key ideas": "ideas", "what works": "pros", "what to be aware of": "cons",
+    "the verdict": "verdict", "faq": "faq", "sources": "sources",
+}
+# Every review has these sections, with exactly these headings, in this order.
+REVIEW_SECTIONS = ["The short answer", "Who it is for", "Who it is not for", "Key ideas", "What works",
+                   "What to be aware of", "The verdict", "FAQ", "Sources"]
+NEEDS_LIST = {"for", "notfor", "pros", "cons", "sources"}
+REVIEW_CLOSING = "A review describes a book. It is not advice"
+MIN_FAQ, MIN_REVIEW_SOURCES = 2, 2
+TOC_MIN_SECTIONS = 3    # a post with at least this many ## sections gets an "On this page" list
+RELATED_POSTS = 3       # how many "More from the blog" cards a post shows
+# Newsletter: the sign-up form posts to whatever https:// address is in newsletter.formAction.
+# Kit (formerly ConvertKit) is understood to call its email field "email_address"; this has NOT
+# been confirmed against a live Kit form. Any other provider gets the usual name "email".
+KIT_HOST = re.compile(r"^https://app\.(?:kit|convertkit)\.com/", re.I)
 # Amazon stores that get a "Get the book" link on reviews. The affiliate tag for
 # each store is read from content.js (affiliate.amazon); it is written nowhere else.
 AMAZON_STORES = [("us", "www.amazon.com", "Amazon US"), ("uk", "www.amazon.co.uk", "Amazon UK"),
@@ -62,6 +85,86 @@ TAG = re.compile(r"^[a-z0-9]+(?:[ -][a-z0-9]+)*$")
 MAX_TITLE, MAX_SUMMARY, MAX_TAGS, MAX_TAG_LENGTH = 120, 220, 5, 30
 
 esc = functools.partial(html.escape, quote=True)
+
+
+# What the markdown code needs to know while it turns one post into HTML: the site's
+# affiliate tags and own products (from content.js), the problems found in the post so
+# far, and whether the post ended up containing an affiliate link.
+CTX = {"site": None, "problems": [], "affiliate": False}
+POST_ROOT = "../../"    # every post page lives at blog/<file-name>/, two folders below the site root
+DIRECTIVE = re.compile(r"^::(\w+)(?:\s+(\S+))?\s*$")
+
+
+def amazon_id_problem(code):
+    """Why a 10-character Amazon code is not acceptable, or "" if it is fine."""
+    if not AMAZON_ID.match(code):
+        return (f"'{code}' is not a valid Amazon code. It must be the 10-character code from the product's "
+                "Amazon address (the part after /dp/): a 10-digit ISBN such as 0857197681, or a code "
+                "starting with B0 such as B0HQVRJQ1P")
+    if code[0] != "B" and sum((10 - k) * (10 if c == "X" else int(c)) for k, c in enumerate(code)) % 11:
+        return f"'{code}' is not a real ISBN-10 (its check digit is wrong). Copy it again from the Amazon address"
+    return ""
+
+
+def store_links(code, title, css=""):
+    """Tagged links to one product on each Amazon store that has a tag in content.js."""
+    links = []
+    for key, host, label in AMAZON_STORES:
+        tag = CTX["site"]["amazon_tags"].get(key) if CTX["site"] else ""
+        if not tag:
+            continue
+        text = label if css else label.replace("Amazon ", "")
+        links.append(
+            f'<a{f" class={chr(34)}{css}{chr(34)}" if css else ""} href="https://{host}/dp/{code}?tag={tag}" '
+            f'target="_blank" rel="sponsored nofollow noopener" '
+            f'aria-label="{esc(title)} on {label} (affiliate link, opens in a new tab)">{text}'
+            + (' <span aria-hidden="true">↗</span>' if css else "") + "</a>")
+    if links:
+        CTX["affiliate"] = True
+    return links
+
+
+def own_card(kind, key):
+    """A 'From the author' card for one of his own books (::book CODE) or templates (::template ID).
+
+    Everything on the card comes from content.js, so a post cannot describe the product differently.
+    """
+    site = CTX["site"]
+    if kind == "book":
+        item = next((b for b in site["books"] if b.get("amazonId") == key and not b.get("status")), None)
+        if not item:
+            CTX["problems"].append(
+                f"'::book {key}' does not match a published book in content.js. Use the amazonId of one of "
+                "the author's own published books: " + ", ".join(
+                    f"{b['amazonId']} ({b.get('title', '')})" for b in site["books"]
+                    if b.get("amazonId") and not b.get("status")))
+            return ""
+        label, image, alt = "From the author: his own book", item.get("cover", ""), "Cover of "
+        buttons = store_links(key, item.get("title", ""), "button button-small")
+        action = ('<p class="bookbox-get-label">Buy on Amazon <span class="aff-tag">Affiliate links</span></p>'
+                  f'<p class="bookbox-buttons">{" ".join(buttons)}</p>') if buttons else ""
+    else:
+        item = next((t for t in site["templates"] if t.get("url", "").rstrip("/").endswith("/l/" + key)), None)
+        if not item:
+            CTX["problems"].append(
+                f"'::template {key}' does not match a template in content.js. Use the last part of the "
+                "template's Gumroad address (after /l/): " + ", ".join(
+                    f"{t['url'].rstrip('/').rsplit('/', 1)[-1]} ({t.get('title', '')})"
+                    for t in site["templates"] if t.get("url")))
+            return ""
+        label, image, alt = "From the author: his own template", item.get("image", ""), "Preview of "
+        free = item.get("tag", "").strip().lower() == "free"
+        action = (f'<p class="bookbox-buttons"><a class="button button-small" href="{esc(item["url"])}" '
+                  f'target="_blank" rel="noopener">{"Get it free on Gumroad" if free else "Get it on Gumroad"} '
+                  '<span aria-hidden="true">↗</span></a></p>')
+    picture = ""
+    if re.match(r"^assets/[A-Za-z0-9._/-]+$", image) and ".." not in image and (ROOT / image).is_file():
+        picture = (f'<img class="owncard-img" src="{POST_ROOT}{esc(image)}" '
+                   f'alt="{alt}{esc(item.get("title", ""))}" loading="lazy" decoding="async">')
+    text = "".join(f'<p class="owncard-{css}">{esc(item[field])}</p>'
+                   for css, field in (("t", "title"), ("s", "subtitle"), ("b", "blurb")) if item.get(field))
+    return (f'<aside class="owncard owncard-{kind}" aria-label="{label}">{picture}'
+            f'<div class="owncard-main"><p class="bookbox-k">{label}</p>{text}{action}</div></aside>')
 
 
 class BuildError(Exception):
@@ -102,6 +205,17 @@ def inline(text):
 
     def link(match):
         label, url = match.group(1), html.unescape(match.group(2))
+        if url.lower().startswith("amazon:"):
+            # [text](amazon:CODE): the build writes the tagged store links after the text.
+            code = url[len("amazon:"):]
+            problem = amazon_id_problem(code)
+            if problem:
+                CTX["problems"].append(f"link '[{plain(label)}](amazon:{code})': {problem}")
+                return label
+            links = store_links(code, plain(re.sub(r"\x00\d+\x00", "", label)))
+            if not links:
+                return label
+            return label + keep(' <span class="amz">(Amazon: ' + " · ".join(links) + ")</span>")
         if not safe_url(url):
             return label
         attrs = f'href="{esc(url)}"'
@@ -134,7 +248,8 @@ def starts_block(line):
     item = LIST_ITEM.match(line)
     if item and (not item.group(2)[0].isdigit() or item.group(2)[:-1] == "1"):
         return True
-    return bool(HEADING.match(line) or RULE.match(line) or QUOTE.match(line) or FENCE.match(line))
+    return bool(HEADING.match(line) or RULE.match(line) or QUOTE.match(line) or FENCE.match(line)
+                or DIRECTIVE.match(line))
 
 
 def split_row(line):
@@ -163,6 +278,18 @@ def blocks(lines):
                 i += 1
             i += 1
             out.append("<pre><code>" + html.escape("\n".join(buf), quote=False) + "</code></pre>")
+            continue
+
+        directive = DIRECTIVE.match(line)
+        if directive:
+            name, key = directive.group(1), directive.group(2) or ""
+            if name in ("book", "template") and key:
+                out.append(own_card(name, key))
+            else:
+                CTX["problems"].append(
+                    f"line '{line.strip()}' is not understood. The only lines that may start with :: are  "
+                    "::book CODE  (one of the author's own books) and  ::template ID  (one of his templates)")
+            i += 1
             continue
 
         heading = HEADING.match(line)
@@ -256,9 +383,141 @@ def blocks(lines):
     return "\n".join(out)
 
 
-def markdown(text):
+def split_at_headings(lines, hashes):
+    """Split lines at headings written with one of those numbers of # signs at the start of a line.
+
+    Returns (lines before the first heading, [(heading text, lines under it), ...]).
+    Headings inside a fenced code block are left alone.
+    """
+    lead, parts, current, fence = [], [], None, None
+    for line in lines:
+        if fence:
+            if line.strip().startswith(fence):
+                fence = None
+        elif FENCE.match(line):
+            fence = FENCE.match(line).group(1)
+        else:
+            heading = HEADING.match(line) if line.startswith("#") else None
+            if heading and len(heading.group(1)) in hashes:
+                current = (heading.group(2), [])
+                parts.append(current)
+                continue
+        (current[1] if current else lead).append(line)
+    return lead, parts
+
+
+def plain(markup):
+    """The text of a piece of generated HTML, with the tags removed."""
+    return html.unescape(re.sub(r"<[^>]+>", "", markup))
+
+
+def has_text(lines):
+    return any(line.strip() for line in lines)
+
+
+def structure(body, kind, bad):
+    """Turn a post body into its parts: the opening text, the ## sections and the closing line.
+
+    Sections whose heading has a fixed meaning (The short answer, Who it is for, FAQ, Sources
+    and so on) are marked so the page can style them. A review must have all of them, in order.
+    Problems are reported through bad().
+    """
     # NUL characters are used internally as placeholders, so they are removed from input.
-    return blocks(text.replace("\x00", "").expandtabs(4).split("\n"))
+    lines = body.replace("\x00", "").expandtabs(4).split("\n")
+    closing = ""
+    if kind == "review":
+        while lines and not lines[-1].strip():
+            lines.pop()
+        last = lines[-1].strip() if lines else ""
+        if re.match(r"^([*_])" + re.escape(REVIEW_CLOSING) + r"\b[^*_]*\1$", last):
+            closing = inline(last)
+            lines.pop()
+            while lines and (not lines[-1].strip() or RULE.match(lines[-1])):
+                lines.pop()
+        else:
+            bad(f"a review must end with the line  *{REVIEW_CLOSING} to buy or sell any investment.*  "
+                "(in italics, as the very last line)")
+
+    intro, parts = split_at_headings(lines, {1, 2})
+    sections, used, order = [], set(), []
+    for title, content in parts:
+        title_html = inline(title)
+        label = plain(title_html).strip()
+        name = SECTION_KINDS.get(re.sub(r"\s+", " ", label).lower().rstrip(":"), "")
+        if name:
+            if name in order:
+                bad(f"the section '{label}' appears twice")
+            order.append(name)
+        base = re.sub(r"[^a-z0-9]+", "-", label.lower()).strip("-") or "section"
+        anchor, n = base, 2
+        while anchor in used:
+            anchor, n = f"{base}-{n}", n + 1
+        used.add(anchor)
+
+        if name in NEEDS_LIST and not any(LIST_ITEM.match(line) and line[:1] != " " for line in content):
+            bad(f"the section '{label}' must be a list (lines starting with - or 1.)")
+        if name == "faq":
+            lead, questions = split_at_headings(content, {3})
+            if has_text(lead):
+                bad("the FAQ section must contain only questions: each question on a line starting with ###, "
+                    "with its answer underneath")
+            if len(questions) < MIN_FAQ:
+                bad(f"the FAQ section needs at least {MIN_FAQ} questions, each on a line starting with ###")
+            items = []
+            for question, answer in questions:
+                if not has_text(answer):
+                    bad(f"the FAQ question '{question}' has no answer under it")
+                items.append(f"<details><summary>{inline(question)}</summary>\n{blocks(answer)}\n</details>")
+            rendered = '<div class="faq">\n' + "\n".join(items) + "\n</div>"
+        else:
+            if not has_text(content):
+                bad(f"the section '{label}' is empty")
+            rendered = blocks(content)
+        if name == "sources" and kind == "review":
+            links = len(re.findall(r"\]\(\s*https?://", "\n".join(content)))
+            if links < MIN_REVIEW_SOURCES:
+                bad(f"the Sources section of a review needs at least {MIN_REVIEW_SOURCES} links to pages "
+                    "that were actually opened and checked (publisher, author or library pages)")
+        sections.append({"kind": name, "id": anchor, "title": title_html, "label": label, "html": rendered})
+
+    if kind == "review":
+        if not has_text(intro):
+            bad("a review must start with a short opening paragraph before the first ## heading")
+        wanted = [SECTION_KINDS[title.lower()] for title in REVIEW_SECTIONS]
+        missing = [title for title in REVIEW_SECTIONS if SECTION_KINDS[title.lower()] not in order]
+        if missing:
+            bad("a review needs these sections, each as a ## heading with exactly this wording: "
+                + ", ".join(missing))
+        elif [name for name in order if name in wanted] != wanted:
+            bad("the sections of a review must come in this order: " + ", ".join(REVIEW_SECTIONS))
+    return {"intro": blocks(intro), "sections": sections, "closing": closing}
+
+
+def image_size(path):
+    """(width, height) of a JPEG or PNG file, or None if it is neither. Standard library only."""
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return None
+    if data[:8] == b"\x89PNG\r\n\x1a\n" and data[12:16] == b"IHDR":
+        return int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
+    if data[:2] != b"\xff\xd8":
+        return None
+    i = 2
+    while i + 9 < len(data):
+        if data[i] != 0xFF:
+            return None
+        marker = data[i + 1]
+        if marker == 0xFF:
+            i += 1
+            continue
+        if 0xD0 <= marker <= 0xD9 or marker == 0x01:
+            i += 2
+            continue
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+        i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -394,24 +653,83 @@ def load_post(path, problems):
                 bad(f"amazon_id '{amazon_id}' is not a real ISBN-10 (its check digit is wrong). "
                     "Copy it again from the book's Amazon address, or leave the field out")
 
+    updated = None
+    if meta.get("updated"):
+        try:
+            if not re.match(r"^\d{4}-\d{2}-\d{2}$", meta["updated"]):
+                raise ValueError
+            updated = dt.date.fromisoformat(meta["updated"])
+        except ValueError:
+            bad(f"updated '{meta['updated']}' is not a real date in the form YYYY-MM-DD")
+        else:
+            if day and updated < day:
+                bad(f"updated {meta['updated']} is earlier than the post's date; leave the field out")
+            if updated > dt.datetime.now(dt.timezone.utc).date() + dt.timedelta(days=1):
+                bad(f"updated {meta['updated']} is in the future")
+
+    # Every review shows the book's cover, so a review without a usable cover image fails.
+    cover, cover_width, cover_height = "", 0, 0
+    if kind == "review":
+        cover = meta.get("cover", "")
+        if not cover:
+            bad("a review needs a cover image. Save the book's cover in assets/covers/ and add the line  "
+                "cover: assets/covers/the-book-title.jpg  (see BOT_GUIDE.md for where covers may come from)")
+        elif not COVER_PATH.match(cover):
+            bad(f"cover '{cover}' is not allowed. It must be a .jpg or .png file in assets/covers/ named with "
+                "lower-case letters, digits and hyphens, for example assets/covers/the-book-title.jpg")
+        elif not (ROOT / cover).is_file():
+            bad(f"cover image {cover} does not exist. Add the image file in the same commit as the review")
+        else:
+            size = image_size(ROOT / cover)
+            if not size:
+                bad(f"cover image {cover} is not a real JPEG or PNG picture")
+            elif size[0] < COVER_MIN_WIDTH or size[1] < COVER_MIN_HEIGHT:
+                bad(f"cover image {cover} is only {size[0]}x{size[1]} pixels, which looks like a blank "
+                    f"placeholder. A cover must be at least {COVER_MIN_WIDTH}x{COVER_MIN_HEIGHT}")
+            elif (ROOT / cover).stat().st_size > COVER_MAX_BYTES:
+                bad(f"cover image {cover} is larger than {COVER_MAX_BYTES // 1000} KB. Save a smaller copy "
+                    "(about 400 pixels wide is plenty)")
+            else:
+                cover_width, cover_height = size
+        source = meta.get("cover_source", "")
+        if not source:
+            bad("a review needs the field 'cover_source': the https:// address of the page the cover image "
+                "came from (the book's Open Library page or the publisher's page)")
+        elif AMAZON_URL.search(source):
+            bad("cover_source points at Amazon. Cover images must not be taken from Amazon; use Open Library "
+                "or the publisher's own page")
+        elif not re.match(r"^https://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(/[^\s\"<>]*)?$", source):
+            bad(f"cover_source '{source}' is not an https:// web address")
+
     body = "\n".join(lines[end + 1:]).strip()
+    parts = None
     if not body:
         bad("there is no text after the front matter")
     elif AMAZON_URL.search(body):
         bad("the text contains a link to Amazon. Do not write Amazon links or affiliate tags in a post: "
             "for a review, set book_title, book_author and (optionally) amazon_id, and the build adds "
-            "the 'Get the book' links with the right tags")
+            "the 'Get the book' buttons with the right tags")
+    else:
+        CTX["problems"], CTX["affiliate"] = [], False
+        parts = structure(body, kind if kind in TYPES else "post", bad)
+        for problem in CTX["problems"]:
+            bad(problem)
 
     if found:
         problems.extend(found)
         return None
     words = len(re.findall(r"\w+", body))
     return {
-        "stem": stem, "file": path.name, "day": day, "type": kind, "rating": rating,
+        "stem": stem, "file": path.name, "day": day, "updated": updated if updated and updated != day else None,
+        "type": kind, "rating": rating,
         "title": meta["title"], "summary": meta["summary"], "tags": tags,
         "book_title": meta.get("book_title", ""), "book_author": meta.get("book_author", ""),
         "amazon_id": amazon_id if kind == "review" else "",
-        "html": markdown(body), "minutes": max(1, round(words / 220)),
+        "cover": cover, "cover_width": cover_width, "cover_height": cover_height,
+        "cover_source": meta.get("cover_source", "") if kind == "review" else "",
+        "parts": parts, "minutes": max(1, round(words / 220)),
+        "affiliate": CTX["affiliate"],
+        "links_to": re.findall(r"\]\(\s*(\.\.?/[^)\s]*)", body),
         "url": f"blog/{stem}/",
     }
 
@@ -429,6 +747,14 @@ def load_posts():
             post = load_post(path, problems)
             if post:
                 posts.append(post)
+    stems = {post["stem"] for post in posts}
+    for post in posts:
+        for target in post["links_to"]:
+            other = re.match(r"^\.\./([^/#?]+)/?(#.*)?$", target)
+            if not other or other.group(1) not in stems:
+                problems.append(f"posts/{post['file']}: the link ({target}) does not lead to a post on this site. "
+                                "To link to another post write ../ then its file name without .md then /, "
+                                "for example (../2026-09-14-review-the-psychology-of-money/)")
     if problems:
         raise BuildError(problems)
     posts.sort(key=lambda p: (p["day"], p["file"]), reverse=True)
@@ -455,6 +781,22 @@ def content_string(source, key, scope=None):
         return None
 
 
+def content_items(source, key):
+    """The items of a list in content.js such as  books: [ {...}, {...} ]  as dictionaries of their text values."""
+    block = re.search(r"^\s*" + re.escape(key) + r"\s*:\s*\[(.*?)^\s*\]", source, re.S | re.M)
+    items = []
+    for body in re.findall(r"\{(.*?)\}", block.group(1) if block else "", re.S):
+        item = {}
+        for name, value in re.findall(r'^\s*(\w+)\s*:\s*("(?:[^"\\\n]|\\.)*")', body, re.M):
+            try:
+                item[name] = json.loads(value)
+            except ValueError:
+                pass
+        if item:
+            items.append(item)
+    return items
+
+
 def public_address():
     """The site's public address, without a trailing slash, or "" when none is set.
 
@@ -470,7 +812,7 @@ def public_address():
 
 def load_site():
     problems = []
-    for needed in ("index.html", "content.js", "styles.css", "main.js"):
+    for needed in ("index.html", "content.js", "styles.css", "main.js", "signup.js"):
         if not (ROOT / needed).is_file():
             problems.append(f"{needed}: file is missing")
     if problems:
@@ -487,8 +829,13 @@ def load_site():
         "amazon_tags": {key: (content_string(content, key, "amazon") or "").strip()
                         for key, _, _ in AMAZON_STORES},
         "tagline": content_string(content, "tagline") or "",
-        "form_action": content_string(content, "formAction", "newsletter") or "",
+        "form_action": (content_string(content, "formAction", "newsletter") or "").strip(),
+        "newsletter_heading": content_string(content, "heading", "newsletter") or "Newsletter",
         "newsletter_blurb": content_string(content, "blurb", "newsletter") or "",
+        "newsletter_thanks": content_string(content, "thanks", "newsletter") or "Thank you.",
+        "photo": content_string(content, "photo") or "",
+        "books": content_items(content, "books"),
+        "templates": content_items(content, "items"),
         "url": public_address(),
         "home": page,
     }
@@ -501,8 +848,12 @@ def load_site():
     if any(site["amazon_tags"].values()) and not site["affiliate.disclosure"]:
         problems.append("content.js: affiliate.disclosure is empty. Amazon requires the line "
                         "'As an Amazon Associate I earn from qualifying purchases.' while affiliate tags are set")
-    if site["form_action"] and not re.match(r"^https://\S+$", site["form_action"]):
-        problems.append("content.js: newsletter.formAction must be an https:// address or empty")
+    if site["form_action"] and not re.match(r"^https://[A-Za-z0-9.-]+\.[A-Za-z]{2,}/\S*$", site["form_action"]):
+        problems.append("content.js: newsletter.formAction must be empty or the full https:// address of your "
+                        "sign-up form, copied from your newsletter provider")
+    if not re.match(r"^assets/[A-Za-z0-9._/-]+\.(jpg|jpeg|png)$", site["photo"]) or ".." in site["photo"] \
+            or not (ROOT / site["photo"]).is_file():
+        site["photo"] = ""    # the small author picture beside the byline is simply left out
 
     header = re.search(r"<header class=\"site-header\">.*?</header>", page, re.S)
     footer = re.search(r"<footer class=\"site-footer\">.*?</footer>", page, re.S)
@@ -512,9 +863,13 @@ def load_site():
     if "<!-- BUILD:LATEST -->" not in page or "<!-- /BUILD:LATEST -->" not in page:
         problems.append("index.html: the markers <!-- BUILD:LATEST --> and <!-- /BUILD:LATEST --> "
                         "(where the latest posts go) are missing")
+    if "<!-- BUILD:NEWSLETTER -->" not in page or "<!-- /BUILD:NEWSLETTER -->" not in page:
+        problems.append("index.html: the markers <!-- BUILD:NEWSLETTER --> and <!-- /BUILD:NEWSLETTER --> "
+                        "(where the newsletter sign-up box goes) are missing")
     if problems:
         raise BuildError(problems)
     site["header"], site["footer"] = header.group(0), footer.group(0)
+    CTX["site"] = site
     return site
 
 
@@ -527,8 +882,11 @@ def fill_text(markup, site):
                         lambda m, value=site[key]: m.group(1) + esc(value), markup)
     markup = re.sub(r'(<span id="year">)[^<]*(?=</span>)',
                     lambda m: m.group(1) + str(dt.date.today().year), markup)
+    # Newsletter links: shown once a Kit form address is set, otherwise removed from the page altogether.
     if site["form_action"]:
         markup = re.sub(r'(<a[^>]*data-nav="newsletter"[^>]*?) hidden(?=[ >])', r"\1", markup)
+    else:
+        markup = re.sub(r'\s*<a\b[^>]*data-nav="newsletter"[^>]*>.*?</a>', "", markup, flags=re.S)
     return markup
 
 
@@ -560,8 +918,8 @@ def stars(rating):
             '<span class="stars-off">{2}</span></span>').format(rating, "★" * rating, "★" * (5 - rating))
 
 
-def amazon_links(site, post):
-    """The 'Get the book' line on a review: one link per Amazon store that has a tag in content.js.
+def amazon_buttons(site, post):
+    """The store buttons on a review: one per Amazon store that has a tag in content.js.
 
     With amazon_id the links go straight to the book's page; without it they go to
     a search for the title and author. Every link carries that store's affiliate tag.
@@ -576,51 +934,121 @@ def amazon_links(site, post):
         else:
             query = urllib.parse.quote_plus(f"{post['book_title']} {post['book_author']}")
             url = f"https://{host}/s?k={query}&i=stripbooks&tag={tag}"
-        links.append(f'<a href="{esc(url)}" target="_blank" rel="sponsored nofollow noopener">{label}</a>')
-    if not links:
-        return ""
-    note = f'<p class="book-get-note">{esc(site["affiliate_note"])}</p>' if site["affiliate_note"] else ""
-    return (f'<p class="book-get"><span class="book-get-label">Get the book</span> '
-            + '<span class="book-get-links">' + " ".join(links) + "</span></p>" + note)
+        links.append(
+            f'<a class="button button-small" href="{esc(url)}" target="_blank" rel="sponsored nofollow noopener" '
+            f'aria-label="{esc(post["book_title"])} on {label} (affiliate link, opens in a new tab)">'
+            f'{label} <span aria-hidden="true">↗</span></a>')
+    return links
+
+
+def cover_img(post, root, css, lazy=True):
+    return (f'<img class="{css}" src="{root}{esc(post["cover"])}" width="{post["cover_width"]}" '
+            f'height="{post["cover_height"]}" alt="Cover of {esc(post["book_title"])}"'
+            + (' loading="lazy"' if lazy else "") + ' decoding="async">')
+
+
+def cover_credit(post):
+    """Says where the cover picture came from, e.g. 'Cover image via Open Library'."""
+    host = urllib.parse.urlsplit(post["cover_source"]).hostname or ""
+    host = host[4:] if host.startswith("www.") else host
+    name = "Open Library" if host.endswith("openlibrary.org") else host
+    return (f'<p class="cover-credit">Cover image via <a href="{esc(post["cover_source"])}" rel="noopener">'
+            f'{esc(name)}</a>. Cover art belongs to the publisher.</p>')
+
+
+def affiliate_note(site):
+    """The disclosure shown close to the affiliate links on a review."""
+    text = " ".join(part for part in (site["affiliate.disclosure"], site["affiliate_note"]) if part)
+    return f'<p class="aff-note" role="note">{esc(text)}</p>' if text else ""
+
+
+def book_box(site, post, root, end=False):
+    """The box with the book's cover, title, author and store buttons.
+
+    Shown near the top of a review and again, smaller, after the verdict.
+    """
+    buttons = amazon_buttons(site, post)
+    get = ""
+    if buttons:
+        get = ('<div class="bookbox-get"><p class="bookbox-get-label">Get the book '
+               '<span class="aff-tag">Affiliate links</span></p>'
+               f'<p class="bookbox-buttons">{" ".join(buttons)}</p>'
+               '<p class="bookbox-small">No prices are shown here because they change. '
+               'Check the edition and format on the store page before you buy.</p></div>')
+    rating = (f'<p class="book-rating">{stars(post["rating"])} '
+              f'<span>{post["rating"]} out of 5</span></p>') if post["rating"] else ""
+    label = "Where to get it" if end else "Book reviewed"
+    box = (f'<aside class="bookbox{" bookbox-end" if end else ""}" aria-label="{label}">'
+           + cover_img(post, root, "bookbox-cover", lazy=end)
+           + f'<div class="bookbox-main"><p class="bookbox-k">{label}</p>'
+           f'<p class="bookbox-t">{esc(post["book_title"])}</p>'
+           f'<p class="bookbox-a">by {esc(post["book_author"])}</p>{rating}{get}</div></aside>')
+    if end:
+        return (affiliate_note(site) if buttons else "") + box
+    return (affiliate_note(site) if buttons else "") + box + cover_credit(post)
 
 
 def post_item(post, root, heading="h2"):
-    book = ""
+    book, thumb = "", ""
     if post["type"] == "review":
         book = (f'<p class="post-book">{esc(post["book_title"])} '
                 f'<span>by {esc(post["book_author"])}</span>'
                 + (" " + stars(post["rating"]) if post["rating"] else "") + "</p>")
+        thumb = (f'<a class="post-thumb" href="{root}{post["url"]}" tabindex="-1" aria-hidden="true">'
+                 + cover_img(post, root, "post-thumb-img").replace(f'alt="Cover of {esc(post["book_title"])}"', 'alt=""')
+                 + "</a>")
     return (
-        f'<li class="post-item post-{post["type"]}">'
+        f'<li class="post-item post-{post["type"]}{" has-thumb" if thumb else ""}">{thumb}<div class="post-item-body">'
         f'<p class="post-kicker"><span class="badge">{TYPES[post["type"]]}</span> '
-        f'<time datetime="{post["day"].isoformat()}">{pretty_date(post["day"])}</time></p>'
+        f'<time datetime="{post["day"].isoformat()}">{pretty_date(post["day"])}</time>'
+        f'<span>{post["minutes"]} min read</span></p>'
         f'<{heading} class="post-title"><a href="{root}{post["url"]}">{esc(post["title"])}</a></{heading}>'
-        f'{book}<p class="post-summary">{esc(post["summary"])}</p></li>'
+        f'{book}<p class="post-summary">{esc(post["summary"])}</p></div></li>'
     )
 
 
+def related_posts(post, posts):
+    """Other posts that share the most tags with this one, newest first among equals."""
+    mine = {tag_slug(t) for t in post["tags"]}
+    scored = []
+    for position, other in enumerate(posts):
+        if other is post:
+            continue
+        shared_tags = len(mine & {tag_slug(t) for t in other["tags"]})
+        scored.append((-shared_tags, other["type"] != post["type"], position, other))
+    scored.sort(key=lambda item: item[:3])
+    return [item[3] for item in scored[:RELATED_POSTS]]
+
+
 def newsletter_block(site):
-    """Signup box for blog pages. Empty until a provider address is set in content.js."""
+    """The newsletter sign-up box. Returns nothing at all until a Kit form address is set in content.js.
+
+    The form posts straight to the address in newsletter.formAction. signup.js sends it in
+    the background and shows the thank-you line; if that fails, or without JavaScript, the
+    form is sent the ordinary way and the provider shows its own confirmation page.
+    """
     if not site["form_action"]:
         return ""
+    field = "email_address" if KIT_HOST.match(site["form_action"]) else "email"
     return f"""
-    <section class="band-dark">
+    <section id="newsletter" class="band-dark">
       <div class="wrap narrow">
         <div class="signup center">
-          <p class="eyebrow">Stay in touch</p>
-          <h2>Newsletter</h2>
+          <p class="eyebrow">Newsletter</p>
+          <h2>{esc(site["newsletter_heading"])}</h2>
           <p>{esc(site["newsletter_blurb"])}</p>
-          <form method="post" action="{esc(site["form_action"])}">
-            <label class="visually-hidden" for="email">Email address</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+          <form class="signup-form" method="post" action="{esc(site["form_action"])}" data-thanks="{esc(site["newsletter_thanks"])}">
+            <label class="visually-hidden" for="signup-email">Email address</label>
+            <input id="signup-email" name="{field}" type="email" autocomplete="email" placeholder="you@example.com" required>
             <button class="button" type="submit">Subscribe</button>
           </form>
+          <p class="note signup-status" role="status" aria-live="polite" hidden></p>
         </div>
       </div>
     </section>"""
 
 
-def render_page(site, path, title, description, main, kind="website", extra_head=""):
+def render_page(site, path, title, description, main, kind="website", extra_head="", image=""):
     root = root_for(path)
     head = [
         '<meta charset="utf-8">',
@@ -631,37 +1059,88 @@ def render_page(site, path, title, description, main, kind="website", extra_head
         f'<meta property="og:description" content="{esc(description)}">',
         f'<meta property="og:type" content="{kind}">',
         f'<link rel="stylesheet" href="{root}styles.css">',
+        f'<link rel="icon" href="{root}assets/icons/monogram/favicon.ico" sizes="48x48">',
+        f'<link rel="icon" href="{root}assets/icons/monogram/icon.svg" type="image/svg+xml">',
+        f'<link rel="apple-touch-icon" href="{root}assets/icons/monogram/apple-touch-icon.png">',
         f'<link rel="alternate" type="application/rss+xml" title="{esc(site["name"])}: blog" href="{root}feed.xml">',
     ]
     if site["url"]:
         head.append(f'<link rel="canonical" href="{esc(site["url"] + "/" + page_url(path))}">')
+        if image:
+            head.append(f'<meta property="og:image" content="{esc(site["url"] + "/" + image)}">')
     if extra_head:
         head.append(extra_head)
+    script = f'\n  <script src="{root}signup.js"></script>' if site["form_action"] else ""
     return (
         '<!DOCTYPE html>\n<html lang="en">\n<head>\n  ' + "\n  ".join(head) + "\n</head>\n<body>\n  "
         + shared(site["header"], site, root)
         + f'\n\n  <main id="top">{main}\n  </main>\n\n  '
         + shared(site["footer"], site, root)
-        + "\n</body>\n</html>\n"
+        + script + "\n</body>\n</html>\n"
     )
 
 
-def render_post(site, post, newer, older):
+def render_sections(sections, after_verdict=""):
+    """The ## sections of a post. 'For / not for' and 'works / be aware' sit side by side on wide screens."""
+    def one(section):
+        css = f"sec sec-{section['kind']}" if section["kind"] else "sec"
+        return (f'<section class="{css}" id="{section["id"]}">\n<h2>{section["title"]}</h2>\n'
+                f'{section["html"]}\n</section>')
+
+    out, i = [], 0
+    while i < len(sections):
+        kinds = (sections[i]["kind"], sections[i + 1]["kind"] if i + 1 < len(sections) else "")
+        if kinds in (("for", "notfor"), ("pros", "cons")):
+            out.append(f'<div class="pair pair-{kinds[0]}">\n{one(sections[i])}\n{one(sections[i + 1])}\n</div>')
+            i += 2
+        else:
+            out.append(one(sections[i]))
+            if kinds[0] == "verdict" and after_verdict:
+                out.append(after_verdict)
+            i += 1
+    return "\n".join(out)
+
+
+def render_post(site, post, posts, newer, older):
     path = post["url"] + "index.html"
     root = root_for(path)
-    label = TYPES[post["type"]]
-    book = ""
-    if post["type"] == "review":
-        rating = (f'<p class="book-rating">{stars(post["rating"])} '
-                  f'<span>{post["rating"]} out of 5</span></p>') if post["rating"] else ""
-        book = (f'\n          <div class="book-box"><p class="book-box-label">Book reviewed</p>'
-                f'<p class="book-box-title">{esc(post["book_title"])}</p>'
-                f'<p class="book-box-author">by {esc(post["book_author"])}</p>{rating}'
-                f'{amazon_links(site, post)}</div>')
+    review = post["type"] == "review"
+    parts = post["parts"]
+    folder, type_label = TYPE_PAGES[post["type"]]
+
+    crumbs = (f'<nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a> <span>/</span> '
+              f'<a href="{root}blog/">Blog</a> <span>/</span> <a href="{root}blog/{folder}/">{type_label}</a></nav>')
+    photo = (f'<img class="byline-photo" src="{root}{esc(site["photo"])}" width="40" height="40" alt="">'
+             if site["photo"] else "")
+    author = esc(site["name"]) + (f', {esc(site["credentials"])}' if site["credentials"] else "")
+    meta = [f'<span>By {author}</span>',
+            f'<span><time datetime="{post["day"].isoformat()}">{pretty_date(post["day"])}</time></span>']
+    if post["updated"]:
+        meta.append(f'<span>Updated <time datetime="{post["updated"].isoformat()}">'
+                    f'{pretty_date(post["updated"])}</time></span>')
+    meta.append(f'<span>{post["minutes"]} min read</span>')
+
+    toc = ""
+    if len(parts["sections"]) >= TOC_MIN_SECTIONS:
+        toc = ('<nav class="toc" aria-labelledby="toc-h"><details open><summary id="toc-h">On this page</summary><ol>'
+               + "".join(f'<li><a href="#{s["id"]}">{s["title"]}</a></li>' for s in parts["sections"])
+               + "</ol></details></nav>")
+    top = (book_box(site, post, root) if review else (affiliate_note(site) if post["affiliate"] else "")) + toc
+    closing = f'\n<p class="post-disclaimer">{parts["closing"]}</p>' if parts["closing"] else ""
+    body = "\n".join(piece for piece in (
+        parts["intro"], render_sections(parts["sections"], book_box(site, post, root, end=True) if review else "")
+    ) if piece) + closing
+
     tags = "".join(f'<li><a href="{root}blog/tag/{tag_slug(t)}/">{esc(t)}</a></li>' for t in post["tags"])
+    more = related_posts(post, posts)
+    related = ""
+    if more:
+        related = ('\n        <section class="related" aria-labelledby="related-h"><h2 id="related-h">More from the blog</h2>'
+                   '<ul class="post-list related-list">' + "".join(post_item(p, root, "h3") for p in more)
+                   + "</ul></section>")
     nav = ""
     if newer or older:
-        nav = '\n        <nav class="post-nav" aria-label="More posts">'
+        nav = '\n        <nav class="post-nav" aria-label="Older and newer posts">'
         if older:
             nav += (f'<a class="post-nav-older" href="{root}{older["url"]}"><span>Older</span>'
                     f'{esc(older["title"])}</a>')
@@ -670,19 +1149,21 @@ def render_post(site, post, newer, older):
                     f'{esc(newer["title"])}</a>')
         nav += "</nav>"
     main = f"""
-    <article class="post">
+    <article class="post post-{post["type"]}">
       <header class="page-head">
         <div class="wrap narrow">
-          <p class="eyebrow"><a href="{root}blog/">Blog</a> · {label}</p>
+          {crumbs}
           <h1 class="page-title">{esc(post["title"])}</h1>
-          <p class="post-meta">By {esc(site["name"])} · <time datetime="{post["day"].isoformat()}">{pretty_date(post["day"])}</time> · {post["minutes"]} min read</p>{book}
+          <p class="post-meta byline">{photo}{"".join(meta)}</p>
+          <p class="post-lead">{esc(post["summary"])}</p>
         </div>
       </header>
       <div class="wrap narrow">
+        <div class="post-top">{top}</div>
         <div class="prose">
-{post["html"]}
+{body}
         </div>
-        <ul class="tag-list" aria-label="Tags">{tags}</ul>{nav}
+        <ul class="tag-list" aria-label="Tags">{tags}</ul>{related}{nav}
         <p class="post-cta">
           <a class="button" href="{root}#books">See the books by {esc(site["name"])}</a>
           <a class="button button-quiet" href="{root}blog/">All posts and reviews</a>
@@ -693,14 +1174,17 @@ def render_post(site, post, newer, older):
         "@context": "https://schema.org", "@type": "BlogPosting",
         "headline": post["title"], "description": post["summary"],
         "datePublished": post["day"].isoformat(),
+        "dateModified": (post["updated"] or post["day"]).isoformat(),
         "author": {"@type": "Person", "name": site["name"]},
     }
     if site["url"]:
         data["url"] = site["url"] + "/" + post["url"]
+        if post["cover"]:
+            data["image"] = site["url"] + "/" + post["cover"]
     # "<" is written as \u003c so nothing in a post can close the script tag.
     extra = ('<script type="application/ld+json">'
              + json.dumps(data, ensure_ascii=False).replace("<", "\\u003c") + "</script>")
-    return path, render_page(site, path, post["title"], post["summary"], main, "article", extra)
+    return path, render_page(site, path, post["title"], post["summary"], main, "article", extra, post["cover"])
 
 
 def render_listings(site, posts):
@@ -795,6 +1279,12 @@ def render_home(site, posts):
     page = re.sub(r"<!-- BUILD:LATEST -->.*?<!-- /BUILD:LATEST -->",
                   lambda m: "<!-- BUILD:LATEST -->" + latest + "<!-- /BUILD:LATEST -->",
                   site["home"], flags=re.S)
+    # The sign-up box is written into the home page only when a Kit form address is set.
+    page = re.sub(r"<!-- BUILD:NEWSLETTER -->.*?<!-- /BUILD:NEWSLETTER -->",
+                  lambda m: "<!-- BUILD:NEWSLETTER -->" + newsletter_block(site) + "\n    <!-- /BUILD:NEWSLETTER -->",
+                  page, flags=re.S)
+    if not site["form_action"]:
+        page = re.sub(r'\s*<script src="signup\.js"></script>', "", page)
     if site["url"]:
         page = page.replace("</head>", f'  <link rel="canonical" href="{esc(site["url"] + "/")}">\n</head>', 1)
     return fill_text(page, site)
@@ -845,7 +1335,7 @@ def build():
     for index, post in enumerate(posts):
         newer = posts[index - 1] if index > 0 else None
         older = posts[index + 1] if index + 1 < len(posts) else None
-        path, markup = render_post(site, post, newer, older)
+        path, markup = render_post(site, post, posts, newer, older)
         pages[path] = markup
     pages.update(render_listings(site, posts))
     extras = {"feed.xml": render_feed(site, posts), ".nojekyll": ""}
@@ -856,7 +1346,7 @@ def build():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
-    for name in ("styles.css", "main.js", "content.js"):
+    for name in ("styles.css", "main.js", "content.js", "signup.js"):
         shutil.copy2(ROOT / name, OUT / name)
     if (ROOT / "assets").is_dir():
         shutil.copytree(ROOT / "assets", OUT / "assets", ignore=shutil.ignore_patterns(".*"))

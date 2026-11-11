@@ -354,14 +354,6 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 
 /* A single post or review */
 .post-meta { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
-.book-box {
-  margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--card);
-  border: 1px solid var(--mint-line); border-left: 5px solid var(--bar-orange); border-radius: 0 8px 8px 0;
-}
-.book-box p { margin: 0; }
-.book-box-label { font-family: var(--display); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label); }
-.book-box-title { font-family: var(--display); font-weight: 700; font-size: 1.2rem; line-height: 1.3; }
-.book-box-author { color: var(--ink-soft); }
 .book-rating { margin-top: 0.35rem !important; font-size: 0.95rem; color: var(--ink-soft); }
 .book-rating .stars { font-size: 1.15rem; }
 
@@ -418,12 +410,172 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 }
 .buy-amazon .button-small { padding: 0.35rem 0.7rem; }
 .buy-more { margin-top: 0.5rem; }
-/* "Get the book" line inside the box at the top of a review */
-.book-get {
-  margin-top: 0.75rem !important; padding-top: 0.7rem; border-top: 1px solid var(--mint-line);
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem;
+
+/* ---------------------------------------------------------------------------
+   POSTS AND REVIEWS: the page layout written by build.py.
+   Breadcrumbs, byline, book box with cover and store buttons, "On this page",
+   the short answer, for / not for, what works / be aware, FAQ, sources,
+   related posts. All colours come from the variables at the top of this file.
+   --------------------------------------------------------------------------- */
+
+/* Breadcrumbs and byline in the page heading */
+.crumbs {
+  display: flex; flex-wrap: wrap; gap: 0.2rem 0.5rem; margin: 0 0 1.1rem;
+  font-family: var(--display); font-weight: 600; font-size: 0.8rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
 }
-.book-get-label { font-family: var(--display); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label); }
-.book-get-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; }
-.book-get-links a { font-family: var(--display); font-weight: 600; }
-.book-get-note { margin-top: 0.35rem !important; font-size: 0.82rem; line-height: 1.45; color: var(--ink-soft); }
+.crumbs a { color: var(--green-label); text-decoration: none; }
+.crumbs a:hover { text-decoration: underline; }
+.crumbs span { color: var(--mint-line); }
+.byline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0; }
+.byline > span:not(:last-child)::after { content: "·"; margin: 0 0.55rem; color: var(--green-bright); font-weight: 700; }
+.byline-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 0.7rem; border: 2px solid #fff; }
+.post-lead { margin: 1.1rem 0 0; font-size: 1.15rem; line-height: 1.55; color: var(--navy); }
+
+/* The top of a post: disclosure, book box, cover credit, contents */
+.post-top { padding-top: 2rem; }
+.post-top:empty { display: none; }
+.aff-note {
+  margin: 0 0 0.75rem; padding: 0.55rem 0.9rem; font-size: 0.875rem; line-height: 1.5; color: var(--navy);
+  background: var(--mint-light); border: 1px solid var(--mint-line); border-left: 4px solid var(--bar-yellow); border-radius: 0 6px 6px 0;
+}
+.aff-tag {
+  display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.5rem; border-radius: 999px;
+  border: 1px solid var(--mint-line); background: var(--mint-light);
+  font-family: var(--sans); font-weight: 600; font-size: 0.7rem; letter-spacing: 0.02em; text-transform: none; color: var(--ink-soft);
+}
+.bookbox {
+  display: grid; grid-template-columns: 8.75rem 1fr; gap: 1.5rem; align-items: start;
+  padding: 1.25rem; background: var(--card);
+  border: 1px solid var(--mint-line); border-top: 5px solid var(--bar-orange); border-radius: 8px;
+}
+.bookbox-cover { width: 100%; height: auto; border-radius: 3px; box-shadow: 0 8px 22px rgba(35, 48, 64, 0.22); }
+.bookbox p { margin: 0; }
+.bookbox-k { font-family: var(--display); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label); }
+.bookbox-t { font-family: var(--display); font-weight: 700; font-size: 1.35rem; line-height: 1.2; margin-top: 0.2rem !important; }
+.bookbox-a { color: var(--ink-soft); margin-top: 0.15rem !important; }
+.bookbox-get { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px solid var(--mint-line); }
+.bookbox-get-label { font-family: var(--display); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label); }
+.bookbox-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.55rem !important; }
+.bookbox-small { margin-top: 0.65rem !important; font-size: 0.8rem; line-height: 1.45; color: var(--ink-soft); }
+.cover-credit { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--ink-soft); }
+.cover-credit a { color: inherit; }
+.bookbox-end { grid-template-columns: 5.5rem 1fr; gap: 1.1rem; margin: 0 0 1.25em; }
+.bookbox-end .bookbox-t { font-size: 1.15rem; }
+.prose .aff-note { margin: 2rem 0 0.75rem; font-size: 0.875rem; line-height: 1.5; }
+.prose .bookbox img { margin: 0; }
+@media (max-width: 30rem) {
+  .bookbox { grid-template-columns: 5.75rem 1fr; gap: 1rem; padding: 1rem; }
+  .bookbox-t { font-size: 1.15rem; }
+  .bookbox-get { grid-column: 1 / -1; }
+  /* On a phone the buttons run under the cover, full width */
+  .bookbox:not(.bookbox-end) .bookbox-main { display: contents; }
+  .bookbox:not(.bookbox-end) .bookbox-k { grid-column: 2; grid-row: 1; align-self: end; }
+  .bookbox:not(.bookbox-end) .bookbox-cover { grid-row: 1 / 4; }
+  .bookbox:not(.bookbox-end) .bookbox-t, .bookbox:not(.bookbox-end) .bookbox-a, .bookbox:not(.bookbox-end) .book-rating { grid-column: 2; }
+  .bookbox:not(.bookbox-end) .bookbox-a { align-self: start; }
+  .bookbox-buttons .button { flex: 1 1 auto; text-align: center; }
+}
+
+/* "On this page" */
+.toc { margin-top: 1.5rem; background: rgba(255, 255, 255, 0.6); border: 1px solid var(--mint-line); border-radius: 8px; }
+.toc summary {
+  cursor: pointer; padding: 0.7rem 1rem;
+  font-family: var(--display); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label);
+}
+.toc ol { margin: 0; padding: 0 1rem 0.9rem 2.4rem; columns: 2; column-gap: 2rem; font-size: 0.95rem; }
+.toc li { margin-bottom: 0.25rem; break-inside: avoid; }
+.toc li::marker { color: var(--green-bright); font-weight: 700; }
+.toc a { color: var(--navy); text-decoration-color: var(--mint-line); }
+.toc a:hover { color: var(--green-label); }
+@media (max-width: 34rem) { .toc ol { columns: 1; } }
+
+/* Sections of a post */
+.prose .sec > h2:first-child { margin-top: 2.25rem; }
+.prose > .sec:first-child > h2:first-child { margin-top: 0; }
+/* The short answer and the verdict: a highlighted box */
+.prose .sec-answer, .prose .sec-verdict {
+  margin: 2rem 0 0; padding: 1.1rem 1.35rem 1.2rem; background: var(--card);
+  border: 1px solid var(--mint-line); border-left: 5px solid var(--green-bright); border-radius: 0 8px 8px 0;
+}
+.prose .sec-verdict { border-left-color: var(--band); margin-bottom: 1.25em; }
+.prose .sec-answer > h2:first-child, .prose .sec-verdict > h2:first-child {
+  margin: 0 0 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label);
+}
+.prose .sec-answer > :last-child, .prose .sec-verdict > :last-child { margin-bottom: 0; }
+/* For / not for, and what works / what to be aware of: two cards, side by side on wide screens */
+.pair { display: grid; gap: 1rem; margin: 2rem 0 0; }
+@media (min-width: 44rem) { .pair-for { grid-template-columns: 1fr 1fr; } }
+.pair .sec {
+  padding: 1rem 1.2rem 1.1rem; background: var(--card);
+  border: 1px solid var(--mint-line); border-top: 4px solid var(--green-bright); border-radius: 8px;
+}
+.pair .sec-notfor, .pair .sec-cons { border-top-color: var(--bar-orange); }
+.prose .pair .sec > h2:first-child { margin: 0 0 0.6rem; font-size: 1.15rem; }
+.pair ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+.pair li { position: relative; padding-left: 1.6rem; margin-bottom: 0.5em; font-size: 1rem; line-height: 1.6; }
+.pair li:last-child { margin-bottom: 0; }
+.pair li::before { position: absolute; left: 0; top: 0; font-weight: 700; }
+.sec-for li::before, .sec-pros li::before { content: "✓"; color: var(--green-tagline); }
+.sec-notfor li::before, .sec-cons li::before { content: "✕"; color: #c2441f; }
+/* FAQ: questions that open */
+.faq { border-top: 1px solid var(--mint-line); margin-bottom: 1.25em; }
+.faq details { border-bottom: 1px solid var(--mint-line); }
+.faq summary {
+  cursor: pointer; padding: 0.8rem 1.75rem 0.8rem 0; position: relative; list-style: none;
+  font-family: var(--display); font-weight: 600; font-size: 1.05rem; line-height: 1.35; color: var(--navy);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 0.25rem; top: 0.7rem; font-size: 1.3rem; line-height: 1; color: var(--green-label); }
+.faq details[open] summary::after { content: "–"; }
+.faq details > :not(summary) { font-size: 1.05rem; }
+.faq details > :last-child { margin-bottom: 1rem; }
+.toc summary:focus-visible, .faq summary:focus-visible { outline: 3px solid var(--bar-teal); outline-offset: 2px; }
+/* Sources */
+.prose .sec-sources ol, .prose .sec-sources ul, .prose .sec-sources p { font-size: 0.95rem; line-height: 1.6; color: var(--ink-soft); }
+.post-disclaimer { margin: 2rem 0 0 !important; padding-top: 1.25rem; border-top: 1px solid var(--mint-line); font-size: 0.95rem; color: var(--ink-soft); }
+
+/* Cover thumbnails in post lists */
+.post-item.has-thumb { display: flex; gap: 1.1rem; align-items: flex-start; }
+.post-item-body { flex: 1; min-width: 0; }
+.post-thumb { flex: 0 0 5rem; }
+.post-thumb-img { width: 100%; height: auto; border-radius: 3px; box-shadow: 0 5px 14px rgba(35, 48, 64, 0.2); }
+.post-kicker > span:last-child::before { content: "·"; margin-right: 0.75rem; color: var(--green-bright); font-weight: 700; }
+.post-cards .post-thumb { flex-basis: 4.25rem; }
+@media (max-width: 30rem) { .post-thumb { flex-basis: 3.75rem; } .post-item.has-thumb { gap: 0.9rem; } }
+
+/* More from the blog, under a post */
+.related { padding: 2.5rem 0 0; margin-top: 2.5rem; border-top: 1px solid var(--mint-line); }
+.related > h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.related .post-title { font-size: 1.1rem; }
+.related .post-summary { font-size: 0.95rem; line-height: 1.55; }
+.related .post-item { padding: 1.1rem 0; }
+
+/* Contact: one email button, then what people usually write about */
+.contact-email { margin: 0.5rem 0 0; }
+.contact-email .button { font-size: 1.05rem; padding: 0.8rem 1.5rem; overflow-wrap: anywhere; }
+.inquiries { list-style: none; padding: 0; }
+.inquiry p:last-child { margin-bottom: 0; }
+
+/* Newsletter: the line shown after signing up */
+.signup-status { font-size: 1.05rem; color: #fff; }
+
+/* Links the build writes for a post: "(Amazon: US · UK · Germany)" after a product name,
+   and the "From the author" cards for his own books and templates */
+.amz { font-size: 0.85em; color: var(--ink-soft); white-space: nowrap; }
+.amz a { font-family: var(--display); font-weight: 600; }
+.owncard {
+  display: grid; grid-template-columns: 6.5rem 1fr; gap: 1.2rem; align-items: start;
+  margin: 0 0 1rem; padding: 1.1rem; background: var(--card);
+  border: 1px solid var(--mint-line); border-top: 4px solid var(--bar-teal); border-radius: 8px;
+}
+.owncard-template { border-top-color: var(--bar-aqua); }
+.prose .owncard-img { width: 100%; height: auto; margin: 0; border-radius: 3px; box-shadow: 0 5px 14px rgba(35, 48, 64, 0.2); }
+.owncard p { margin: 0; }
+.owncard-t { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.25; margin-top: 0.2rem !important; }
+.owncard-s { font-family: var(--display); font-weight: 600; font-size: 0.85rem; line-height: 1.4; color: var(--green-label); margin-top: 0.2rem !important; }
+.owncard-b { font-size: 0.95rem; line-height: 1.55; margin-top: 0.5rem !important; }
+.owncard .bookbox-get-label { margin-top: 0.8rem !important; }
+.owncard .bookbox-buttons { margin-top: 0.5rem !important; }
+.owncard-template .bookbox-buttons { margin-top: 0.8rem !important; }
+@media (max-width: 30rem) { .owncard { grid-template-columns: 4.5rem 1fr; gap: 0.9rem; padding: 0.9rem; } }

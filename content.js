@@ -40,13 +40,14 @@ const SITE = {
   // Amazon affiliate links (Amazon Associates).
   // The three tags below are the ONLY place your Associates tags are written.
   // The site adds the right tag to every Amazon link it makes: the buy buttons
-  // on your own books and the "Get the book" links on reviews. To change a tag,
+  // on your own books and the "Get the book" buttons on reviews. To change a tag,
   // change it here. To switch a store off, set its tag to "".
-  // disclosure is the line Amazon requires; it is shown in the footer of every page.
-  // note is the short line shown beside the links on review pages.
+  // disclosure is the line Amazon requires; it is shown in the footer of every page and,
+  // on book reviews, again near the top, just above the store buttons.
+  // note is the sentence shown straight after it on review pages.
   affiliate: {
     disclosure: "As an Amazon Associate I earn from qualifying purchases.",
-    note: "These are affiliate links. If you buy through them I may earn a small commission, at no extra cost to you.",
+    note: "The Amazon buttons on this page are affiliate links: if you buy through them I may earn a small commission, at no extra cost to you.",
     amazon: {
       us: "remotelyscale-20",
       uk: "remotelyscale-21",
@@ -221,34 +222,39 @@ const SITE = {
     ]
   },
 
-  // Newsletter. The signup box and the "Newsletter" menu link stay hidden until formAction is filled in.
+  // Newsletter (Kit, formerly ConvertKit).
+  // The sign-up box appears on the home page and at the end of every post and review, and a
+  // "Newsletter" link appears in the menu. ALL of it stays off the site while formAction is "".
   newsletter: {
-    // DRAFT. Tell readers what they get and how often.
-    blurb: "New posts, book reviews and book news by email.",
-    // PLACEHOLDER: paste the https:// form address from your newsletter provider (Buttondown, Mailchimp, etc.).
+    // DRAFT. The heading of the sign-up box.
+    heading: "Get new posts by email",
+    // DRAFT. One line saying what readers get. Change it to your own words.
+    blurb: "New book reviews and plain-English finance posts, sent to your inbox. No spam, and you can unsubscribe at any time.",
+    // DRAFT. Shown in place of the form after someone signs up.
+    thanks: "Thank you. Please check your inbox and confirm your email address to finish signing up.",
+    // PLACEHOLDER: the full https:// address your Kit sign-up form sends to (the "action"
+    // address in the form's HTML embed code). See "Newsletter" in README.md.
     formAction: ""
   },
 
   // Contact. The contact section stays hidden until there is an email address or at least one profile link.
   contact: {
-    // The address readers and press should write to. Leave "" to hide it.
+    // The address readers and press should write to. It is shown as the one button in the
+    // contact section. Leave "" to hide it.
     email: "hello@ashokpaudel.com",
-    // PLACEHOLDER: your real profiles. Remove the // in front of a line and put in the full address.
+    // Optional: profile links, shown as small buttons under the contact details.
+    // To add one, remove the // in front of a line and put in the full address.
     socials: [
-      { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela/" },
       // { label: "Goodreads", url: "https://www.goodreads.com/author/show/..." },
-      // { label: "Amazon author page", url: "https://www.amazon.de/..." },
     ],
 
-    // The kinds of request people can send you, shown as cards in the contact section.
-    // Each card's button opens an email with the subject filled in. While no email
-    // address is set above, the button links to your first profile (LinkedIn) instead.
-    // Remove a card by deleting its line; leave the list empty ([]) to show none.
+    // The kinds of request people can send you, shown as short descriptions under the button.
+    // Remove one by deleting its line; leave the list empty ([]) to show none.
     inquiries: [
-      { title: "Press and media", text: "Interview requests, quotes and review copies.", subject: "Press inquiry" },
-      { title: "Speaking engagements", text: "Talks, workshops and panels on investing and corporate finance.", subject: "Speaking inquiry" },
-      { title: "Podcasts and guest articles", text: "Podcast appearances and guest contributions.", subject: "Podcast or guest article inquiry" },
-      { title: "Bulk orders and rights", text: "Bulk and corporate orders, translation and other rights.", subject: "Bulk order or rights inquiry" }
+      { title: "Press and media", text: "Interview requests, quotes and review copies." },
+      { title: "Speaking engagements", text: "Talks, workshops and panels on investing and corporate finance." },
+      { title: "Podcasts and guest articles", text: "Podcast appearances and guest contributions." },
+      { title: "Bulk orders and rights", text: "Bulk and corporate orders, translation and other rights." }
     ]
   }
 };

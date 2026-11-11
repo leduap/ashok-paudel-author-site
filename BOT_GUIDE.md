@@ -4,18 +4,32 @@ You publish to Ashok Paudel's author site. Your whole job is to **add one markdo
 
 ## The rules
 
-1. **One new file per day.** Each file is either one blog post or one book review.
+1. **One new post per day.** Each is either one blog post or one book review. A blog post is one new file. A book review is two new files: the review and the picture of the book's cover (see "The cover image").
 2. **Add only. Never edit, rename, move or delete any other file**, including earlier posts, `content.js`, `index.html`, `build.py`, `styles.css` and the workflow.
-3. Put the file directly in `posts/`. No sub-folders, no images, no other file types.
-4. Follow the file name and front matter rules below exactly. If anything is wrong the build fails, **nothing is published**, and the site stays as it was until the file is fixed.
+3. The post goes directly in `posts/`. The cover picture of a review goes in `assets/covers/`. No sub-folders, no other files.
+4. Follow the file name, front matter and section rules below exactly. If anything is wrong the build fails, **nothing is published**, and the site stays as it was until the file is fixed.
 5. Write plain markdown. Do not write HTML: any HTML is shown to readers as literal text, never run.
-6. Content rules:
-   - Do not give personalised financial advice and do not tell readers to buy, sell or hold any specific security.
-   - Do not invent facts, quotes, statistics, awards or events about Ashok Paudel or anyone else.
-   - A review describes the book: what it covers, what works, what does not, and who it suits. Quote the book sparingly and accurately.
-   - Do not name Ashok Paudel's employer or clients.
-   - When a post's subject closely matches one of Ashok's finance templates, you may end with one sentence linking to that template's own page under `https://financea2z.gumroad.com/l/`. At most one such link per post, and only where it fits; most posts will have none. See the existing reviews in `posts/` for examples.
-7. **Never write an Amazon link or an affiliate tag anywhere in a post.** No `amazon.com`, `amazon.co.uk`, `amazon.de` or `amzn.to` addresses, and no `tag=` codes. The site adds the "Get the book" links to every review by itself, with the correct affiliate tag for each store (see "Amazon links on reviews" below). A post that contains an Amazon address fails the build.
+6. **Never write an Amazon link or an affiliate tag anywhere in a post.** No `amazon.com`, `amazon.co.uk`, `amazon.de` or `amzn.to` addresses, and no `tag=` codes. The site writes every Amazon link itself, with the correct affiliate tag for each store. You ask for one by its code (see "Links"). A post that contains an Amazon address fails the build.
+
+## Accuracy comes first
+
+Accuracy matters more than length. A short review that is right is better than a long one that is not.
+
+- **Open your sources.** Before writing a review, open at least two pages about the book and read them: the publisher's page, the author's own site, the book's Open Library record, a library catalogue, or its Wikipedia article. List the ones you used under `## Sources`.
+- **State only what you saw.** Edition, year, publisher, page count, chapter titles and what the book covers must each come from a page you opened for this review. Do not write from memory. If you could not confirm something, leave it out.
+- **Say which edition** you are describing, and mention a newer one if your sources show it exists.
+- **Quote sparingly and exactly.** Only quote words you saw on a source page, and say where they come from (for example "the publisher says"). Never invent a quotation, an endorsement, an award, a sales figure or a statistic.
+- **Be balanced.** `## What to be aware of` must list real weaknesses or limits, not polite filler. If the author sells services connected to the book, say so.
+- **No star ratings.** Leave the `rating` line out unless Ashok asks for one.
+- **No promises.** Do not say or suggest that a book, a method, a template or one of Ashok's own books will produce any investment result. Do not give personalised financial advice, and do not tell readers to buy, sell or hold any specific security.
+- **Plain English.** Short sentences. Explain a technical term the first time it appears.
+
+## Nothing invented about Ashok
+
+- Do not invent anything about Ashok Paudel: no personal stories, no "when I...", no claims about his job, employer, clients, experience or results. The only credentials the site states are "CPA, MBA".
+- Never name his employer or clients.
+- Describe his books and templates only with the words `content.js` uses for them. The build writes the "From the author" cards from `content.js` for you, so the simplest safe sentence is one that says they are his own products and why they sit on this page. Do not add claims about what they achieve.
+- Do not copy any description of Ashok from his Gumroad store or anywhere else.
 
 ## Where the file goes and what it is called
 
@@ -27,6 +41,25 @@ posts/YYYY-MM-DD-short-title.md
 - `short-title` uses only lower-case letters `a-z`, digits `0-9` and single hyphens. No spaces, capitals, underscores or accents.
 - The extension is `.md`.
 - The file name becomes the page address: `posts/2026-11-12-reading-a-cash-flow-statement.md` is published at `/blog/2026-11-12-reading-a-cash-flow-statement/`. Never reuse a file name.
+
+## The cover image (reviews only)
+
+Every review shows the book's cover near the top. **A review without a cover fails the build.**
+
+1. **Find the cover by the book's ISBN.** Use Open Library (`https://openlibrary.org/isbn/<ISBN>` shows the record; the picture is at `https://covers.openlibrary.org/b/isbn/<ISBN>-L.jpg`) or the publisher's own page for the book. **Never take an image from Amazon.**
+2. **Look at the picture.** It must show the right book and the same edition you are reviewing. Open Library returns a tiny blank picture when it has no cover; the build rejects anything smaller than 120 by 160 pixels. If you cannot find a usable cover, do not publish that review: choose another book.
+3. **Save it** as `assets/covers/<book-title-in-lower-case-with-hyphens>.jpg` (or `.png`). Lower-case letters, digits and single hyphens only. It must be a real JPEG or PNG and no larger than 400 KB; about 300 to 500 pixels wide is right.
+4. **Add two lines to the review's front matter:**
+
+   ```
+   cover: assets/covers/the-example-book.jpg
+   cover_source: https://openlibrary.org/isbn/0000000000
+   ```
+
+   `cover_source` is the address of the page the picture came from. It must start with `https://` and must not be an Amazon address. The site prints a small credit under the cover that links to it.
+5. **Commit the picture in the same commit as the review.**
+
+Do not replace or edit any existing picture in `assets/`.
 
 ## What goes in the file
 
@@ -49,24 +82,20 @@ Front matter is deliberately simple. It is **not** full YAML:
 | `summary` | always | One or two plain sentences, at most 220 characters. Shown in the blog list, on the home page, in search results and in the RSS feed. No markdown. |
 | `book_title` | when `type` is `review` | Title of the book reviewed. Not allowed on a `post`. |
 | `book_author` | when `type` is `review` | Author of the book reviewed. Not allowed on a `post`. |
-| `rating` | optional, reviews only | A whole number `1`, `2`, `3`, `4` or `5`. Leave the line out for no rating. Not allowed on a `post`. |
+| `cover` | when `type` is `review` | The cover picture: `assets/covers/` then a lower-case, hyphenated file name ending `.jpg`, `.jpeg` or `.png`. The file must exist. Not allowed on a `post`. |
+| `cover_source` | when `type` is `review` | The `https://` address of the page the cover came from (Open Library or the publisher). Never Amazon. Not allowed on a `post`. |
+| `updated` | optional | `YYYY-MM-DD`. Only when a published post is later corrected by Ashok. Leave it out of new posts. |
+| `rating` | optional, reviews only | Leave this line out. The site does not use star ratings unless Ashok asks for one. |
 | `amazon_id` | optional, reviews only | The book's 10-character Amazon code: a 10-digit ISBN such as `0857197681`, or a code starting with `B0`. Only use a code you have actually seen on the book's Amazon page. If unsure, leave the line out. Not allowed on a `post`. |
 
 Any other field name is rejected, so a misspelt field (such as `sumary`) fails the build rather than being silently ignored.
 
-### Amazon links on reviews
+### The book's own Amazon buttons
 
-Every review automatically gets a "Get the book" line with links to Amazon US, UK and Germany. You do not write these links; the build makes them from the front matter and adds the site owner's affiliate tags, which are stored in `content.js` and nowhere else.
+Every review automatically gets a box near the top with the cover, the title, the author and three buttons (Amazon US, UK and Germany), and the same box again after the verdict. You do not write these links; the build makes them from the front matter and adds the site owner's affiliate tags, which are stored in `content.js` and nowhere else. It also prints the affiliate disclosure above the first box.
 
-- **With `amazon_id`** the links open the book's own page. The code is the part after `/dp/` in the book's Amazon address. For example, The Psychology of Money is at `amazon.com/dp/0857197681`, so its review has:
-
-  ```
-  book_title: The Psychology of Money
-  book_author: Morgan Housel
-  amazon_id: 0857197681
-  ```
-
-- **Without `amazon_id`** the links open an Amazon search for `book_title` and `book_author`. This always works, so leaving the field out is safe. A wrong code is worse than no code: never guess one or recall one from memory.
+- **With `amazon_id`** the buttons open the book's own page. The code is the part after `/dp/` in the book's Amazon address. For example, The Psychology of Money is at `amazon.com/dp/0857197681`, so its review has `amazon_id: 0857197681`.
+- **Without `amazon_id`** the buttons open an Amazon search for `book_title` and `book_author`. This always works, so leaving the field out is safe. A wrong code is worse than no code: never guess one or recall one from memory.
 
 The build rejects a code that is not 10 characters, or a 10-digit ISBN whose check digit is wrong.
 
@@ -83,7 +112,7 @@ Standard markdown, limited to what the site supports:
 - paragraphs separated by a blank line
 - headings with `##`, `###` or `####` (the title is the page's only top-level heading; a single `#` is treated as `##`)
 - `**bold**`, `*italic*`, `` `code` ``
-- links: `[text](https://example.com)`. Only `http://`, `https://`, `mailto:` and relative links are kept; any other kind is dropped and only the text is shown
+- links: `[text](https://example.com)`. Only `http://`, `https://`, `mailto:` and links to other posts on this site are kept (see "Links"); any other kind is dropped and only the text is shown
 - bullet lists with `-` and numbered lists with `1.`
 - quotations with `>`
 - simple tables with `|` and a `| --- | --- |` line under the header row
@@ -93,9 +122,59 @@ Standard markdown, limited to what the site supports:
 
 Do not repeat the title at the top of the body; the site adds it. The body must not be empty.
 
+## Links
+
+Ashok's instruction: posts may link freely to his Gumroad templates, to his own books, to other relevant products on Amazon and to other posts on this site. There is no limit on the number. The rules below keep those links honest and working.
+
+**Useful, not spammy.** Add a link where a reader of that post would want it. A link must never change what a review says about a book. Most posts need only a few.
+
+| To link to | Write | What the site does |
+| --- | --- | --- |
+| Another post or review on this site | `[The Psychology of Money](../2026-09-14-review-the-psychology-of-money/)` | A normal link. The address is `../`, then the other post's file name without `.md`, then `/`. The build fails if no such post exists. |
+| One of Ashok's own published books, as a card | A line containing only `::book B0HQVWGD1R` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and tagged Amazon buttons. |
+| One of Ashok's own templates, as a card | A line containing only `::template zxcrtz` | A "From the author: his own template" card with the picture, title and description from `content.js`, and a button to its Gumroad page. |
+| Any Amazon product, inside a sentence | `[Rolling, Repair and Risk](amazon:B0HQVRJQ1P)` | The words, followed by "(Amazon: US, UK, Germany)" links with the right tag for each store. |
+| A Gumroad template, inside a sentence | `[Month-End Close Starter Kit](https://financea2z.gumroad.com/l/utrxle)` | A normal link. Gumroad links are not affiliate links. |
+| Any other web page | `[text](https://example.com/page)` | A normal link. |
+
+Details:
+
+- **`::book CODE`**: the code must be the `amazonId` of a book in the `books` list of `content.js` that is on sale. A book marked `status: "Coming soon"` cannot be linked. Any other code fails the build.
+- **`::template ID`**: the ID is the last part of the template's `url` in `content.js`, after `/l/`. Any other ID fails the build.
+- **`amazon:CODE`**: the code is the 10 characters after `/dp/` in the product's Amazon address. **Only use a code you have seen on the product's Amazon page in this session, with the product name matching.** If you cannot confirm the code, mention the product without a link. A badly formed code fails the build; a well-formed but wrong code would send readers to the wrong product, and the build cannot catch that.
+- Any other line starting with `::` fails the build.
+- **Say plainly whose products they are.** Put `::book` and `::template` cards under a `## From the author` heading placed after `## The verdict`, with one sentence saying they are Ashok's own products and separate from the book reviewed. The cards carry the label too.
+- **Disclosure.** Any post that ends up with Amazon links gets the affiliate disclosure near its top automatically, as well as the one in the footer. You do not write it.
+
+## The sections of a review
+
+A review must have a short opening paragraph, then these sections, each as a `##` heading with exactly this wording, in this order:
+
+| Heading | What goes in it | Form |
+| --- | --- | --- |
+| `## The short answer` | The verdict in three or four sentences: what the book is, who it suits, its main limit. | Paragraph |
+| `## Who it is for` | The readers who will get the most from it. | A list (`-` lines) |
+| `## Who it is not for` | The readers who should skip it. | A list |
+| `## Key ideas` | What the book covers and argues, from your sources. | Paragraphs or a list |
+| `## What works` | Its real strengths. | A list |
+| `## What to be aware of` | Its real weaknesses and limits. | A list |
+| `## The verdict` | A short closing judgement. May link to related reviews on this site. | Paragraph |
+| `## FAQ` | At least two questions a reader would ask. Each question is a `###` line with its answer in a paragraph under it. Nothing else in this section. | `###` questions |
+| `## Sources` | At least two links to pages you opened, each with the date you checked it. | A numbered list |
+
+You may add other `##` sections of your own between these, for example `## From the author` after the verdict. The site adds a contents list, shows the two "who it is for" lists side by side and the two "what works" lists side by side, and repeats the book box after the verdict.
+
+The file must end with a `---` line and then this line, in italics, as the last line of the file:
+
+```
+*A review describes a book. It is not advice to buy or sell any investment.*
+```
+
+A blog post (`type: post`) has no required sections. If it uses the headings `## FAQ` or `## Sources`, the same form applies to them.
+
 ## Complete example: a book review
 
-File: `posts/2026-11-12-review-the-example-book.md`
+Files: `posts/2026-11-12-review-the-example-book.md` and `assets/covers/the-example-book.jpg`
 
 ```markdown
 ---
@@ -106,28 +185,73 @@ tags: books, personal finance
 summary: A short, practical introduction to household budgeting. Clear on the basics, thin on investing.
 book_title: The Example Book
 book_author: A. N. Author
-rating: 4
+amazon_id: 0000000000
+cover: assets/covers/the-example-book.jpg
+cover_source: https://openlibrary.org/isbn/0000000000
 ---
 
-The Example Book is a 200-page introduction to household budgeting, written for readers who have never kept a budget.
+The Example Book is an introduction to household budgeting, written for readers who have never kept a budget. The edition reviewed here was published by Example Press in 2021.
 
-## What the book covers
+## The short answer
 
-The first half explains how to track spending for a month. The second half turns that record into a simple plan.
+A clear first book on budgeting. It is strong on tracking spending and weak on investing, which it covers only in definitions.
+
+## Who it is for
+
+- Readers who have never kept a budget.
+- Readers who like worksheets.
+
+## Who it is not for
+
+- Readers who already keep a budget.
+- Readers who want guidance on investing.
+
+## Key ideas
+
+- **Track first.** The first half explains how to record spending for a month.
+- **Then plan.** The second half turns that record into a simple plan.
 
 ## What works
 
-- Every chapter ends with a one-page worksheet.
-- The examples use small, realistic numbers.
+- **Every chapter ends with a worksheet,** according to the publisher's description.
+- **The order is logical.**
 
 ## What to be aware of
 
-The chapter on investing is brief and stays at the level of definitions.
+- **The investing chapter is brief.** It stays at the level of definitions.
+- **It is written for readers in the United States.**
 
-## Who should read it
+## The verdict
 
-Readers who want a first budget will get the most from it. Readers who already keep one will find little that is new.
+A good first budgeting book. For the next step, see the review of [The Psychology of Money](../2026-09-14-review-the-psychology-of-money/).
+
+## From the author
+
+Ashok Paudel's own calculator on a related subject. It is his product, separate from the book reviewed above.
+
+::template zxcrtz
+
+## FAQ
+
+### Is it suitable for beginners?
+
+Yes. It assumes no knowledge of budgeting.
+
+### How long is it?
+
+The publisher lists 200 pages.
+
+## Sources
+
+1. [Example Press: The Example Book](https://example.com/the-example-book), checked 12 November 2026
+2. [Open Library: The Example Book](https://openlibrary.org/isbn/0000000000), checked 12 November 2026
+
+---
+
+*A review describes a book. It is not advice to buy or sell any investment.*
 ```
+
+(The ISBN and addresses in this example are made up to show the form. A real review uses the real ones, and `0000000000` would fail the build.)
 
 ## Complete example: a blog post
 
@@ -167,16 +291,38 @@ The difference between any two of these is called a **variance**.
 
 ## Before you commit: checklist
 
-- [ ] Exactly one new file, in `posts/`, named `YYYY-MM-DD-short-title.md`
+- [ ] One new post file, in `posts/`, named `YYYY-MM-DD-short-title.md`; for a review, also its cover picture in `assets/covers/`
 - [ ] First line is `---`; front matter is closed by a second `---`
 - [ ] `title`, `date`, `type`, `tags` and `summary` are all present and not empty
 - [ ] `date` equals the date in the file name and is today's date
-- [ ] `type` is `post` or `review`; a review also has `book_title` and `book_author`
-- [ ] `amazon_id`, if present, was copied from the book's Amazon page (not guessed) and the file is a review
-- [ ] the text contains no Amazon links and no affiliate tags
-- [ ] `rating`, if present, is a whole number from 1 to 5 and the file is a review
+- [ ] `type` is `post` or `review`; a review also has `book_title`, `book_author`, `cover` and `cover_source`
+- [ ] the cover was found by ISBN on Open Library or the publisher's page, not on Amazon, and you looked at it: right book, right edition
+- [ ] a review has all nine sections with the exact headings, in order, and ends with the italic closing line
+- [ ] every fact in the review was seen on a page listed under `## Sources`
+- [ ] nothing is claimed about Ashok beyond "CPA, MBA", and his products are described only as `content.js` describes them
+- [ ] `amazon_id` and every `amazon:` code were copied from the product's Amazon page in this session (not guessed)
+- [ ] the text contains no hand-written Amazon links and no affiliate tags
+- [ ] every `::book` and `::template` code is in `content.js`, and the post says they are Ashok's own
+- [ ] links to other posts use `../file-name-without-md/` and that post exists
+- [ ] no `rating` line
 - [ ] The body is markdown, has no HTML, and does not repeat the title
 - [ ] No other file in the repository was changed
+
+## What fails the build
+
+Besides the file name and front matter rules above:
+
+- a review with no `cover`, a cover file that is missing, not a real JPEG or PNG, smaller than 120 by 160 pixels or larger than 400 KB, or a cover path outside `assets/covers/`
+- a review with no `cover_source`, or one that points at Amazon or is not an `https://` address
+- a review missing one of the nine sections, with a heading worded differently, with the sections out of order, or with one of them twice or empty
+- a "who it is for", "who it is not for", "what works", "what to be aware of" or "sources" section that is not a list
+- a FAQ with fewer than two `###` questions, a question with no answer, or other text in the FAQ section
+- a review with fewer than two links under `## Sources`
+- a review with no opening paragraph, or that does not end with the italic closing line
+- any hand-written Amazon address or affiliate tag
+- an `amazon:` code that is not a well-formed Amazon code
+- a `::book` code that is not one of Ashok's published books, a `::template` ID that is not in `content.js`, or any other line starting with `::`
+- a link to another post that does not exist
 
 ## What happens after the commit
 
