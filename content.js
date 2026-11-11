@@ -222,9 +222,8 @@ const SITE = {
     blurb: "New book reviews and plain-English finance posts, sent to your inbox. No spam, and you can unsubscribe at any time.",
     // DRAFT. Shown in place of the form after someone signs up.
     thanks: "Thank you. Please check your inbox and confirm your email address to finish signing up.",
-    // PLACEHOLDER: your Kit form address. It looks like
-    //   https://app.kit.com/forms/1234567/subscriptions
-    // where 1234567 is the ID of your form in Kit (see "Newsletter" in README.md).
+    // PLACEHOLDER: the full https:// address your Kit sign-up form sends to (the "action"
+    // address in the form's HTML embed code). See "Newsletter" in README.md.
     formAction: ""
   },
 
