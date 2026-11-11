@@ -455,6 +455,19 @@ def content_string(source, key, scope=None):
         return None
 
 
+def public_address():
+    """The site's public address, without a trailing slash, or "" when none is set.
+
+    GitHub reports a custom domain as http:// until "Enforce HTTPS" is ticked in
+    the Pages settings. The site is always served over https, so the address is
+    written as https:// (addresses on this computer are left alone).
+    """
+    url = (os.environ.get("SITE_URL") or SITE_URL or "").strip().rstrip("/")
+    if url.startswith("http://") and not re.match(r"^http://(127\.0\.0\.1|localhost|\[::1\])(:|/|$)", url):
+        url = "https://" + url[len("http://"):]
+    return url
+
+
 def load_site():
     problems = []
     for needed in ("index.html", "content.js", "styles.css", "main.js"):
@@ -476,7 +489,7 @@ def load_site():
         "tagline": content_string(content, "tagline") or "",
         "form_action": content_string(content, "formAction", "newsletter") or "",
         "newsletter_blurb": content_string(content, "blurb", "newsletter") or "",
-        "url": (os.environ.get("SITE_URL") or SITE_URL or "").strip().rstrip("/"),
+        "url": public_address(),
         "home": page,
     }
     if not site["name"]:

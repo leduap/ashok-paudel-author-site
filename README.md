@@ -46,7 +46,7 @@ Opening `index.html` directly shows the home page without the blog, because the 
 Open `content.js`, change the text between the quotes, save, and rebuild.
 
 - Lines marked `DRAFT` (the headline and tagline) were written for you; replace them with your own words.
-- Lines marked `PLACEHOLDER` (email, social profiles, newsletter address) are waiting for your details.
+- Lines marked `PLACEHOLDER` (further social profiles, newsletter address) are waiting for your details.
 - **Empty means hidden.** While a value is `""` or a list is `[]`, that part of the page does not appear. The Newsletter, Writing elsewhere, Events and Press, and Contact sections are all switched off this way. Fill one in and it appears, together with its menu link where it has one.
 - **Books not yet for sale.** A book in the `books` list may carry the optional line `status: "Coming soon",`. Its card then shows that label and no buy button, and an empty `blurb` and `amazonId` leave no gap. "The Own the Whole Market Workbook" is set up this way, with a placeholder cover (`assets/own-the-whole-market-workbook-placeholder.svg`). Once the book is live: put the real cover in `assets/` and point `cover` at it, add the `blurb` and the book's `amazonId`, and delete the `status` line.
 - Dates use `YYYY-MM-DD`. Events sort themselves into Upcoming and Past.
@@ -86,7 +86,9 @@ This is already set up:
 
 - Repository (public): <https://github.com/leduap/ashok-paudel-author-site>
 - Copy it with: `git clone https://github.com/leduap/ashok-paudel-author-site.git`
-- Live site: <https://leduap.github.io/ashok-paudel-author-site/>
+- Live site: <https://ashokpaudel.com/>. The earlier address, <https://leduap.github.io/ashok-paudel-author-site/>, forwards to it.
+
+The domain `ashokpaudel.com` is registered at Hostinger and its DNS is managed there. It is connected to the site in two places: the DNS records at Hostinger (four A and four AAAA records on the bare domain pointing at GitHub Pages, and `www` as a CNAME to `leduap.github.io`), and the "Custom domain" box under Settings, then Pages, on GitHub. Because the site is published by the workflow, no `CNAME` file is needed in this folder. The workflow passes the address to `build.py`, so the feed, the sitemap and the page addresses follow the domain by themselves; nothing in this folder has the address typed into it.
 
 ## Images
 
