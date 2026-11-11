@@ -114,6 +114,16 @@ const SITE = {
       cover: "assets/inside-fpa.jpg",
       blurb: "FP&A is learned on the job, one deadline at a time. Follow one fictional company through a full planning year, from the plan and the forecast call to the board pack, with worked numbers that tie out from chapter to chapter.",
       amazonId: "B0HQW1LKZB"
+    },
+    {
+      // NOT YET PUBLISHED (planned for January 2027). There is no description yet.
+      // When the book is live: fill in blurb, add its amazonId, and delete the status line.
+      title: "The Smartest Woman in the Town",
+      subtitle: "Clear Thinking, Steady Habits, and the Quiet Power of Systems",
+      cover: "assets/the-smartest-woman-in-the-town.jpg",
+      status: "Coming January 2027",
+      blurb: "",
+      amazonId: ""
     }
   ],
 
