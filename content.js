@@ -221,8 +221,8 @@ const SITE = {
 
   // Contact. The contact section stays hidden until there is an email address or at least one profile link.
   contact: {
-    // PLACEHOLDER: the address readers and press should write to, e.g. "hello@yourdomain.com".
-    email: "",
+    // The address readers and press should write to. Leave "" to hide it.
+    email: "hello@ashokpaudel.com",
     // PLACEHOLDER: your real profiles. Remove the // in front of a line and put in the full address.
     socials: [
       { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela/" },
