@@ -6,6 +6,7 @@ tags: books, investing, index funds, personal finance
 summary: A plain, opinionated case for spending less than you earn and putting the difference into one broad index fund. Strong on mindset, very focused on the United States.
 book_title: The Simple Path to Wealth
 book_author: JL Collins
+amazon_id: 1533667926
 ---
 
 The Simple Path to Wealth grew out of a series of letters JL Collins wrote to his daughter and later published on his blog. That origin shows. The book reads like advice from a relative who has made the mistakes already and wants to save you the trouble.

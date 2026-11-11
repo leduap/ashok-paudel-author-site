@@ -6,6 +6,7 @@ tags: books, options, investing
 summary: The standard reference on options strategies, running to more than a thousand pages. Thorough and dependable, and far better consulted than read straight through.
 book_title: Options as a Strategic Investment
 book_author: Lawrence G. McMillan
+amazon_id: 0735204659
 ---
 
 Options as a Strategic Investment was first published in 1980 and has been through several editions. It has a place on the desk of many people who trade options seriously, and it is often described as the reference work on the subject.

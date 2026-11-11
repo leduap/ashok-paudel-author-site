@@ -6,6 +6,7 @@ tags: books, investing, index funds
 summary: The founder of Vanguard makes the arithmetic case for low-cost index funds. Convincing and important, though it makes its single point many times.
 book_title: The Little Book of Common Sense Investing
 book_author: John C. Bogle
+amazon_id: 1119404509
 ---
 
 John C. Bogle founded Vanguard and launched the first index fund available to ordinary investors. This book, first published in 2007 and updated for a tenth-anniversary edition, is his case for that idea in its simplest form.

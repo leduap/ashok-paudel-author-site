@@ -15,6 +15,7 @@ You publish to Ashok Paudel's author site. Your whole job is to **add one markdo
    - A review describes the book: what it covers, what works, what does not, and who it suits. Quote the book sparingly and accurately.
    - Do not name Ashok Paudel's employer or clients.
    - When a post's subject closely matches one of Ashok's finance templates, you may end with one sentence linking to that template's own page under `https://financea2z.gumroad.com/l/`. At most one such link per post, and only where it fits; most posts will have none. See the existing reviews in `posts/` for examples.
+7. **Never write an Amazon link or an affiliate tag anywhere in a post.** No `amazon.com`, `amazon.co.uk`, `amazon.de` or `amzn.to` addresses, and no `tag=` codes. The site adds the "Get the book" links to every review by itself, with the correct affiliate tag for each store (see "Amazon links on reviews" below). A post that contains an Amazon address fails the build.
 
 ## Where the file goes and what it is called
 
@@ -49,8 +50,25 @@ Front matter is deliberately simple. It is **not** full YAML:
 | `book_title` | when `type` is `review` | Title of the book reviewed. Not allowed on a `post`. |
 | `book_author` | when `type` is `review` | Author of the book reviewed. Not allowed on a `post`. |
 | `rating` | optional, reviews only | A whole number `1`, `2`, `3`, `4` or `5`. Leave the line out for no rating. Not allowed on a `post`. |
+| `amazon_id` | optional, reviews only | The book's 10-character Amazon code: a 10-digit ISBN such as `0857197681`, or a code starting with `B0`. Only use a code you have actually seen on the book's Amazon page. If unsure, leave the line out. Not allowed on a `post`. |
 
 Any other field name is rejected, so a misspelt field (such as `sumary`) fails the build rather than being silently ignored.
+
+### Amazon links on reviews
+
+Every review automatically gets a "Get the book" line with links to Amazon US, UK and Germany. You do not write these links; the build makes them from the front matter and adds the site owner's affiliate tags, which are stored in `content.js` and nowhere else.
+
+- **With `amazon_id`** the links open the book's own page. The code is the part after `/dp/` in the book's Amazon address. For example, The Psychology of Money is at `amazon.com/dp/0857197681`, so its review has:
+
+  ```
+  book_title: The Psychology of Money
+  book_author: Morgan Housel
+  amazon_id: 0857197681
+  ```
+
+- **Without `amazon_id`** the links open an Amazon search for `book_title` and `book_author`. This always works, so leaving the field out is safe. A wrong code is worse than no code: never guess one or recall one from memory.
+
+The build rejects a code that is not 10 characters, or a 10-digit ISBN whose check digit is wrong.
 
 ### Tags
 
@@ -154,6 +172,8 @@ The difference between any two of these is called a **variance**.
 - [ ] `title`, `date`, `type`, `tags` and `summary` are all present and not empty
 - [ ] `date` equals the date in the file name and is today's date
 - [ ] `type` is `post` or `review`; a review also has `book_title` and `book_author`
+- [ ] `amazon_id`, if present, was copied from the book's Amazon page (not guessed) and the file is a review
+- [ ] the text contains no Amazon links and no affiliate tags
 - [ ] `rating`, if present, is a whole number from 1 to 5 and the file is a review
 - [ ] The body is markdown, has no HTML, and does not repeat the title
 - [ ] No other file in the repository was changed

@@ -6,6 +6,7 @@ tags: books, investing, index funds, behaviour
 summary: A long, readable tour of how markets work and why they are hard to beat, first published in 1973 and revised many times. Thorough, and best read in parts.
 book_title: A Random Walk Down Wall Street
 book_author: Burton G. Malkiel
+amazon_id: 1324051132
 ---
 
 A Random Walk Down Wall Street first appeared in 1973, before index funds for ordinary investors existed. Burton Malkiel, an economist at Princeton, has revised it many times since. It remains one of the fullest introductions to investing written for a general reader.

@@ -6,6 +6,7 @@ tags: books, corporate finance, careers
 summary: Argues that buying an existing small business can be a better route into ownership than starting one. A useful map of the process, with an optimistic view of the risks.
 book_title: Buy Then Build
 book_author: Walker Deibel
+amazon_id: 1544501137
 ---
 
 Most books about entrepreneurship assume you will start from nothing. Buy Then Build, published in 2018, argues for a different route: buy a small company that already has customers, staff and cash flow, then grow it. Walker Deibel calls this acquisition entrepreneurship.

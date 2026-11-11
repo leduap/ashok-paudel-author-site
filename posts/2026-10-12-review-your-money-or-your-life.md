@@ -6,6 +6,7 @@ tags: books, personal finance, behaviour
 summary: A nine-step programme that asks what your money costs you in hours of life. Its approach to spending is still powerful; its tracking demands are heavy.
 book_title: Your Money or Your Life
 book_author: Vicki Robin and Joe Dominguez
+amazon_id: 0143115766
 ---
 
 Your Money or Your Life was first published in 1992 and has been revised since. It is one of the books behind the modern financial independence movement, and it starts from a different place than most money books: not how to earn more, but what your earning costs you.

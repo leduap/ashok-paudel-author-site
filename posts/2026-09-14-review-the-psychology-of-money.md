@@ -6,6 +6,7 @@ tags: books, behaviour, personal finance, investing
 summary: Short essays arguing that doing well with money depends more on behaviour than on knowledge. Easy to read and hard to disagree with, but light on practical steps.
 book_title: The Psychology of Money
 book_author: Morgan Housel
+amazon_id: 0857197681
 ---
 
 Most finance books treat money as a maths problem. Morgan Housel treats it as a behaviour problem. The Psychology of Money, published in 2020, is a collection of short chapters, each built around one idea and a story to carry it.

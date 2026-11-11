@@ -37,59 +37,83 @@ const SITE = {
   // The line in the footer of every page. Leave "" to remove it.
   disclaimer: "The views expressed on this site are the author's own. Nothing here is financial, investment, tax or legal advice.",
 
+  // Amazon affiliate links (Amazon Associates).
+  // The three tags below are the ONLY place your Associates tags are written.
+  // The site adds the right tag to every Amazon link it makes: the buy buttons
+  // on your own books and the "Get the book" links on reviews. To change a tag,
+  // change it here. To switch a store off, set its tag to "".
+  // disclosure is the line Amazon requires; it is shown in the footer of every page.
+  // note is the short line shown beside the links on review pages.
+  affiliate: {
+    disclosure: "As an Amazon Associate I earn from qualifying purchases.",
+    note: "These are affiliate links. If you buy through them I may earn a small commission, at no extra cost to you.",
+    amazon: {
+      us: "remotelyscale-20",
+      uk: "remotelyscale-21",
+      de: "remotelysca08-21"
+    }
+  },
+
   // Titles, covers and descriptions are taken from the Amazon.de listings (November 2026).
   // Blurbs are shortened from the published descriptions.
   //
   // Optional: status. For a book that is not for sale yet, add the line
   //   status: "Coming soon",
   // The card then shows that label and no buy button. Leave blurb as "" and
-  // buyLinks as [] until they exist. Published books have no status line.
+  // amazonId as "" until they exist. Published books have no status line.
+  //
+  // amazonId is the 10-character Amazon code of the book (the part after /dp/
+  // in its Amazon address). The card then shows "Buy on Amazon" buttons for the
+  // US, UK and German stores, each carrying your affiliate tag from above.
+  // Each code below was checked on amazon.com, amazon.co.uk and amazon.de (November 2026).
+  // Optional: buyLinks, for shops other than Amazon, e.g.
+  //   buyLinks: [{ label: "Buy from the publisher", url: "https://..." }]
   books: [
     {
       title: "Rolling, Repair and Risk",
       subtitle: "The Wheel Strategy Playbook for Real Markets",
       cover: "assets/rolling-repair-and-risk.jpg",
       blurb: "Most wheel trades end quietly. This book is about the ones that do not. A practical guide to rolling, repairing stuck positions and managing risk, for readers who already know how the wheel works.",
-      buyLinks: [{ label: "Buy on Amazon", url: "https://www.amazon.de/dp/B0HQVRJQ1P" }]
+      amazonId: "B0HQVRJQ1P"
     },
     {
       title: "Own the Whole Market",
       subtitle: "A Plain-English Playbook for Building Wealth with Low-Cost Index Funds, from First Paycheck to Financial Freedom",
       cover: "assets/own-the-whole-market.jpg",
       blurb: "Most people are never taught how money actually grows. This book fixes that in plain English, with real data and worked numbers, and without hype, from your first paycheck to the day your investments can pay for your life.",
-      buyLinks: [{ label: "Buy on Amazon", url: "https://www.amazon.de/dp/B0HQVWGD1R" }]
+      amazonId: "B0HQVWGD1R"
     },
     {
       // NOT YET PUBLISHED. The cover is a placeholder and there is no description yet.
       // When the book is live: point cover at the real cover file, fill in blurb,
-      // add the buy link, and delete the status line.
+      // add its amazonId, and delete the status line.
       title: "The Own the Whole Market Workbook",
       subtitle: "Build Your Money System: Worksheets, Trackers and Checklists for Every Stage, from First Paycheck to Financial Freedom",
       cover: "assets/own-the-whole-market-workbook-placeholder.svg",
       status: "Coming soon",
       blurb: "",
-      buyLinks: []
+      amazonId: ""
     },
     {
       title: "The Mindful Grid",
       subtitle: "365 Sudokus & 365 Questions for the Soul",
       cover: "assets/the-mindful-grid.jpg",
       blurb: "A daily ritual for the mindful thinker: one Sudoku to focus your attention and one open-ended question for reflection, every day for a year. Questions are presented in English, German, Spanish, French and Italian.",
-      buyLinks: [{ label: "Buy on Amazon", url: "https://www.amazon.de/dp/B0HQP95S6B" }]
+      amazonId: "B0HQP95S6B"
     },
     {
       title: "The Wheel Strategy",
       subtitle: "From Zero to Hero",
       cover: "assets/the-wheel-strategy.jpg",
       blurb: "The wheel options strategy explained from zero. You do not need to know what an option is. The book walks through the wheel one step at a time, with order tickets, payoff tables and worked examples, including the parts that are easy to get wrong.",
-      buyLinks: [{ label: "Buy on Amazon", url: "https://www.amazon.de/dp/B0HQPBQVBJ" }]
+      amazonId: "B0HQPBQVBJ"
     },
     {
       title: "Inside FP&A",
       subtitle: "How Planning, Forecasting and Analysis Really Work in Large Companies",
       cover: "assets/inside-fpa.jpg",
       blurb: "FP&A is learned on the job, one deadline at a time. Follow one fictional company through a full planning year, from the plan and the forecast call to the board pack, with worked numbers that tie out from chapter to chapter.",
-      buyLinks: [{ label: "Buy on Amazon", url: "https://www.amazon.de/dp/B0HQW1LKZB" }]
+      amazonId: "B0HQW1LKZB"
     }
   ],
 

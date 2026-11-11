@@ -48,17 +48,29 @@ Open `content.js`, change the text between the quotes, save, and rebuild.
 - Lines marked `DRAFT` (the headline and tagline) were written for you; replace them with your own words.
 - Lines marked `PLACEHOLDER` (email, social profiles, newsletter address) are waiting for your details.
 - **Empty means hidden.** While a value is `""` or a list is `[]`, that part of the page does not appear. The Newsletter, Writing elsewhere, Events and Press, and Contact sections are all switched off this way. Fill one in and it appears, together with its menu link where it has one.
-- **Books not yet for sale.** A book in the `books` list may carry the optional line `status: "Coming soon",`. Its card then shows that label and no buy button, and an empty `blurb` and `buyLinks` leave no gap. "The Own the Whole Market Workbook" is set up this way, with a placeholder cover (`assets/own-the-whole-market-workbook-placeholder.svg`). Once the book is live: put the real cover in `assets/` and point `cover` at it, add the `blurb` and the buy link, and delete the `status` line.
+- **Books not yet for sale.** A book in the `books` list may carry the optional line `status: "Coming soon",`. Its card then shows that label and no buy button, and an empty `blurb` and `amazonId` leave no gap. "The Own the Whole Market Workbook" is set up this way, with a placeholder cover (`assets/own-the-whole-market-workbook-placeholder.svg`). Once the book is live: put the real cover in `assets/` and point `cover` at it, add the `blurb` and the book's `amazonId`, and delete the `status` line.
 - Dates use `YYYY-MM-DD`. Events sort themselves into Upcoming and Past.
 - A link without a real `https://` address is never shown as a link.
 
 ## Blog posts and book reviews
 
-Each post is one file in `posts/` named `YYYY-MM-DD-short-title.md`. The top of the file holds a few labelled lines (title, date, type, tags, summary, and for reviews the book's title, author and an optional rating), followed by the text. `BOT_GUIDE.md` has the full rules and two complete examples. You can add posts by hand in exactly the same way the bot does.
+Each post is one file in `posts/` named `YYYY-MM-DD-short-title.md`. The top of the file holds a few labelled lines (title, date, type, tags, summary, and for reviews the book's title, author, an optional rating and an optional Amazon code), followed by the text. `BOT_GUIDE.md` has the full rules and two complete examples. You can add posts by hand in exactly the same way the bot does.
 
 The build checks every post. If one is malformed (a missing field, a wrong date, a misspelt field name, a bad file name) the build stops, names the file and the problem, and publishes nothing, so the live site stays as it was. Any HTML typed into a post is shown as plain text and never run, so a post cannot inject scripts into the site.
 
 The first ten posts are book reviews dated weekly from 7 September to 9 November 2026. They were drafted with AI assistance and should be read over by the author.
+
+## Amazon affiliate links
+
+The site earns Amazon Associates commission through tagged links. The three tags (US, UK, Germany) are written once, in the `affiliate` block near the top of `content.js`, and nowhere else. Change a tag there and every link on the site changes with it; set a tag to `""` and that store's links disappear.
+
+- **Your own books.** Each book in `content.js` has an `amazonId` (the 10-character code after `/dp/` in its Amazon address). Its card shows "Buy on Amazon" buttons for the US, UK and German stores, each with the right tag. A book marked `status: "Coming soon"` shows none.
+- **Book reviews.** Every review shows a "Get the book" line with the same three stores. If the review has an `amazon_id` line, the links open the book's page; if not, they open an Amazon search for the title and author. Either way the tag is added by the build. Posts must not contain Amazon links of their own: the build rejects them.
+- **Disclosure.** Amazon requires the sentence "As an Amazon Associate I earn from qualifying purchases." It is `affiliate.disclosure` in `content.js` and appears in the footer of every page. A shorter note (`affiliate.note`) appears beside the links on review pages. The build refuses to run if tags are set and the disclosure is empty.
+- Affiliate links open in a new tab and are marked `rel="sponsored nofollow noopener"`, as search engines ask.
+- Links to the Gumroad templates in some reviews are ordinary links to Ashok's own products. They are not affiliate links and need no tag.
+
+Amazon's own rules, which the site cannot enforce: do not put affiliate links in emails, PDFs or ebooks; do not buy through your own links or ask friends and family to; and do not show prices copied from Amazon.
 
 ## Publishing
 

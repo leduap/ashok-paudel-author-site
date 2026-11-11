@@ -6,6 +6,7 @@ tags: books, personal finance, investing
 summary: A six-week programme for setting up your money so that it runs itself. Very practical and very American, with a tone you will either enjoy or tolerate.
 book_title: I Will Teach You to Be Rich
 book_author: Ramit Sethi
+amazon_id: 1523505745
 ---
 
 The title sounds like a promise from a late-night advert. The book is better than that. I Will Teach You to Be Rich, first published in 2009 with a second edition in 2019, is a step-by-step programme for people in their twenties and thirties who want their finances sorted without thinking about them every day.

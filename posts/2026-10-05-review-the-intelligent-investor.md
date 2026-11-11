@@ -6,6 +6,7 @@ tags: books, investing, behaviour
 summary: The classic text on value investing, first published in 1949. Two of its ideas are still essential; much of the detail belongs to another era.
 book_title: The Intelligent Investor
 book_author: Benjamin Graham
+amazon_id: 0060555661
 ---
 
 The Intelligent Investor was first published in 1949 and last revised by Benjamin Graham in the early 1970s. Warren Buffett, who studied under Graham, has called it the best book on investing ever written. Modern editions add commentary by the journalist Jason Zweig after each chapter.

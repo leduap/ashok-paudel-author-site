@@ -6,6 +6,7 @@ tags: books, corporate finance, accounting, careers
 summary: A clear guide to financial statements for managers who are not accountants. Its best lesson is that the numbers rest on judgement, not only arithmetic.
 book_title: Financial Intelligence
 book_author: Karen Berman and Joe Knight
+amazon_id: 1422144119
 ---
 
 Financial Intelligence, written by Karen Berman and Joe Knight with John Case, is aimed at managers who sit in meetings full of numbers and are not sure what all of them mean. It was first published in 2006 and later revised.

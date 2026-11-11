@@ -25,6 +25,30 @@
     return a;
   }
 
+  // Amazon affiliate links. The tags live only in content.js (affiliate.amazon).
+  // A store with no tag gets no link, so the site never shows an untagged Amazon link.
+  var AMAZON_STORES = [
+    { key: "us", host: "www.amazon.com", label: "US" },
+    { key: "uk", host: "www.amazon.co.uk", label: "UK" },
+    { key: "de", host: "www.amazon.de", label: "Germany" }
+  ];
+  function amazonLinks(id, title) {
+    var tags = (SITE.affiliate || {}).amazon || {};
+    if (!/^[A-Z0-9]{10}$/.test(id || "")) { return []; }
+    return AMAZON_STORES.filter(function (store) {
+      return /^[A-Za-z0-9-]+$/.test(tags[store.key] || "");
+    }).map(function (store) {
+      var a = el("a", {
+        href: "https://" + store.host + "/dp/" + id + "?tag=" + tags[store.key],
+        className: "button button-small"
+      }, store.label);
+      a.target = "_blank";
+      a.rel = "sponsored nofollow noopener";
+      a.setAttribute("aria-label", "Buy " + title + " on Amazon " + store.label + " (affiliate link, opens in a new tab)");
+      return a;
+    });
+  }
+
   // Dates are written YYYY-MM-DD and treated as local dates.
   function parseDate(text) {
     var parts = String(text || "").split("-").map(Number);
@@ -80,7 +104,15 @@
     var buyButtons = status ? [] : (book.buyLinks || []).map(function (buy) {
       return isRealUrl(buy.url) ? link(buy.label, buy.url, "button button-small") : null;
     }).filter(Boolean);
-    if (buyButtons.length) { parts.push(el("div", { className: "buy" }, buyButtons)); }
+    // Amazon buttons, one per store, each carrying the affiliate tag from content.js.
+    var amazonButtons = status ? [] : amazonLinks(book.amazonId, book.title);
+    if (amazonButtons.length) {
+      parts.push(el("div", { className: "buy buy-amazon" },
+        [el("span", { className: "buy-label" }, "Buy on Amazon")].concat(amazonButtons)));
+    }
+    if (buyButtons.length) {
+      parts.push(el("div", { className: amazonButtons.length ? "buy buy-more" : "buy" }, buyButtons));
+    }
     $("book-list").appendChild(el("article", { className: "book" }, [
       el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }),
       el("div", { className: "book-body" }, parts)

@@ -408,3 +408,22 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* Affiliate links ---------------------------------------------------------- */
+/* "Buy on Amazon" row on a book card: a small label, then one button per store */
+.buy-amazon { align-items: center; gap: 0.4rem; }
+.buy-label {
+  flex-basis: 100%; font-family: var(--display); font-weight: 600; font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.07em; color: var(--green-label);
+}
+.buy-amazon .button-small { padding: 0.35rem 0.7rem; }
+.buy-more { margin-top: 0.5rem; }
+/* "Get the book" line inside the box at the top of a review */
+.book-get {
+  margin-top: 0.75rem !important; padding-top: 0.7rem; border-top: 1px solid var(--mint-line);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem;
+}
+.book-get-label { font-family: var(--display); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--green-label); }
+.book-get-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; }
+.book-get-links a { font-family: var(--display); font-weight: 600; }
+.book-get-note { margin-top: 0.35rem !important; font-size: 0.82rem; line-height: 1.45; color: var(--ink-soft); }

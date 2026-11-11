@@ -27,6 +27,7 @@ import os
 import re
 import shutil
 import sys
+import urllib.parse
 from email.utils import format_datetime
 from pathlib import Path
 
@@ -45,9 +46,17 @@ SITE_URL = ""
 
 TYPES = {"review": "Book review", "post": "Post"}
 TYPE_PAGES = {"post": ("posts", "Posts"), "review": ("reviews", "Book reviews")}
-FIELDS = ["title", "date", "type", "tags", "summary", "book_title", "book_author", "rating"]
+FIELDS = ["title", "date", "type", "tags", "summary", "book_title", "book_author", "rating", "amazon_id"]
 REQUIRED = ["title", "date", "type", "tags", "summary"]
-REVIEW_ONLY = ["book_title", "book_author", "rating"]
+REVIEW_ONLY = ["book_title", "book_author", "rating", "amazon_id"]
+# Amazon stores that get a "Get the book" link on reviews. The affiliate tag for
+# each store is read from content.js (affiliate.amazon); it is written nowhere else.
+AMAZON_STORES = [("us", "www.amazon.com", "Amazon US"), ("uk", "www.amazon.co.uk", "Amazon UK"),
+                 ("de", "www.amazon.de", "Amazon Germany")]
+AMAZON_ID = re.compile(r"^(\d{9}[\dX]|B0[A-Z0-9]{8})$")
+AMAZON_TAG = re.compile(r"^[A-Za-z0-9]+-[A-Za-z0-9]+$")
+# Any web address pointing at Amazon. Posts must not contain one: the build makes them.
+AMAZON_URL = re.compile(r"(?:https?:)?//[^\s)>\]]*\b(?:amazon\.[a-z]{2,3}(?:\.[a-z]{2})?|amzn\.(?:to|eu|com))\b", re.I)
 FILENAME = re.compile(r"^(\d{4}-\d{2}-\d{2})-([a-z0-9]+(?:-[a-z0-9]+)*)\.md$")
 TAG = re.compile(r"^[a-z0-9]+(?:[ -][a-z0-9]+)*$")
 MAX_TITLE, MAX_SUMMARY, MAX_TAGS, MAX_TAG_LENGTH = 120, 220, 5, 30
@@ -373,9 +382,25 @@ def load_post(path, problems):
         else:
             bad(f"rating '{meta['rating']}' must be a whole number from 1 to 5 (or leave the field out)")
 
+    amazon_id = meta.get("amazon_id", "")
+    if "amazon_id" in meta and kind == "review":
+        if not AMAZON_ID.match(amazon_id):
+            bad(f"amazon_id '{amazon_id}' is not valid. It must be the 10-character code from the book's "
+                "Amazon address (the part after /dp/): either a 10-digit ISBN such as 0857197681, "
+                "or a code starting with B0 such as B0HQVRJQ1P. Leave the field out if unsure")
+        elif amazon_id[0] != "B":
+            total = sum((10 - k) * (10 if c == "X" else int(c)) for k, c in enumerate(amazon_id))
+            if total % 11:
+                bad(f"amazon_id '{amazon_id}' is not a real ISBN-10 (its check digit is wrong). "
+                    "Copy it again from the book's Amazon address, or leave the field out")
+
     body = "\n".join(lines[end + 1:]).strip()
     if not body:
         bad("there is no text after the front matter")
+    elif AMAZON_URL.search(body):
+        bad("the text contains a link to Amazon. Do not write Amazon links or affiliate tags in a post: "
+            "for a review, set book_title, book_author and (optionally) amazon_id, and the build adds "
+            "the 'Get the book' links with the right tags")
 
     if found:
         problems.extend(found)
@@ -385,6 +410,7 @@ def load_post(path, problems):
         "stem": stem, "file": path.name, "day": day, "type": kind, "rating": rating,
         "title": meta["title"], "summary": meta["summary"], "tags": tags,
         "book_title": meta.get("book_title", ""), "book_author": meta.get("book_author", ""),
+        "amazon_id": amazon_id if kind == "review" else "",
         "html": markdown(body), "minutes": max(1, round(words / 220)),
         "url": f"blog/{stem}/",
     }
@@ -443,6 +469,10 @@ def load_site():
         "name": content_string(content, "name"),
         "credentials": content_string(content, "credentials"),
         "disclaimer": content_string(content, "disclaimer"),
+        "affiliate.disclosure": content_string(content, "disclosure", "affiliate"),
+        "affiliate_note": content_string(content, "note", "affiliate") or "",
+        "amazon_tags": {key: (content_string(content, key, "amazon") or "").strip()
+                        for key, _, _ in AMAZON_STORES},
         "tagline": content_string(content, "tagline") or "",
         "form_action": content_string(content, "formAction", "newsletter") or "",
         "newsletter_blurb": content_string(content, "blurb", "newsletter") or "",
@@ -451,6 +481,13 @@ def load_site():
     }
     if not site["name"]:
         problems.append('content.js: could not find the line  name: "..."  near the top')
+    for key, tag in site["amazon_tags"].items():
+        if tag and not AMAZON_TAG.match(tag):
+            problems.append(f"content.js: affiliate.amazon.{key} is '{tag}', which does not look like an "
+                            "Amazon Associates tag (for example yourname-20). Fix it or set it to \"\"")
+    if any(site["amazon_tags"].values()) and not site["affiliate.disclosure"]:
+        problems.append("content.js: affiliate.disclosure is empty. Amazon requires the line "
+                        "'As an Amazon Associate I earn from qualifying purchases.' while affiliate tags are set")
     if site["form_action"] and not re.match(r"^https://\S+$", site["form_action"]):
         problems.append("content.js: newsletter.formAction must be an https:// address or empty")
 
@@ -470,10 +507,10 @@ def load_site():
 
 def fill_text(markup, site):
     """Fill in the bits main.js fills on the home page, so pages work without JavaScript."""
-    for key in ("name", "credentials", "disclaimer"):
+    for key in ("name", "credentials", "disclaimer", "affiliate.disclosure"):
         if site[key] is None:
             continue
-        markup = re.sub(r'(<[^>]*data-text="' + key + r'"[^>]*>)[^<]*(?=<)',
+        markup = re.sub(r'(<[^>]*data-text="' + re.escape(key) + r'"[^>]*>)[^<]*(?=<)',
                         lambda m, value=site[key]: m.group(1) + esc(value), markup)
     markup = re.sub(r'(<span id="year">)[^<]*(?=</span>)',
                     lambda m: m.group(1) + str(dt.date.today().year), markup)
@@ -508,6 +545,30 @@ def page_url(path):
 def stars(rating):
     return ('<span class="stars" role="img" aria-label="Rated {0} out of 5">{1}'
             '<span class="stars-off">{2}</span></span>').format(rating, "★" * rating, "★" * (5 - rating))
+
+
+def amazon_links(site, post):
+    """The 'Get the book' line on a review: one link per Amazon store that has a tag in content.js.
+
+    With amazon_id the links go straight to the book's page; without it they go to
+    a search for the title and author. Every link carries that store's affiliate tag.
+    """
+    links = []
+    for key, host, label in AMAZON_STORES:
+        tag = site["amazon_tags"].get(key)
+        if not tag:
+            continue
+        if post["amazon_id"]:
+            url = f"https://{host}/dp/{post['amazon_id']}?tag={tag}"
+        else:
+            query = urllib.parse.quote_plus(f"{post['book_title']} {post['book_author']}")
+            url = f"https://{host}/s?k={query}&i=stripbooks&tag={tag}"
+        links.append(f'<a href="{esc(url)}" target="_blank" rel="sponsored nofollow noopener">{label}</a>')
+    if not links:
+        return ""
+    note = f'<p class="book-get-note">{esc(site["affiliate_note"])}</p>' if site["affiliate_note"] else ""
+    return (f'<p class="book-get"><span class="book-get-label">Get the book</span> '
+            + '<span class="book-get-links">' + " ".join(links) + "</span></p>" + note)
 
 
 def post_item(post, root, heading="h2"):
@@ -582,7 +643,8 @@ def render_post(site, post, newer, older):
                   f'<span>{post["rating"]} out of 5</span></p>') if post["rating"] else ""
         book = (f'\n          <div class="book-box"><p class="book-box-label">Book reviewed</p>'
                 f'<p class="book-box-title">{esc(post["book_title"])}</p>'
-                f'<p class="book-box-author">by {esc(post["book_author"])}</p>{rating}</div>')
+                f'<p class="book-box-author">by {esc(post["book_author"])}</p>{rating}'
+                f'{amazon_links(site, post)}</div>')
     tags = "".join(f'<li><a href="{root}blog/tag/{tag_slug(t)}/">{esc(t)}</a></li>' for t in post["tags"])
     nav = ""
     if newer or older:
