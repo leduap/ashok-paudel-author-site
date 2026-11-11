@@ -67,7 +67,7 @@
 
   // Optional sections start hidden in index.html and are shown only when they have real content.
   function showSection(id, show) {
-    $(id).hidden = !show;
+    if ($(id)) { $(id).hidden = !show; }
     document.querySelectorAll('[data-nav="' + id + '"]').forEach(function (navLink) { navLink.hidden = !show; });
   }
 
@@ -190,11 +190,8 @@
   $("press-block").hidden = !mentions.length && !hasKit;
   showSection("events", events.length > 0 || !$("press-block").hidden);
 
-  // Newsletter: shown only once a provider address is set in content.js
-  var newsletter = SITE.newsletter || {};
-  var hasNewsletter = /^https:\/\/\S+$/.test(newsletter.formAction || "");
-  if (hasNewsletter) { $("signup-form").action = newsletter.formAction; }
-  showSection("newsletter", hasNewsletter);
+  // Newsletter: build.py writes the sign-up box and un-hides the "Newsletter" links, but only
+  // once newsletter.formAction is set in content.js. signup.js handles the form itself.
 
   // Contact: shown only when there is a real email address or at least one real profile link
   var contact = SITE.contact || {};
@@ -208,23 +205,13 @@
   socials.forEach(function (social) {
     $("social-list").appendChild(el("li", {}, [link(social.label, social.url, "button button-quiet button-small")]));
   });
-  // Inquiry cards: each button opens an email with the subject filled in, or,
-  // while no email address is set, links to the first profile instead.
+  // The kinds of request, as short descriptions. There is one button for all of them:
+  // the email address above.
   var inquiries = (hasEmail || socials.length > 0) ? (contact.inquiries || []) : [];
   inquiries.forEach(function (inquiry) {
-    var button;
-    if (hasEmail) {
-      button = el("a", {
-        href: "mailto:" + contact.email + "?subject=" + encodeURIComponent(inquiry.subject || inquiry.title),
-        className: "button button-small"
-      }, "Send an email");
-    } else {
-      button = link("Message on " + socials[0].label, socials[0].url, "button button-small");
-    }
     var parts = [el("h3", {}, inquiry.title)];
     if (inquiry.text) { parts.push(el("p", {}, inquiry.text)); }
-    parts.push(button);
-    $("inquiry-list").appendChild(el("div", { className: "inquiry" }, parts));
+    $("inquiry-list").appendChild(el("li", { className: "inquiry" }, parts));
   });
   $("inquiry-list").hidden = !inquiries.length;
   showSection("contact", hasEmail || socials.length > 0);
