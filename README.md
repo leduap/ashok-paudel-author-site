@@ -58,7 +58,7 @@ Each post is one file in `posts/` named `YYYY-MM-DD-short-title.md`. The top of 
 
 The build checks every post. If one is malformed (a missing field, a wrong date, a misspelt field name, a bad file name) the build stops, names the file and the problem, and publishes nothing, so the live site stays as it was. Any HTML typed into a post is shown as plain text and never run, so a post cannot inject scripts into the site.
 
-The two files in `posts/` with `sample` and `delete-me` in their names are placeholders. **Delete them before the site goes live.**
+The first ten posts are book reviews dated weekly from 7 September to 9 November 2026. They were drafted with AI assistance and should be read over by the author.
 
 ## Publishing
 

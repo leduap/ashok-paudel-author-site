@@ -89,7 +89,8 @@
 
   // Finance templates (sold on Gumroad)
   var templates = SITE.templates || {};
-  var templateItems = (templates.items || []).filter(function (item) { return isRealUrl(item.url); });
+  var templateItems = templates.show === false ? [] :
+    (templates.items || []).filter(function (item) { return isRealUrl(item.url); });
   showSection("templates", templateItems.length > 0);
   templateItems.forEach(function (item) {
     var free = /^free$/i.test(String(item.tag || "").trim());

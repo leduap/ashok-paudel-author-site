@@ -97,8 +97,12 @@ const SITE = {
   // from the public store listings (November 2026); descriptions are the opening
   // lines of each listing. Prices are left off so they never go out of date.
   // Optional: tag, a small label on the card such as "Free".
-  // Leave the list empty ([]) to hide the section and its menu link.
+  //
+  // SWITCHED OFF: the section and its menu link are hidden while show is false.
+  // Individual blog posts link to a template where it fits instead.
+  // Change false to true to bring the section back.
   templates: {
+    show: false,
     storeUrl: "https://financea2z.gumroad.com/",
     items: [
       {

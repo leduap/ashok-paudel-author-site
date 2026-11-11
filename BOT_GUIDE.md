@@ -14,6 +14,7 @@ You publish to Ashok Paudel's author site. Your whole job is to **add one markdo
    - Do not invent facts, quotes, statistics, awards or events about Ashok Paudel or anyone else.
    - A review describes the book: what it covers, what works, what does not, and who it suits. Quote the book sparingly and accurately.
    - Do not name Ashok Paudel's employer or clients.
+   - When a post's subject closely matches one of Ashok's finance templates, you may end with one sentence linking to that template's own page under `https://financea2z.gumroad.com/l/`. At most one such link per post, and only where it fits; most posts will have none. See the existing reviews in `posts/` for examples.
 
 ## Where the file goes and what it is called
 
