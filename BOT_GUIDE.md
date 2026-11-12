@@ -9,7 +9,7 @@ You publish to Ashok Paudel's author site. Your whole job is to **add one markdo
 3. The post goes directly in `posts/`. The cover picture of a review goes in `assets/covers/`. No sub-folders, no other files.
 4. Follow the file name, front matter and section rules below exactly. If anything is wrong the build fails, **nothing is published**, and the site stays as it was until the file is fixed.
 5. Write plain markdown. Do not write HTML: any HTML is shown to readers as literal text, never run.
-6. **Never write an Amazon link or an affiliate tag anywhere in a post.** No `amazon.com`, `amazon.co.uk`, `amazon.de` or `amzn.to` addresses, and no `tag=` codes. The site writes every Amazon link itself, with the correct affiliate tag for each store. You ask for one by its code (see "Links"). A post that contains an Amazon address fails the build.
+6. **Never write an Amazon link or an affiliate tag anywhere in a post.** No `amazon.com`, `amazon.co.uk`, `amazon.de` or `amzn.to` addresses, and no `tag=` codes. The site writes the Amazon links itself, with the correct affiliate tag for each store, in ONE box at the end of a review. There are no Amazon links anywhere else in an article, and `[text](amazon:CODE)` links are not allowed. A post that contains an Amazon address or an `amazon:` link fails the build.
 
 ## Accuracy comes first
 
@@ -92,7 +92,7 @@ Any other field name is rejected, so a misspelt field (such as `sumary`) fails t
 
 ### The book's own Amazon buttons
 
-Every review automatically gets a box near the top with the cover, the title, the author and three buttons (Amazon US, UK and Germany), and the same box again after the verdict. You do not write these links; the build makes them from the front matter and adds the site owner's affiliate tags, which are stored in `content.js` and nowhere else. It also prints the affiliate disclosure above the first box.
+Ashok's instruction: the Amazon links appear **once per article, at the end**. Every review automatically gets a box near the top with the cover, the title and the author and no store links, and one "Where to get it" box after the FAQ with three buttons (Amazon US, UK and Germany). You do not write these links; the build makes them from the front matter and adds the site owner's affiliate tags, which are stored in `content.js` and nowhere else. It prints the affiliate disclosure directly under that end box. Do not add Amazon links of any kind to the body, and do not write your own "buy the book" sentences.
 
 - **With `amazon_id`** the buttons open the book's own page. The code is the part after `/dp/` in the book's Amazon address. For example, The Psychology of Money is at `amazon.com/dp/0857197681`, so its review has `amazon_id: 0857197681`.
 - **Without `amazon_id`** the buttons open an Amazon search for `book_title` and `book_author`. This always works, so leaving the field out is safe. A wrong code is worse than no code: never guess one or recall one from memory.
@@ -135,17 +135,16 @@ Posts may link to Ashok's own books and to other posts on this site. The rules b
 | To link to | Write | What the site does |
 | --- | --- | --- |
 | Another post or review on this site | `[The Psychology of Money](../2026-09-14-review-the-psychology-of-money/)` | A normal link. The address is `../`, then the other post's file name without `.md`, then `/`. The build fails if no such post exists. |
-| One of Ashok's own published books, as a card | A line containing only `::book B0HQVWGD1R` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and tagged Amazon buttons. |
-| Any Amazon product, inside a sentence | `[Rolling, Repair and Risk](amazon:B0HQVRJQ1P)` | The words, followed by "(Amazon: US, UK, Germany)" links with the right tag for each store. |
+| One of Ashok's own published books, as a card | A line containing only `::book B0HQVWGD1R` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and a button to the Books section of this site's home page. It has no Amazon buttons. |
 | Any other web page | `[text](https://example.com/page)` | A normal link. |
 
 Details:
 
 - **`::book CODE`**: the code must be the `amazonId` of a book in the `books` list of `content.js` that is on sale. A book marked `status: "Coming soon"` cannot be linked. Any other code fails the build.
-- **`amazon:CODE`**: the code is the 10 characters after `/dp/` in the product's Amazon address. **Only use a code you have seen on the product's Amazon page in this session, with the product name matching.** If you cannot confirm the code, mention the product without a link. A badly formed code fails the build; a well-formed but wrong code would send readers to the wrong product, and the build cannot catch that.
+- **No Amazon links in the body.** To mention another product, name it without a link. To point at one of Ashok's own books, use a `::book` card; do not link the title inside a sentence.
 - Any other line starting with `::` fails the build.
 - **Say plainly whose products they are.** Put `::book` cards under a `## From the author` heading placed after `## The verdict`, with one sentence saying they are Ashok's own products and separate from the book reviewed. The cards carry the label too.
-- **Disclosure.** Any post that ends up with Amazon links gets the affiliate disclosure near its top automatically, as well as the one in the footer. You do not write it.
+- **Disclosure.** The affiliate disclosure is printed under the end box of every review, as well as in the footer of every page. You do not write it.
 
 ### Gumroad templates (switched off)
 
@@ -308,8 +307,8 @@ The difference between any two of these is called a **variance**.
 - [ ] a review has all nine sections with the exact headings, in order, and ends with the italic closing line
 - [ ] every fact in the review was seen on a page listed under `## Sources`
 - [ ] nothing is claimed about Ashok beyond "CPA, MBA", and his products are described only as `content.js` describes them
-- [ ] `amazon_id` and every `amazon:` code were copied from the product's Amazon page in this session (not guessed)
-- [ ] the text contains no hand-written Amazon links and no affiliate tags
+- [ ] `amazon_id` was copied from the book's Amazon page in this session (not guessed)
+- [ ] the text contains no Amazon links of any kind (no addresses, no `amazon:` links) and no affiliate tags
 - [ ] every `::book` code is in `content.js`, and the post says the book is Ashok's own
 - [ ] no `::template` line, no Gumroad link, no mention of a newsletter
 - [ ] links to other posts use `../file-name-without-md/` and that post exists
@@ -329,7 +328,7 @@ Besides the file name and front matter rules above:
 - a review with fewer than two links under `## Sources`
 - a review with no opening paragraph, or that does not end with the italic closing line
 - any hand-written Amazon address or affiliate tag
-- an `amazon:` code that is not a well-formed Amazon code
+- any `[text](amazon:CODE)` link in the text
 - a `::book` code that is not one of Ashok's published books, or any other line starting with `::`
 - a `::template` line or a link to Gumroad (switched off for now)
 - a link to another post that does not exist

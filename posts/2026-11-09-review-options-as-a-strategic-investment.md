@@ -64,9 +64,11 @@ The book to own if you are serious about options and already know the basics. Re
 
 ## From the author
 
-Ashok Paudel has written about one strategy that combines two of the positions McMillan covers, the sale of a put and the covered call. These are his own products, separate from the book reviewed above. His follow-up book on managing those positions is [Rolling, Repair and Risk](amazon:B0HQVRJQ1P).
+Ashok Paudel has written about one strategy that combines two of the positions McMillan covers, the sale of a put and the covered call. The second book below is his follow-up on managing those positions. Both are his own products, separate from the book reviewed above.
 
 ::book B0HQPBQVBJ
+
+::book B0HQVRJQ1P
 
 ## FAQ
 

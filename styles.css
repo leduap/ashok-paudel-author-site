@@ -485,6 +485,12 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 .bookbox-end { grid-template-columns: 5.5rem 1fr; gap: 1.1rem; margin: 0 0 1.25em; }
 .bookbox-end .bookbox-t { font-size: 1.15rem; }
 .prose .aff-note { margin: 2rem 0 0.75rem; font-size: 0.875rem; line-height: 1.5; }
+/* The top box has no store links, only a jump to the one "Where to get it" box at the end of the review.
+   That end box and the affiliate disclosure under it are kept together. */
+.bookbox-jump { margin-top: 0.85rem !important; font-family: var(--display); font-weight: 600; font-size: 0.9rem; }
+.getbox { margin: 0.5rem 0 2rem; }
+.getbox .bookbox-end { margin: 0; }
+.prose .getbox .aff-note { margin: 0.6rem 0 0; }
 .prose .bookbox img { margin: 0; }
 @media (max-width: 30rem) {
   .bookbox { grid-template-columns: 5.75rem 1fr; gap: 1rem; padding: 1rem; }
@@ -493,7 +499,8 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   /* On a phone the buttons run under the cover, full width */
   .bookbox:not(.bookbox-end) .bookbox-main { display: contents; }
   .bookbox:not(.bookbox-end) .bookbox-k { grid-column: 2; grid-row: 1; align-self: end; }
-  .bookbox:not(.bookbox-end) .bookbox-cover { grid-row: 1 / 4; }
+  .bookbox:not(.bookbox-end) .bookbox-cover { grid-row: 1 / 5; }
+  .bookbox:not(.bookbox-end) .bookbox-jump { grid-column: 2; margin-top: 0.4rem !important; }
   .bookbox:not(.bookbox-end) .bookbox-t, .bookbox:not(.bookbox-end) .bookbox-a, .bookbox:not(.bookbox-end) .book-rating { grid-column: 2; }
   .bookbox:not(.bookbox-end) .bookbox-a { align-self: start; }
   .bookbox-buttons .button { flex: 1 1 auto; text-align: center; }

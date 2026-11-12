@@ -142,9 +142,9 @@ def own_card(kind, key):
                     if b.get("amazonId") and not b.get("status")))
             return ""
         label, image, alt = "From the author: his own book", item.get("cover", ""), "Cover of "
-        buttons = store_links(key, item.get("title", ""), "button button-small")
-        action = ('<p class="bookbox-get-label">Buy on Amazon <span class="aff-tag">Affiliate links</span></p>'
-                  f'<p class="bookbox-buttons">{" ".join(buttons)}</p>') if buttons else ""
+        # No store buttons here: a review carries Amazon links in one place only, the box at its end.
+        action = (f'<p class="bookbox-buttons"><a class="button button-small button-quiet" href="{POST_ROOT}#books">'
+                  'See it on the Books page</a></p>')
     else:
         item = next((t for t in site["templates"] if t.get("url", "").rstrip("/").endswith("/l/" + key)), None)
         if not item:
@@ -214,10 +214,11 @@ def inline(text):
             if problem:
                 CTX["problems"].append(f"link '[{plain(label)}](amazon:{code})': {problem}")
                 return label
-            links = store_links(code, plain(re.sub(r"\x00\d+\x00", "", label)))
-            if not links:
-                return label
-            return label + keep(' <span class="amz">(Amazon: ' + " · ".join(links) + ")</span>")
+            CTX["problems"].append(
+                f"link '[{plain(label)}](amazon:{code})': Amazon links are not written in the text of a post. "
+                "A review has one set of Amazon buttons, added by the build at the end of the article. "
+                "Mention the product without a link; for one of the author's own books use a  ::book CODE  line")
+            return label
         if not safe_url(url):
             return label
         attrs = f'href="{esc(url)}"'
@@ -294,7 +295,7 @@ def blocks(lines):
             else:
                 CTX["problems"].append(
                     f"line '{line.strip()}' is not understood. The only lines that may start with :: are  "
-                    "::book CODE  (one of the author's own books) and  ::template ID  (one of his templates)")
+                    "::book CODE  (one of the author's own books) and, when switched on,  ::template ID")
             i += 1
             continue
 
@@ -714,7 +715,8 @@ def load_post(path, problems):
     elif AMAZON_URL.search(body):
         bad("the text contains a link to Amazon. Do not write Amazon links or affiliate tags in a post: "
             "for a review, set book_title, book_author and (optionally) amazon_id, and the build adds "
-            "the 'Get the book' buttons with the right tags")
+            "one 'Get the book' box with the right tags at the end of the article. Amazon links are not "
+            "allowed anywhere else in a post")
     elif GUMROAD_URL.search(body) and not (CTX["site"] or {}).get("templates_on"):
         bad("the text contains a link to Gumroad. Gumroad links are switched off for now, so remove it. "
             "(They come back when templates.show is set to true in content.js.)")
@@ -979,13 +981,18 @@ def affiliate_note(site):
 
 
 def book_box(site, post, root, end=False):
-    """The box with the book's cover, title, author and store buttons.
+    """The box with the book's cover, title and author.
 
-    Shown near the top of a review and again, smaller, after the verdict.
+    Near the top of a review it has no store links at all, only a jump to the end box.
+    The end box (after the FAQ) is the ONE place in the article with Amazon buttons, and
+    the affiliate disclosure sits directly under it.
     """
     buttons = amazon_buttons(site, post)
     get = ""
-    if buttons:
+    if not end:
+        if buttons:
+            get = '<p class="bookbox-jump"><a href="#get-the-book">Where to get it <span aria-hidden="true">↓</span></a></p>'
+    elif buttons:
         get = ('<div class="bookbox-get"><p class="bookbox-get-label">Get the book '
                '<span class="aff-tag">Affiliate links</span></p>'
                f'<p class="bookbox-buttons">{" ".join(buttons)}</p>'
@@ -1000,8 +1007,8 @@ def book_box(site, post, root, end=False):
            f'<p class="bookbox-t">{esc(post["book_title"])}</p>'
            f'<p class="bookbox-a">by {esc(post["book_author"])}</p>{rating}{get}</div></aside>')
     if end:
-        return (affiliate_note(site) if buttons else "") + box
-    return (affiliate_note(site) if buttons else "") + box + cover_credit(post)
+        return f'<div class="getbox" id="get-the-book">{box}{affiliate_note(site)}</div>' if buttons else ""
+    return box + cover_credit(post)
 
 
 def post_item(post, root, heading="h2"):
@@ -1096,7 +1103,7 @@ def render_page(site, path, title, description, main, kind="website", extra_head
     )
 
 
-def render_sections(sections, after_verdict=""):
+def render_sections(sections, end_box=""):
     """The ## sections of a post. 'For / not for' and 'works / be aware' sit side by side on wide screens."""
     def one(section):
         css = f"sec sec-{section['kind']}" if section["kind"] else "sec"
@@ -1111,9 +1118,15 @@ def render_sections(sections, after_verdict=""):
             i += 2
         else:
             out.append(one(sections[i]))
-            if kinds[0] == "verdict" and after_verdict:
-                out.append(after_verdict)
             i += 1
+    if end_box:
+        # After the FAQ, before the sources. (After the verdict if there is no FAQ; otherwise last.)
+        kinds = [re.search(r'class="sec sec-(\w+)"', piece) for piece in out]
+        kinds = [m.group(1) if m else "" for m in kinds]
+        at = next((k + 1 for k in range(len(out) - 1, -1, -1) if kinds[k] == "faq"), None)
+        if at is None:
+            at = next((k + 1 for k in range(len(out) - 1, -1, -1) if kinds[k] == "verdict"), len(out))
+        out.insert(at, end_box)
     return "\n".join(out)
 
 
@@ -1141,7 +1154,7 @@ def render_post(site, post, posts, newer, older):
         toc = ('<nav class="toc" aria-labelledby="toc-h"><details open><summary id="toc-h">On this page</summary><ol>'
                + "".join(f'<li><a href="#{s["id"]}">{s["title"]}</a></li>' for s in parts["sections"])
                + "</ol></details></nav>")
-    top = (book_box(site, post, root) if review else (affiliate_note(site) if post["affiliate"] else "")) + toc
+    top = (book_box(site, post, root) if review else "") + toc
     closing = f'\n<p class="post-disclaimer">{parts["closing"]}</p>' if parts["closing"] else ""
     body = "\n".join(piece for piece in (
         parts["intro"], render_sections(parts["sections"], book_box(site, post, root, end=True) if review else "")

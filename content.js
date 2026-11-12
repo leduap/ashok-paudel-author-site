@@ -134,7 +134,8 @@ const SITE = {
   // Optional: tag, a small label on the card such as "Free".
   //
   // SWITCHED OFF: the section and its menu link are hidden while show is false.
-  // Individual blog posts link to a template where it fits instead.
+  // The same switch covers blog posts: while show is false, posts may not link to
+  // Gumroad and the build rejects such links.
   // Change false to true to bring the section back.
   templates: {
     show: false,
