@@ -153,23 +153,41 @@ One setting controls everything to do with Gumroad: `templates.show` in `content
 - a line containing only `::template ID`, where the ID is the last part of the template's `url` in `content.js` after `/l/`. It makes a "From the author: his own template" card under `## From the author`.
 - an ordinary link to the template's Gumroad address inside a sentence.
 
+## How deep a review goes
+
+Ashok's instruction: reviews must not be surface level. A reader should finish knowing how the book is built, what it argues and why, where it is weak, and how it compares.
+
+**Length.** Aim for 1,200 to 1,800 words in the body. Every sentence must earn its place: depth comes from checked substance, never from padding or repetition. If you cannot verify enough to reach that length honestly, write a shorter review and say in the review that it is shorter because less could be checked. A short true review is always better than a long padded or guessed one.
+
+**What each part needs:**
+
+- **How the book is organised** (add this as `## How the book is organised`, before `## Key ideas`). The number of pages, the parts or chapters and what order they run in, taken from a table of contents you opened (publisher, library record or the author's site). If you only have the contents of a different edition, say so.
+- **Key ideas.** Four to six ideas, each under its own `###` sub-heading. For each one give the book's own reasoning, or an example or figure from the book, as found in your sources. Say where a detail comes from when it is not the book itself (for example the author's website or an earlier essay), and that the book's version may differ.
+- **Plain English.** Explain every finance term the first time it appears, in a few words.
+- **Worked illustrations.** Where it helps, add a small example with made-up round numbers. Start it with exactly *An illustration with round numbers, not taken from the book:* in italics, so nobody mistakes it for the book's own example. Check the arithmetic.
+- **What to be aware of.** Real weaknesses: what has dated since publication, who the advice does not fit, where the evidence is thin or disputed, what the author sells or is tied to. Explain each in a sentence.
+- **How it compares** (add this as `## How it compares`, before `## The verdict`). What the book does better and worse than comparable books, including other reviews on this site, with links to them. Say which edition differences matter and which edition to choose.
+- **Who it is for and not for.** Three or four specific kinds of reader in each list.
+
+**The verification rules do not relax with length.** Everything in "Accuracy comes first" applies to every added sentence: only facts seen on a page you opened in this session; no invented quotations, statistics, page references or chapter contents; a chapter title tells you the topic, not what the chapter says, so do not describe an argument you have not read. Soften or drop what you cannot confirm. To go deeper, open more sources: the publisher's page and excerpts, the table of contents, the author's own site and articles, library records, reputable reviews and encyclopaedia entries. List every one you used under `## Sources` with the date you actually opened it.
+
 ## The sections of a review
 
 A review must have a short opening paragraph, then these sections, each as a `##` heading with exactly this wording, in this order:
 
 | Heading | What goes in it | Form |
 | --- | --- | --- |
-| `## The short answer` | The verdict in three or four sentences: what the book is, who it suits, its main limit. | Paragraph |
+| `## The short answer` | The verdict in four to six sentences: what the book is, who it suits, its main limits. | Paragraph |
 | `## Who it is for` | The readers who will get the most from it. | A list (`-` lines) |
 | `## Who it is not for` | The readers who should skip it. | A list |
-| `## Key ideas` | What the book covers and argues, from your sources. | Paragraphs or a list |
+| `## Key ideas` | Four to six ideas, each under its own `###` sub-heading and explained in a paragraph or two (see "How deep a review goes"). | `###` sub-headings with paragraphs |
 | `## What works` | Its real strengths. | A list |
-| `## What to be aware of` | Its real weaknesses and limits. | A list |
+| `## What to be aware of` | Its real weaknesses and limits: at least four, each with a sentence of explanation. No token criticisms. | A list |
 | `## The verdict` | A short closing judgement. May link to related reviews on this site. | Paragraph |
 | `## FAQ` | At least two questions a reader would ask. Each question is a `###` line with its answer in a paragraph under it. Nothing else in this section. | `###` questions |
 | `## Sources` | At least two links to pages you opened, each with the date you checked it. | A numbered list |
 
-You may add other `##` sections of your own between these, for example `## From the author` after the verdict. The site adds a contents list, shows the two "who it is for" lists side by side and the two "what works" lists side by side, and repeats the book box after the verdict.
+You may add other `##` sections of your own between these, for example `## From the author` after the verdict. The site adds a contents list, shows the two "who it is for" lists side by side and the two "what works" lists side by side, and puts the one "Where to get it" box with the Amazon buttons after the FAQ.
 
 The file must end with a `---` line and then this line, in italics, as the last line of the file:
 
@@ -180,6 +198,8 @@ The file must end with a `---` line and then this line, in italics, as the last 
 A blog post (`type: post`) has no required sections. If it uses the headings `## FAQ` or `## Sources`, the same form applies to them.
 
 ## Complete example: a book review
+
+This example shows the form: the fields, the headings and the kinds of link. It is deliberately short. A real review is much fuller, as described in "How deep a review goes"; the ten reviews already in `posts/` are the model for length and depth.
 
 Files: `posts/2026-11-12-review-the-example-book.md` and `assets/covers/the-example-book.jpg`
 
@@ -305,6 +325,8 @@ The difference between any two of these is called a **variance**.
 - [ ] `type` is `post` or `review`; a review also has `book_title`, `book_author`, `cover` and `cover_source`
 - [ ] the cover was found by ISBN on Open Library or the publisher's page, not on Amazon, and you looked at it: right book, right edition
 - [ ] a review has all nine sections with the exact headings, in order, and ends with the italic closing line
+- [ ] the body is about 1,200 to 1,800 words, or is shorter and says why; it has `## How the book is organised`, four to six `###` key ideas and `## How it compares`
+- [ ] every illustration with made-up numbers starts with *An illustration with round numbers, not taken from the book:* and its arithmetic is right
 - [ ] every fact in the review was seen on a page listed under `## Sources`
 - [ ] nothing is claimed about Ashok beyond "CPA, MBA", and his products are described only as `content.js` describes them
 - [ ] `amazon_id` was copied from the book's Amazon page in this session (not guessed)
