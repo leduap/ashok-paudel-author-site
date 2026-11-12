@@ -16,7 +16,7 @@ Financial Intelligence, written by Karen Berman and Joe Knight with John Case, i
 
 ## The short answer
 
-A plain, well-organised introduction to the three main financial statements and the ratios built from them, written for people who are not accountants. Its most valuable idea is that reported numbers depend on rules, estimates and assumptions, so reading them well means knowing where the judgement sits and being willing to ask about it. It is an introduction, it follows United States accounting, it dates from 2013, and it gives little practice. People who work in finance will find it basic, though useful to hand to colleagues who do not.
+A plain, well-organised introduction to the three main financial statements and the ratios built from them, written for people who are not accountants. Its most valuable idea is that reported numbers depend on conventions, estimates and assumptions, so reading them well means knowing where the judgement sits and being willing to ask about it. It is an introduction, it follows United States accounting, it dates from 2013, and it gives little practice. People who work in finance will find it basic, though useful to hand to colleagues who do not.
 
 ## Who it is for
 
@@ -44,21 +44,21 @@ The authors' own description lists five areas: the basics of financial measureme
 
 ### Financial intelligence is a set of skills
 
-The book's opening claim, in a published excerpt, is that financial intelligence "isn't some innate ability". It is a set of skills that people in finance learn early and that other managers too often never pick up. The authors name four: understanding the foundation (reading the three statements and knowing why the balance sheet balances), understanding the art, understanding analysis, and understanding the big picture, meaning that numbers never tell the whole story without the economy, competitors and customers around them.
+The book's opening claim, in a published excerpt, is that financial intelligence "isn't some innate ability". It is something learned. Finance staff acquire it at the start of their careers; managers elsewhere are frequently never taught it. The authors name four skills: understanding the foundation (reading the three statements and telling profit from cash), understanding the art, understanding analysis, and understanding the big picture, meaning that numbers never tell the whole story without the economy, competitors and customers around them.
 
 ### The art of finance
 
-This is the idea that sets the book apart from a plain primer. In the authors' words, finance and accounting "are an art as well as a science": they must put numbers on things that cannot always be measured exactly, and so rely on rules, estimates and assumptions. A financially intelligent manager can see where that judgement has been applied and knows how applying it differently might lead to a different conclusion.
+This is the idea that sets the book apart from a plain primer. In the authors' words, finance and accounting "are an art as well as a science". Some of what they have to measure cannot be measured precisely, so the figures are built partly on conventions, estimates and assumptions. The skill the authors want a manager to have is to spot where such a choice was made and to understand that another defensible choice would have produced another number.
 
-Their example is revenue. A company normally records a sale when it delivers the product or service, but "when is a sale a sale" is often unclear. A firm that is paid over the life of a building project, or a software company that sells five years of upgrades with its product, must decide how much to count now. The chapter describes how a company under pressure to meet a profit forecast could change that proportion and lift its reported earnings, and notes that such a change is not illegal.
+Their example is revenue. The usual rule is that a sale counts once the product or service has been delivered, but the authors treat the question of "when is a sale a sale" as one of the places where judgement comes in. A firm that is paid over the life of a building project, or a software company that sells five years of upgrades with its product, must decide how much to count now. The chapter describes how a company under pressure to meet a profit forecast could change that proportion and lift its reported earnings, and notes that doing so would not break the law.
 
 ### How to read an income statement
 
-The advice is practical. Every income statement has sales at the top, costs and expenses in the middle and profit at the bottom. To see what matters to a company, look for the biggest numbers relative to sales: if the cost of goods sold is a large share, management will be watching it closely.
+The advice is practical. Whatever the company, the statement has the same shape: sales first, then what was spent, then the profit left over. To find out what a company cares about, compare each line with the sales figure and see which are largest. If the cost of goods sold takes up much of every sale, that is the number its managers will be watching.
 
 ### Profit is not cash
 
-The authors give this its own section, and their site sets out the three reasons. Revenue is counted at the time of sale, before the customer has paid. Expenses are matched to the revenue they help earn, not to the date the bill is settled. And spending on equipment does not reduce profit when the money goes out; only a yearly slice, called depreciation, is charged. The conclusion is blunt: a company can be profitable and still run out of cash.
+The authors give this its own section, and their site sets out the three reasons. A sale is recorded as revenue when it is made, which may be weeks before the customer pays. Costs are recorded alongside the sales they belong to, whenever the bill was actually settled. And money spent on equipment is not taken off profit in one go; a slice, called depreciation, is charged each year. The conclusion is blunt: a business can report a profit and have an empty bank account.
 
 *An illustration with round numbers, not taken from the book:* a firm sells 100,000 of goods in March on 60 days' credit, having paid 70,000 for stock and wages that month. March shows a profit of 30,000. Its bank balance is down 70,000, and stays down until May.
 
@@ -68,9 +68,9 @@ The balance sheet shows what a company owns, what it owes and what is left for t
 
 ### Cash flow, and a warning about shortcuts
 
-The cash flow statement sorts cash into three kinds: from operations, from investing and from financing. The authors call operating cash flow in many ways the single most important number for the health of a business, because a company that generates it can pay for more of its own growth.
+The cash flow statement sorts cash into three kinds: from operations, from investing and from financing. The authors rank operating cash flow, with some qualification, above every other figure as a sign of whether a business is healthy, because a company that generates it can pay for more of its own growth.
 
-They are cautious about popular short-cut measures. EBITDA, a profit figure before interest, tax and depreciation that lenders like as a rough guide to cash, depends on the income statement, and the excerpt notes that after the accounting scandals around 2000 and the crisis of 2008 investors grew wary of it for that reason. On return on investment, the hard part is not the formula but the forecast: most investments that fail were justified by unrealistic estimates of future benefits.
+They are cautious about popular short-cut measures. EBITDA, a profit figure before interest, tax and depreciation that lenders like as a rough guide to cash, depends on the income statement, and the excerpt notes that after the accounting scandals around 2000 and the crisis of 2008 investors grew wary of it for that reason. On return on investment, the hard part is not the formula but the forecast: investments that disappoint were nearly always approved on forecasts of benefit that were too hopeful.
 
 ## What works
 

@@ -16,7 +16,7 @@ Most books about entrepreneurship assume you will start from nothing. Buy Then B
 
 ## The short answer
 
-A clear, start-to-finish overview of how an individual might find, assess, buy and take over a small business. It is good at showing that this path exists and what its stages are. It is written by someone who works in the field, sells courses on it and is enthusiastic about it, and it gives less room to what can go wrong. A real purchase needs professional advice well beyond any book.
+A clear overview, from first search to handover, of how an individual might find, assess, buy and take over a small business. It is good at showing that this path exists and what its stages are. It is written by someone who works in the field, sells courses on it and is enthusiastic about it, and it gives less room to what can go wrong. A real purchase needs professional advice well beyond any book.
 
 This review is shorter than the others on this site. I could confirm the book's structure, its main argument and its named tools from an independent review and the author's own pages, but not the chapter-level detail, so I have not described what I could not check.
 
@@ -34,15 +34,15 @@ This review is shorter than the others on this site. I could confirm the book's 
 
 ## How the book is organised
 
-The paperback is 310 pages according to its Open Library record. The book is divided into four parts that follow the order of a purchase: Opportunity, Evaluation, Analysis and Execution. In the words of an independent review, it sets out how to go about finding a company to buy, making an offer, purchasing the business and transitioning ownership. The author draws on his own acquisitions, which that review puts at seven companies, along with research and interviews.
+The paperback is 310 pages according to its Open Library record. It has four parts, named Opportunity, Evaluation, Analysis and Execution, and they run in the order a purchase does: the search for a company, the offer, the purchase itself and the change of owner. The author writes from his own acquisitions, which an independent review puts at seven companies, and adds research and interviews to them.
 
 ## Key ideas
 
 ### Skip the start-up stage
 
-The opening argument is that "the startup phase is a company killer", and that there is "a path that could bypass the startup phase altogether". The cover copy puts the problem this way: almost all start-ups either fail or never reach a sustainable size. A business that is already trading has got past that stage. It has customers, income and a record that can be examined, so the buyer begins, in the book's phrase, with profitable revenue from day one.
+The opening argument is that "the startup phase is a company killer", and that buying offers a way round it. The author's site states the problem bluntly: the great majority of new ventures either close or stay too small to last. A business that is already trading has got past that stage. It has customers, income and a record that can be examined, so the buyer starts with sales and profit already coming in.
 
-The author also claims the idea "hasn't penetrated the entrepreneurship community much beyond the elite universities", which is his explanation for why so few would-be founders consider it.
+The author also claims that, outside a handful of elite universities, the idea has barely reached people who want to be entrepreneurs, which is his explanation for why so few would-be founders consider it.
 
 ### A wave of sellers
 
@@ -54,13 +54,13 @@ Before looking at listings, the book asks the buyer to define what they are look
 
 ### Analysis: evaluating, reading the accounts, valuing
 
-The third part covers the basics of evaluating a business, analysing its financial statements and valuing it. The independent review says this section should help to demystify valuation for many entrepreneurs. It is an introduction to those skills, not a substitute for them.
+The third part introduces three skills: sizing up a business, reading its accounts and putting a price on it. The one independent review I could find describes this as a walk through the basics. It is an introduction to those skills, not a substitute for them.
 
 *An illustration with round numbers, not taken from the book:* small businesses are often priced as a multiple of yearly profit. A firm earning 200,000 a year and priced at three times earnings costs 600,000. If the true earnings turn out to be 150,000 because the seller's figures were flattering, the same price is four times earnings. That gap is why checking the figures, known as due diligence, matters so much.
 
 ### The seller is a person
 
-One chapter deals with the seller's state of mind and gives techniques for holding meaningful, non-threatening conversations with them. For an owner who has spent decades building a company, the sale is not only a transaction, and the book treats trust as part of getting a deal done. The final part ends with a three-month plan for the handover of ownership.
+One chapter is about how the seller sees the sale, and offers ways of talking with them that feel like a real conversation and do not put them on the defensive. For an owner who has spent decades building a company, the sale is not only a transaction, and the book treats trust as part of getting a deal done. The final part ends with a three-month plan for the handover of ownership.
 
 ## What works
 
@@ -91,11 +91,11 @@ A good first map for anyone curious about buying a business. Treat it as an intr
 
 ### What is acquisition entrepreneurship?
 
-The author's term for becoming an owner by buying an existing business and growing it, instead of starting a new one.
+The author's term for becoming an owner by taking over a company that is already running and expanding it, as an alternative to founding one.
 
 ### Does the book explain how to value a business?
 
-It covers the basics of reading financial statements and valuing a company. It is an introduction, and a real purchase needs professional help.
+It introduces reading a company's accounts and working out what the company is worth. It is an introduction, and a real purchase needs professional help.
 
 ### How long is it?
 

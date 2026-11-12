@@ -16,7 +16,7 @@ A Random Walk Down Wall Street was first published in 1973. Its author, Burton G
 
 ## The short answer
 
-A broad, patient explanation of why share prices are hard to predict and why most investors are better served by saving steadily and holding a diversified set of index funds. It covers far more ground than a short index-fund book: the history of bubbles, the main ways professionals try to pick shares, the theory of risk, and a guide to investing at different ages. It is long, the middle chapters are demanding, the practical advice is American, and the theory at its centre is still argued over. If you want to understand the case for index funds and not only accept it, this is the book.
+A broad, patient explanation of why share prices are hard to predict and why most investors are better served by saving steadily and holding a broad spread of index funds. It covers far more ground than a short index-fund book: the history of bubbles, the main ways professionals try to pick shares, the theory of risk, and a guide to investing at different ages. It is long, the middle chapters are demanding, the practical advice is American, and the theory at its centre is still argued over. If you want to understand the case for index funds and not only accept it, this is the book.
 
 ## Who it is for
 
@@ -43,21 +43,21 @@ That edition runs in four broad movements. It opens with how shares are valued a
 
 A random walk, in the book's sense, is a price path in which the next step cannot be predicted from the steps before it. If share prices behave this way, nobody can reliably forecast short-term moves, and consistently beating the market average becomes very hard.
 
-Malkiel's best-known demonstration is a classroom experiment. His students built a chart for an imaginary share that started at fifty dollars and moved up or down by half a point each day on the flip of a coin. He then showed the chart to a chartist, a professional who reads price patterns, who saw a pattern and said the share should be bought at once. The pattern had been produced by chance.
+Malkiel's best-known demonstration came out of his classroom. He gave his students an invented share priced at fifty dollars and had them toss a coin for each day's close: heads, up half a point; tails, down half a point. The resulting chart went to a chartist, a professional who reads price patterns for a living, who found a pattern in it and advised buying immediately. Nothing but chance had drawn the line.
 
 "Random" here means unforecastable. It does not mean that prices are senseless, and it does not mean the market goes nowhere: the long-run direction of a growing economy's shares can be upward while the path there is unpredictable.
 
 ### Two ways of picking shares, both tested
 
-Technical analysis studies charts of past prices in the belief that patterns repeat. Fundamental analysis studies a company's business, earnings and prospects to estimate what its shares ought to be worth. Malkiel explains each fairly and then sets it against academic studies. He finds significant flaws in both, and concludes that for most investors these methods will do worse than simply holding the market.
+Technical analysis studies charts of past prices in the belief that patterns repeat. Fundamental analysis studies a company's business, earnings and prospects to estimate what its shares ought to be worth. Malkiel explains each fairly and then sets it against academic studies. Neither comes out well. His judgement is that most investors who rely on either one will end up with less than they would have had from simply owning the market.
 
 ### Bubbles are old, and they rhyme
 
-The early chapters are history: crowds carried away by rising prices, from earlier centuries to the internet shares of the late 1990s. The purpose is practical. A reader who has seen the pattern several times is better placed to recognise the next one. The publisher says the fiftieth anniversary edition brings this up to date by critically analysing cryptocurrencies, NFTs (digital collectibles) and meme stocks (shares driven up by online enthusiasm).
+The early chapters are history: crowds carried away by rising prices, from earlier centuries to the internet shares of the late 1990s. The purpose is practical. A reader who has seen the pattern several times is better placed to recognise the next one. According to the publisher, the fiftieth anniversary edition carries the story forward with a critical look at cryptocurrencies, NFTs (digital collectibles) and meme stocks (shares driven up by online enthusiasm).
 
 ### Past winners rarely stay winners
 
-Malkiel makes the same case against choosing actively managed funds by their track record. He cites studies showing that funds which do well in one period often fall behind in the next, a drift back towards average. Since only a few funds beat their benchmark index over the long run, the chance that an ordinary investor picks them in advance is small.
+Malkiel applies the same scepticism to choosing actively managed funds on their track record. The studies he cites find that a fund's good years are often followed by weaker ones, so that results slide back towards the average. Funds that stay ahead of their benchmark year after year do exist, but they are few, and an ordinary investor has little chance of knowing beforehand which ones they will be.
 
 ### Risk, and investing by age
 
@@ -65,7 +65,7 @@ The theory chapters explain why spreading money across many holdings reduces ris
 
 ### The practical conclusion
 
-According to the publisher, the book shows why an individual who saves consistently over time and buys a diversified set of index funds can achieve above-average results. "Above-average" follows from the argument: if most professional investors trail the market after their costs, then matching the market cheaply puts you ahead of most of them. The newest edition also covers tax-aware investing and newer techniques, including factor investing, risk parity and ESG portfolios.
+The publisher's summary of the book's case is that a person who keeps saving and puts the money into a broad mix of index funds can end up with better results than most. "Better than most" follows from the argument: if most professional investors trail the market after their costs, then matching the market cheaply puts you ahead of most of them. The newest edition, the publisher adds, also deals with investing tax-efficiently and with three recently fashionable approaches: ESG portfolios, risk parity and factor investing.
 
 ## What works
 
@@ -80,7 +80,7 @@ According to the publisher, the book shows why an individual who saves consisten
 - **It is long.** More than 400 pages, and a reader who only wants the recommendation will find it in the final quarter.
 - **The middle is denser than the rest.** The chapters on portfolio theory and risk ask more of the reader than the history or the practical advice.
 - **The theory is disputed.** The book is closely tied to the efficient-market hypothesis, the idea that prices already reflect available information. Investors such as Warren Buffett and many behavioural economists reject it, and two finance professors answered Malkiel with a book titled A Non-Random Walk Down Wall Street. Malkiel himself has written that the weight of evidence supports the theory while conceding that the data contain what he called "gremlins". The practical advice does not need markets to be perfectly efficient, only hard to beat after costs.
-- **The author has ties to the index-fund industry.** Malkiel was a director of the Vanguard Group for 28 years and is chief investment officer of Wealthfront, an automated investing service. That does not undo the evidence, but a reader should know it.
+- **The author has ties to the index-fund industry.** Malkiel sat on the board of the Vanguard Group for 28 years and holds the post of chief investment officer at Wealthfront, an automated investing service. That does not undo the evidence, but a reader should know it.
 - **It is written for American investors.** The practical guidance assumes United States accounts and tax rules.
 - **Older editions date quickly at the edges.** The core has not changed in decades, but the discussion of current fashions, products and tax belongs to the year of each edition.
 

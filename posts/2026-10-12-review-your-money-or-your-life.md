@@ -35,13 +35,13 @@ A programme for changing how you think about spending, built on one idea: money 
 
 The publisher lists 368 pages. The book is a single programme of nine steps, meant to be done in order, with stories from people who followed it. The steps, as named in the summary on Vicki Robin's own website, are: making peace with the past; tracking your life energy; the monthly tabulation; three questions; making life energy visible; minimising spending; maximising income; capital and the crossover point; and managing your finances.
 
-That summary was written for an earlier edition, and I have used it to check the detail below. The figures in the worked example are from that summary, and the 2018 edition's numbers may differ. The summary is firm on one point: the steps build on each other, and the effect may not show until you have followed them for some months.
+That summary was written for an earlier edition, and I have used it to check the detail below. The figures in the worked example are from that summary, and the 2018 edition's numbers may differ. The summary is firm on one point: each step depends on the ones before it, and the effect may not show until you have followed them for some months.
 
 ## Key ideas
 
 ### Money is life energy
 
-The book's one definition is that money is something we choose to trade our life energy for. Life energy is your time: the hours you have, which are limited and cannot be got back. Everything else follows from taking that literally.
+The book rests on one definition: money is "something we choose to trade our life energy for." Life energy means your time, the stock of hours you have to live, which runs down and cannot be refilled. Everything else follows from taking that literally.
 
 ### Your real hourly wage
 
@@ -51,31 +51,31 @@ The summary gives the book's example. A job paying $440 for a 40-hour week looks
 
 ### Track everything, then ask three questions
 
-The second half of step two is to keep track of every cent that comes in or goes out. Step three sorts a month of it into categories of your own and converts each total from money into hours, using the real hourly wage.
+The second half of step two is to write down all money received and all money spent, to the cent. Step three sorts a month of those records into categories you choose yourself and restates each total in hours of work, using the real hourly wage.
 
-Step four, which the summary calls the core of the programme, asks three questions of each category. Did I receive fulfilment in proportion to the life energy spent? Is this spending in line with my values and purpose? How might it change if I did not have to work for a living? You mark each category with a minus, a plus or a zero.
+Step four, which the summary calls the core of the programme, puts three questions to each category. Was what I got from this worth the hours of life it cost? Does this spending fit my values and what I want my life to be for? Would it look different if I no longer needed a job? You mark each category with a minus, a plus or a zero.
 
-The book is clear that this is not budgeting. Its line is that budgets, like diets, do not work, because they deal with symptoms. The claim is that spending falls by itself in the categories marked with a minus, once you can see what they cost.
+The summary is clear that this is not budgeting. It compares budgets to diets and says both fail for the same reason: they tackle the symptom and leave the cause alone. The claim is that spending falls by itself in the categories marked with a minus, once you can see what they cost.
 
 ### Enough
 
-The word the programme is built around is "enough": enough for survival, for comfort, even for small luxuries, and nothing beyond that to weigh you down. Frugality, in the book's sense, means enjoying what you have. Its example is that someone with ten dresses who feels there is nothing to wear is a spendthrift, while someone who has enjoyed the same ten for years is frugal.
+The word the programme is built around is "enough": the amount of money and possessions that leaves you most fulfilled, past which anything more is surplus. Frugality, as the book uses the word, is about getting full use and pleasure from what you already own. The summary's example is a wardrobe of ten dresses: the owner who still feels she has nothing to wear is the spendthrift, and the owner who has happily worn the same ten for years is the frugal one.
 
 ### The wall chart and the crossover point
 
-Step five is to plot monthly income and monthly spending on a large chart and hang it where you will see it daily. As savings build, step eight adds a third line: the monthly income your savings could produce. In the original programme the formula was capital multiplied by the current long-term interest rate, divided by twelve. The crossover point is the month that line rises above the spending line. In the book's terms, that is financial independence: income for your needs from a source other than paid work.
+Step five is to draw a large chart of each month's income and spending and put it up somewhere you cannot avoid looking at it. As savings build, step eight adds a third line: the monthly income your savings could produce. In the original programme this was worked out as your capital times the long-term interest rate of the day, divided by twelve. The crossover point is the month that line rises above the spending line. In the book's terms, that is financial independence: your needs are covered by income that does not come from a job.
 
 *An illustration with round numbers, not taken from the book:* with savings of 300,000 and a long-term rate of 4%, the formula gives 300,000 × 0.04 ÷ 12 = 1,000 a month. If your spending is 2,500 a month, you are two-fifths of the way to the crossover point.
 
 ### How the investing step has changed
 
-This is the part of the book that has moved most. Joe Dominguez's original criteria were strict: capital and income must be absolutely safe, the income must not fluctuate, and nothing should be lost to commissions or fees. That led him to long-term United States government bonds. The summary notes that a later revision widened this to a conservative, balanced use of funds, property and other investments, and the publisher says the 2018 edition covers index funds.
+This is the part of the book that has moved most. Joe Dominguez's original criteria were strict. The money had to be completely secure, the income it paid had to be steady, and none of it was to go on commissions or fees. That led him to long-term United States government bonds. The summary notes that a later revision relaxed this to allow cautious, balanced holdings of mutual funds, property and other investments, and the publisher says the 2018 edition covers index funds.
 
 ## What works
 
 - **The central idea changes behaviour.** Pricing a purchase in hours of work is simple and hard to forget.
-- **It deals with spending without preaching a budget.** The publisher describes it as saving through mindfulness and good habits, not strict budgeting.
-- **The steps build on each other,** and the wall chart gives quick, visible feedback.
+- **It deals with spending without preaching a budget.** The publisher's own description sets attention and good habits against strict budgeting as the way to save.
+- **Each step prepares the next,** and the wall chart gives quick, visible feedback.
 - **It comes from practice.** The programme was taught in seminars for years before it became a book, and Dominguez had used it to leave paid work at 30.
 - **The revision brought it up to date,** adding side income, online tracking and conversations about money.
 

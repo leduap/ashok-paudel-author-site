@@ -12,11 +12,11 @@ cover: assets/covers/options-as-a-strategic-investment.jpg
 cover_source: https://openlibrary.org/isbn/0735204659
 ---
 
-Options as a Strategic Investment was first published in 1980. The fifth edition, reviewed here, came out in August 2012 and runs to 1,072 pages. Its author, Lawrence G. McMillan, is a professional trader and the founder of McMillan Analysis Corporation. The book is often called the reference work on its subject.
+Options as a Strategic Investment was first published in 1980. The fifth edition, reviewed here, came out in August 2012 and runs to 1,072 pages. Its author, Lawrence G. McMillan, trades professionally and founded McMillan Analysis Corporation. The book is often called the reference work on its subject.
 
 ## The short answer
 
-A reference book, and a very complete one. Each strategy gets its own chapter explaining how it works, when it suits and what to do as the position changes. It is not for beginners: the publisher says it is written for investors who already have some familiarity with the options market. It is long, dense and dated in places, and a book this thorough can make risky positions look more manageable than they are. Own it if you already trade options and want one dependable book to check your thinking against; do not start here.
+A reference book, and a very complete one. Each strategy gets its own chapter explaining how it works, when it suits and what to do as the position changes. It is not for beginners: the publisher says its intended reader already knows something about the options market. It is long, dense and dated in places, and a book this thorough can make risky positions look more manageable than they are. Own it if you already trade options and want one dependable book to check your thinking against; do not start here.
 
 ## Who it is for
 
@@ -66,7 +66,7 @@ The book treats uncovered, or "naked", selling openly, with sections titled "The
 
 ### Protection as well as income
 
-Options are also insurance. One chapter covers buying puts alongside shares you own, including "Put Buying As Protection for the Covered Call Writer" and "No-Cost Collars", where the cost of a protective put is met by selling a call. Part V extends this to whole portfolios, and the author's site says the fifth edition explains portfolio protection using index puts or the newer volatility call options.
+Options are also insurance. One chapter covers buying puts alongside shares you own, including "Put Buying As Protection for the Covered Call Writer" and "No-Cost Collars", where the cost of a protective put is met by selling a call. Part V extends this to whole portfolios, and the author's site says the fifth edition goes into protecting a portfolio in depth, either with put options on a broad index or, the more recent method, with call options on volatility.
 
 ### Volatility as the real subject
 
@@ -74,7 +74,7 @@ Part VI moves from the direction of prices to how much they move. Its headings i
 
 ### The unglamorous chapters
 
-There are full chapters on mathematics, on arbitrage and on taxes, and the publisher highlights the detailed examples, exhibits and checklists. These are what make it a working reference instead of a book of ideas.
+There are full chapters on mathematics, on arbitrage and on taxes, and the publisher draws attention to the worked examples, exhibits and checklists. These are what make it a working reference instead of a book of ideas.
 
 ## What works
 
@@ -82,7 +82,7 @@ There are full chapters on mathematics, on arbitrage and on taxes, and the publi
 - **It deals with management, not only entry.** The follow-up sections are where many shorter books stop.
 - **It is organised for looking things up.** A reader can go straight to the strategy in question.
 - **It takes risk and reward strategy by strategy,** with sections on the investment required and on evaluation.
-- **A study guide is sold alongside it,** with reading assignments and quizzes, for those who want to work through it.
+- **A study guide is sold alongside it,** with set reading and quizzes, for readers who would like to work through it.
 
 ## What to be aware of
 
@@ -115,7 +115,7 @@ Ashok Paudel has written about one strategy that combines two of the positions M
 
 ### Is Options as a Strategic Investment suitable for beginners?
 
-No. The publisher describes it as written for investors who have some familiarity with the options market.
+No. The publisher says it is meant for investors who already know something about the options market.
 
 ### Which edition is current?
 
@@ -123,7 +123,7 @@ The fifth edition, published in August 2012. It is the one linked on this page.
 
 ### Is there a study guide?
 
-Yes. The author's site sells a separate study guide with reading assignments and quizzes for each chapter.
+Yes. The author's site sells a separate study guide, with set reading and quizzes for each chapter.
 
 ### What is a covered call?
 

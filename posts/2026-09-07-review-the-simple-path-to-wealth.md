@@ -12,7 +12,7 @@ cover: assets/covers/the-simple-path-to-wealth.jpg
 cover_source: https://openlibrary.org/isbn/1533667926
 ---
 
-The Simple Path to Wealth is JL Collins's guide to investing for financial independence. The edition reviewed here was self-published in 2016, with a foreword by the blogger Mr. Money Mustache. Its library record describes it as drawn from the author's blog posts and from a series of letters about money written to his teenage daughter, and that origin shows: it reads like advice from someone who wants to save you trouble, not like a textbook.
+The Simple Path to Wealth is JL Collins's guide to investing for financial independence. The edition reviewed here was self-published in 2016, with a foreword by the blogger Mr. Money Mustache. According to its library record, the material began as posts on his blog and as letters to his teenage daughter about handling money, and that origin shows: it reads like advice from someone who wants to save you trouble, not like a textbook.
 
 ## The short answer
 
@@ -44,7 +44,7 @@ The book grew out of the "stock series" on the author's blog, which is still fre
 
 The series opens with a part titled "There's a Major Market Crash Coming!!!!" The point is that crashes are a normal part of owning shares. Collins lists the ones he has invested through, from the recession of 1974-75 to the crash of 1987, the technology crash and 2008, and tells his daughter to expect a meltdown on the scale of 2008 every 15 to 20 years over an investing life.
 
-The danger, he argues, is the investor's reaction. He tells the story against himself: after the crash of 1987 he held on for three or four months, then lost his nerve and sold close to the bottom, and bought back in a year or so later at a higher price. "Everybody makes money when the market is rising," he writes; what decides the outcome is what you do while it is collapsing.
+The danger, he argues, is the investor's reaction. He tells the story against himself: after the crash of 1987 he sat tight for a few months while prices kept sliding, then gave in and sold at what turned out to be nearly the lowest point. It was about a year before he trusted the market enough to return, and by then shares cost more. "Everybody makes money when the market is rising," he writes. The test comes in the falls, and how an investor behaves then settles whether the market enriches them or hurts them.
 
 ### Why he believes the market always goes up
 
@@ -56,11 +56,11 @@ He is careful to say this is not a smooth ride, and that it applies to the whole
 
 From there the recommendation follows. For someone building wealth, Collins suggests a single total stock market index fund. An index fund simply buys every company in a market index instead of paying a manager to choose among them, which is why it is cheap. His example throughout is Vanguard's total United States stock market fund.
 
-He turns the usual saying around: put all your eggs in one basket and forget about it. He accepts that holding 100% shares is considered very aggressive and says that is the point for an investor with decades ahead. He also notes that an 80% shares and 20% bonds mix has done about as well in some studies with a little less movement, and has no quarrel with readers who prefer it.
+He turns the usual saying about eggs and baskets on its head: use one basket, he says, and then stop looking at it. He accepts that holding 100% shares is considered very aggressive and says that is the point for an investor with decades ahead. He also notes that an 80% shares and 20% bonds mix has done about as well in some studies with a little less movement, and has no quarrel with readers who prefer it.
 
 ### Two stages, three tools
 
-Collins divides an investing life into a wealth building stage and a wealth preservation stage, and says the stage depends on your plans, not your age. He needs only three tools: the stock index fund for growth, a total bond market index fund to smooth the ride and to protect against deflation (falling prices), and cash for daily needs and emergencies. Moving towards preservation means adding bonds; that is the whole adjustment.
+Collins divides an investing life into a wealth building stage and a wealth preservation stage, and says the stage depends on your plans, not your age. He needs only three tools: the stock index fund to do the growing, a total bond market index fund to steady the portfolio and guard against deflation (falling prices), and cash to cover everyday spending and anything unexpected. Moving towards preservation means adding bonds; that is the whole adjustment.
 
 He dismisses the common rule of holding your age as a percentage in bonds, on the grounds that even a 60-year-old may be investing for another 30 years and inflation eats bonds.
 
@@ -74,7 +74,7 @@ His reading is more useful than the slogan. Four per cent is a guide, not a guar
 
 ### "F-You Money"
 
-The blunt phrase is the author's name for savings large enough to let you walk away from a job. It does not have to be enough to retire on. Collins's argument is that the most valuable thing money buys is freedom, and that people who live from one pay cheque to the next, or who carry debt, have very little of it. This is the motive that runs under the whole book.
+The blunt phrase is the author's name for savings large enough to let you walk away from a job. It does not have to be enough to retire on. Collins's argument is that freedom is the best thing money can buy, and that it is exactly what a person gives up by depending on the next pay cheque or by owing money. This is the motive that runs under the whole book.
 
 ## What works
 
@@ -90,7 +90,7 @@ The blunt phrase is the author's name for savings large enough to let you walk a
 - **It is written for the United States.** Account types, tax rules and fund names will not match what is available elsewhere.
 - **It recommends one company.** Collins says plainly that Vanguard is the only investment company he recommends, because it is owned by its own funds. He states that he is not paid by it. The reasoning about low costs applies to any cheap, broad index fund, but the book reads at times like an advertisement.
 - **The 100% shares advice asks a lot.** It works only for readers who really will not sell in a crash. Many people discover they are not that investor only when the crash arrives.
-- **There is a newer edition.** The author announced a revised edition for May 2025 with updated figures, expanded content, a new case study and reorganised chapters, and calls it a better book than the original. The edition linked on this page is the 2016 original.
+- **There is a newer edition.** The author announced a revised edition for May 2025 with updated figures, expanded content, a new case study and reorganised chapters, and says he thinks the result improves on the first version. The edition linked on this page is the 2016 original.
 
 ## How it compares
 

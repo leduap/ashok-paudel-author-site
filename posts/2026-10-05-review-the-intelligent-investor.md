@@ -43,33 +43,33 @@ The appendixes include Buffett's essay "The Superinvestors of Graham-and-Doddsvi
 
 ### Investment versus speculation
 
-Graham insists the reader begin by separating the two. His definition, first given in his earlier book Security Analysis, is that an investment operation is one which, "upon thorough analysis, promises safety of principal and a satisfactory return", and that operations not meeting these requirements are speculative. Three tests are packed into that sentence: you have done the analysis, you are protected against serious loss, and you are aiming for an adequate return, not a spectacular one.
+Graham insists the reader begin by separating the two. His definition, first given in his earlier book Security Analysis, runs: "An investment operation is one which, upon thorough analysis, promises safety of principal and a satisfactory return." Whatever fails that test he classes as speculation. Three tests are packed into that sentence: you have done the analysis, you are protected against serious loss, and you are aiming for an adequate return, not a spectacular one.
 
-Behind it is the view that a share is first of all part-ownership of a business. In the short term, in his well-known phrase, the market behaves like a voting machine; in the long term it acts like a weighing machine.
+Behind it is the view that a share is before anything else a stake in a business. Graham's well-known image for the difference in time scale is of two machines: over short periods the market is a "voting machine", registering what is popular, and over long ones a "weighing machine", registering what a business is worth.
 
 ### The defensive and the enterprising investor
 
-Graham writes separate chapters for two kinds of reader. The defensive investor wants to keep time, effort and, above all, worry to a minimum, and so trades seldom, gives up trying to forecast prices and holds for the long term. The enterprising investor has more time and interest and is prepared to do original analysis in search of exceptional bargains.
+Graham writes separate chapters for two kinds of reader. The defensive investor's aim is to spend as little time and effort on investing as possible and, more than anything, to be spared the worry. That reader buys, holds for years, rarely trades and does not try to guess where prices are heading. The enterprising investor is willing to give the subject real time and attention, and does original research in the hope of finding unusually good bargains.
 
-The distinction is about effort, not about appetite for risk. Graham's warning is that the enterprising path demands substantial work, and that there is little middle ground where a bit of effort earns a bit of extra return.
+The distinction is about effort, not about appetite for risk. Graham's warning is that the enterprising path is real work: it means giving a great deal of time to studying the finances of companies.
 
 ### Mr. Market
 
-In the chapter on market fluctuations, Graham asks the reader to imagine a business partner, Mr. Market, who turns up every day offering to buy your share or sell you his. Usually the price he names seems plausible; occasionally it is ridiculous. You are free to trade with him or to ignore him completely. He does not mind, and will be back tomorrow with another price.
+In the chapter on market fluctuations, Graham invents a business partner called Mr. Market. Every day he arrives with a price at which he will buy your share of the business or sell you his. Most days the figure is sensible. Some days it is absurd. You can deal with him or send him away, and it makes no difference to him: tomorrow he will be at the door again with a new price.
 
-The point is that a price is an offer, not a verdict on what a business is worth. The investor should profit from the market's folly instead of taking part in it, and should watch how the businesses perform, not how Mr. Market behaves. It is the most practical idea in the book, because it changes what a falling price means: for someone who is still buying, it is a better offer.
+The point is that a price is an offer, not a verdict on what a business is worth. Mr. Market's moods are there to be used when they suit you and disregarded when they do not, and the thing to keep your eye on is the progress of the business, not the partner's behaviour. It is the most practical idea in the book, because it changes what a falling price means: for someone who is still buying, it is a better offer.
 
 ### Margin of safety
 
-The margin of safety is the gap between what a careful estimate says a share is worth and the price paid for it. Because any estimate of value is rough, the investor insists on a wide gap, so that mistakes and bad luck can be absorbed. Graham's own line is that the margin of safety is always dependent on the price paid: a sound company can be a poor investment if bought too dear.
+The margin of safety is the gap between what a careful estimate says a share is worth and the price paid for it. Because any estimate of value is rough, the investor insists on a wide gap, so that mistakes and bad luck can be absorbed. Graham ties the margin to the price, not to the quality of the company: a sound business can still be a poor investment for someone who paid too much for it.
 
-Buffett's comparison helps: you build a bridge to carry 30,000 pounds and then drive 10,000-pound trucks across it.
+Buffett's comparison helps. An engineer designs a bridge to bear 30,000 pounds and then lets nothing heavier than 10,000 pounds cross it.
 
 *An illustration with round numbers, not taken from the book:* if your careful estimate of a company's worth is 100 per share and you buy at 65, your estimate can be wrong by a third before you have overpaid. If you buy at 95, almost any error leaves you with a loss.
 
 ### Think for yourself, and be businesslike
 
-Graham writes that "investment is most intelligent when it is most businesslike", meaning a systematic effort to earn a reasonable return and avoid severe loss. He adds that agreement or disagreement from the crowd proves nothing: "You are right because your data and reasoning are right." He was also critical of companies that reported their finances obscurely, favoured paying dividends over hoarding profits, and distrusted the claim that some shares were worth buying at any price because of their growth.
+Graham writes that "investment is most intelligent when it is most businesslike". He means approaching it as a well-run business would: methodically, aiming for a fair return and taking care to avoid a heavy loss. Whether the crowd agrees with you settles nothing, he adds: "You are right because your data and reasoning are right." He also had views on how companies treat their shareholders. He disliked financial reporting that hid the true position, wanted profits paid out as dividends instead of piling up inside the company, and did not accept that the promise of growth could make a share a good buy whatever it cost.
 
 ## What works
 
@@ -83,7 +83,7 @@ Graham writes that "investment is most intelligent when it is most businesslike"
 
 - **Much of the detail is dated.** The securities, yields and tax rules discussed are those of the United States around 1972, and one chapter is fixed on the level of share prices in that year.
 - **It is hard going.** The prose is formal and several chapters are close studies of company accounts.
-- **Its best-known followers say it is not sufficient.** Buffett and his partner Charlie Munger have both said Graham's methods are necessary but not enough for investing today, because Graham placed too little weight on a company's potential for future growth.
+- **Its best-known followers say it is not sufficient.** Buffett and his partner Charlie Munger have both said that an investor today needs Graham's methods and needs more than them, since Graham gave a company's capacity to grow less attention than it deserves.
 - **Graham's own view shifted.** Late in life he described moving away from detailed analysis of single companies towards buying groups of shares that met simple tests of cheapness.
 - **The evidence for the method is contested.** Supporters of efficient markets argue that the few investors who beat the averages may simply be lucky. Buffett's appendix is a reply to exactly that argument, and readers should hear both sides.
 - **There is a newer edition.** A third revised edition with updated commentary was published in 2024. The edition linked on this page is the 2003 revision.
@@ -111,7 +111,7 @@ It can be read by a beginner, but it is not the easiest starting point. A shorte
 
 ### Who was Benjamin Graham?
 
-An investor and teacher who began teaching his approach at Columbia Business School in 1928 and co-wrote Security Analysis in 1934. Warren Buffett is the best known of his students.
+An investor and teacher. He started teaching his approach at Columbia Business School in 1928, and Security Analysis, written with David Dodd, appeared in 1934. Warren Buffett is the best known of his students.
 
 ### What is value investing, in one sentence?
 

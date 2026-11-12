@@ -36,7 +36,7 @@ One of the most practical personal finance books available to an American reader
 
 The publisher lists 352 pages and describes the book as a six-week programme. I have the chapter list of the first edition from its catalogue record, and the second edition keeps the six-week shape: "Optimize Your Credit Cards", "Beat the Banks", "Get Ready to Invest", "Conscious Spending", "Save While Sleeping" and "The Myth of Financial Expertise", followed by "Investing Isn't Only for Rich People", a chapter on maintaining the system, and "A Rich Life" on larger decisions.
 
-The order is deliberate: clear up credit and bank accounts first, open investment accounts, decide where the money should go, then automate it, and only then choose investments. The publisher says the second edition adds more than 80 pages, including new tools, material on money and psychology, and stories from earlier readers.
+The order is deliberate: clear up credit and bank accounts first, open investment accounts, decide where the money should go, then automate it, and only then choose investments. The publisher says the second edition is more than 80 pages longer, with added tools, a section on the psychology of money, and accounts from people who used the first edition.
 
 To check the two central ideas I have used the author's own current articles on them, which describe the same systems the book teaches and refer back to its chapters. The percentages below are from those articles, and the book's may differ slightly.
 
@@ -46,17 +46,17 @@ To check the two central ideas I have used the author's own current articles on 
 
 Sethi's Conscious Spending Plan divides take-home pay into four buckets and gives each a rough share. Fixed costs such as rent, utilities, insurance and subscriptions should ideally take 50 to 60%. Investments take about 10%. Savings for specific goals and emergencies take 5 to 10%. The rest, 20 to 35%, is what he calls guilt-free spending.
 
-The last bucket is the point. His complaint about ordinary budgets is that they tell you what you cannot do. Under his plan, once the first three buckets are dealt with, the remainder is meant to be spent, with "no guilt" about the daily coffee or concert tickets.
+The last bucket is the point. His complaint about ordinary budgets is that they are lists of prohibitions. Under his plan, once the first three buckets are dealt with, the remainder is there to be enjoyed, with "no guilt" about the daily coffee or concert tickets.
 
 *An illustration with round numbers, not taken from the book:* on take-home pay of 4,000 a month, the plan would suggest about 2,000 to 2,400 for fixed costs, 400 for investments, 200 to 400 for savings and 800 to 1,400 for guilt-free spending.
 
 ### Fixed costs are the number to watch
 
-Sethi treats the fixed-cost share as the first figure to look at. In one example on his site, a couple found that 91% of their take-home pay went on fixed costs, and his reading was blunt: at that level there is nothing left to save or invest, whatever happens in the other buckets. He also suggests adding a buffer of about 15% to fixed costs for the expenses people forget.
+Sethi treats the fixed-cost share as the first figure to look at. One example on his site is a couple whose fixed costs came to 91% of what they took home. His reading was blunt: at that level there is nothing left to save or invest, whatever happens in the other buckets. He also suggests adding a buffer of about 15% to fixed costs for the expenses people forget.
 
 ### Big wins instead of fifty small cuts
 
-He argues that people who try to economise on fifty things end up saving a little on each and giving up. His alternative is to pick the two largest areas of optional spending and cut them by a quarter to a third over six months. It is the opposite of advice to give up small treats.
+His argument is that trimming dozens of small expenses produces small savings and a good deal of strain, and that people worn down by it abandon the effort. His alternative is to pick the two largest areas of optional spending and cut them by a quarter to a third over six months. It is the opposite of advice to give up small treats.
 
 ### Automate the flow
 
@@ -68,7 +68,7 @@ He also recommends starting tiny if needed: an automatic transfer of $5 proves t
 
 ### Ask, with a script
 
-The book assumes that banks and card companies will often waive a fee or change a term if asked properly, and it supplies the words. The publisher highlights word-for-word scripts for talking your way out of late fees. For many readers the discovery that these things are negotiable is worth the price of the book.
+The book assumes that banks and card companies will often waive a fee or change a term if asked properly, and it supplies the words. The publisher singles out the scripts, written out line by line, for getting a late fee cancelled. For many readers the discovery that these things are negotiable is worth the price of the book.
 
 ### Simple investing
 
@@ -107,7 +107,7 @@ A strong first book for an American reader in their twenties or thirties who wan
 
 ### What is new in the second edition?
 
-According to the publisher, more than 80 new pages, including new tools, material on money and psychology, and stories from readers of the first edition.
+According to the publisher, more than 80 extra pages: added tools, a section on the psychology of money, and accounts from people who used the first edition.
 
 ### Does the six-week programme really take six weeks?
 

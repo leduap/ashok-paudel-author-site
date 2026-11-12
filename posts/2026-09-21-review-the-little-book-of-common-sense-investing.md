@@ -12,7 +12,7 @@ cover: assets/covers/the-little-book-of-common-sense-investing.jpg
 cover_source: https://openlibrary.org/isbn/1119404509
 ---
 
-John C. Bogle founded the Vanguard Group, and this book is his case for the index fund in its simplest form. It was first published in April 2007. The edition reviewed here is the tenth anniversary edition, published by Wiley in October 2017, which the publisher says has updated data and two new chapters, one on asset allocation and one on retirement investing.
+John C. Bogle founded the Vanguard Group, and this book is his case for the index fund in its simplest form. It was first published in April 2007. The edition reviewed here is the tenth anniversary edition, published by Wiley in October 2017, which the publisher says brings the figures up to date and adds two chapters, on asset allocation and on investing for retirement.
 
 ## The short answer
 
@@ -43,17 +43,17 @@ In the first chapter, which the publisher makes available as an excerpt, the tex
 
 The book opens with a story Bogle adapts from Warren Buffett's 2005 letter to Berkshire Hathaway shareholders. A family called the Gotrocks owns every company in the United States and grows richer each year from the earnings and dividends. Then "Helpers" arrive. Brokers persuade some cousins to trade shares with each other, for a commission. When that makes the family poorer, money managers offer to pick the shares, for a fee. When that fails too, consultants offer to pick the managers. Each layer takes a slice, and the trading adds tax.
 
-In the end a wise uncle tells the family to get rid of all the Helpers and go back to holding everything. "That is exactly what an index fund does," Bogle writes. He quotes Buffett's moral: for investors as a whole, returns decrease as motion increases.
+In the end a wise uncle tells the family to get rid of all the Helpers and go back to holding everything. "That is exactly what an index fund does," Bogle writes. He ends on the moral Buffett drew from the story, which is that the more investors as a group move their money around, the less of the return they keep.
 
 The parable carries the whole argument. Before costs, investors together own the market, so together they earn the market's return. After costs, they must earn less, by exactly the amount of the costs.
 
 ### Why the industry cannot say this
 
-Bogle draws a blunt conclusion from the story: there is a conflict of interest between those who work in the investment business and those who invest. The business prospers by telling clients, "Don't just stand there. Do something." Clients as a group prosper by the opposite: "Don't do something. Just stand there."
+Bogle draws a blunt conclusion from the story: the people who make their living from investing and the people whose money is invested want opposite things. The business does well by urging its customers, "Don't just stand there. Do something." The customers, taken together, do well by turning the advice round: "Don't do something. Just stand there."
 
 ### Where returns come from
 
-The book breaks stock returns into three sources: the dividend yield, the growth in company earnings, and the change in what the market is willing to pay for those earnings. The first two reflect what businesses do. The third reflects opinion, and the publisher's summary puts Bogle's view plainly: in the long run, business reality trumps market expectations. He uses the same three parts to set what he calls rational expectations for the decade ahead, which is the subject of the chapter on when the good times no longer roll.
+The book breaks stock returns into three sources: the dividend yield, the growth in company earnings, and the change in what the market is willing to pay for those earnings. The first two reflect what businesses do. The third reflects opinion, and the publisher's summary gives Bogle's view of it: over a long enough period, what companies actually earn and pay out counts for more than what the market expected of them. The same three parts are his tool for working out what returns it is reasonable to expect over the coming decade, which is where the chapter on lower future returns comes in.
 
 ### Costs compound too
 
@@ -63,11 +63,11 @@ Bogle sets "the magic of compounding returns" against "the tyranny of compoundin
 
 ### Past winners are a poor guide
 
-The chapters "Selecting Long-Term Winners" and "Reversion to the Mean" take on the natural response: accept that the average fund loses, and pick an above-average one. Reversion to the mean is the tendency of unusually good results to drift back towards average. Bogle's position, stated in the first chapter through a quotation from a former head of Harvard's endowment, is that 85 to 90 percent of managers fail to match their benchmarks, and that most people who think they can find the exceptions are wrong.
+The chapters "Selecting Long-Term Winners" and "Reversion to the Mean" take on the natural response: accept that the average fund loses, and pick an above-average one. Reversion to the mean is the tendency of unusually good results to drift back towards average. The first chapter already makes the point through a former head of Harvard's endowment, whom Bogle quotes as saying that most people who believe they can find winning managers are mistaken, and that the share of managers who fall short of their benchmark is 85 to 90 percent.
 
 ### Even index products can be misused
 
-Bogle does not approve of everything with "index" in its name. He gives a chapter to exchange-traded funds, which are index funds that can be bought and sold all day like shares, and another to index funds that promise to beat the market. The publisher's summary states his worry: too many investors trade frantically, turning a winner's game into a loser's game.
+Bogle does not approve of everything with "index" in its name. He gives a chapter to exchange-traded funds, which are index funds that can be bought and sold all day like shares, and another to funds that keep the index label while claiming they can do better than the market. The publisher's summary names his worry: an index fund is meant to be held, and investors who trade in and out of one throw away the advantage it gave them.
 
 ## What works
 
@@ -108,7 +108,7 @@ Ashok Paudel's own book on index funds. It is his product, separate from the boo
 
 ### What is the difference between the 2007 and 2017 editions?
 
-According to Wiley, the tenth anniversary edition has updated data and new information, plus two new chapters on asset allocation and retirement investing.
+According to Wiley, the tenth anniversary edition brings the figures up to date and adds two chapters, one on asset allocation and one on investing for retirement.
 
 ### Is the book only about Vanguard funds?
 

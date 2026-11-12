@@ -12,7 +12,7 @@ cover: assets/covers/the-psychology-of-money.jpg
 cover_source: https://openlibrary.org/isbn/0857197681
 ---
 
-Most finance books treat money as a maths problem. Morgan Housel treats it as a behaviour problem. The Psychology of Money was published by Harriman House in September 2020. The publisher describes it as 19 short stories about the strange ways people think about money, and its opening claim is that doing well with money has less to do with what you know than with how you behave.
+Most finance books treat money as a maths problem. Morgan Housel treats it as a behaviour problem. The Psychology of Money was published by Harriman House in September 2020. The publisher presents it as a collection of 19 short stories about the odd ways people reason about money, and its starting claim is that behaviour counts for more than knowledge where money is concerned.
 
 ## The short answer
 
@@ -33,7 +33,7 @@ A short, well-written book about the human side of money: luck, patience, envy, 
 
 ## How the book is organised
 
-The paperback is 256 pages. After an introduction, its table of contents lists twenty short chapters, each built around one idea and each readable on its own: "No One's Crazy", "Luck & Risk", "Never Enough", "Confounding Compounding", "Getting Wealthy vs. Staying Wealthy", "Tails, You Win", "Freedom", "Man in the Car Paradox", "Wealth is What You Don't See", "Save Money", "Reasonable > Rational", "Surprise!", "Room for Error", "You'll Change", "Nothing's Free", "You & Me", "The Seduction of Pessimism", "When You'll Believe Anything", "All Together Now" and "Confessions". A postscript gives a short history of how the American consumer came to think the way they do.
+The paperback is 256 pages. After an introduction, its table of contents lists twenty short chapters, each built around one idea and each readable on its own: "No One's Crazy", "Luck & Risk", "Never Enough", "Confounding Compounding", "Getting Wealthy vs. Staying Wealthy", "Tails, You Win", "Freedom", "Man in the Car Paradox", "Wealth is What You Don't See", "Save Money", "Reasonable > Rational", "Surprise!", "Room for Error", "You'll Change", "Nothing's Free", "You & Me", "The Seduction of Pessimism", "When You'll Believe Anything", "All Together Now" and "Confessions". A postscript adds a short history of the American consumer.
 
 The book shares its title with an essay Housel published in 2018 on the website of the Collaborative Fund, where the publisher says he is a partner. The essay lists twenty flaws and biases in how people handle money, and many of the book's chapter titles echo them. I have used the essay to check the ideas below. The stories and figures quoted here are from the essay, and the book's versions may differ in detail.
 
@@ -41,39 +41,39 @@ The book shares its title with an essay Housel published in 2018 on the website 
 
 ### Behaviour beats knowledge
 
-The essay opens with two people. Grace Groner worked her whole career as a secretary, lived in a one-bedroom house, and left $7 million to charity when she died in 2010 at the age of 100, having left modest savings to grow in the stock market for eighty years. Richard Fuscone, a former Merrill Lynch executive educated at Harvard, went bankrupt in the same period after heavy borrowing.
+The essay opens with two people. Grace Groner was a secretary all her working life and lived alone in a small house with a single bedroom. When she died in 2010, aged 100, she left $7 million to charity: the product of small savings put into the stock market and left untouched for eighty years. Richard Fuscone had a Harvard education and a senior post at Merrill Lynch, borrowed heavily, and was declared bankrupt in the same year.
 
-Housel's point is not that one is a saint and the other a fool. It is that there is no other field in which this could happen. An untrained person will never outperform a heart surgeon at surgery. In investing it happens, because the result depends on behaviour, and "behavior is hard to teach, even to really smart people."
+Housel is not holding one up as a model and the other as a warning. His point is that investing may be the only field where such a pair of outcomes is possible: a person with no training or connections can end up far ahead of a highly educated insider. That can happen, he argues, because results turn on conduct more than on knowledge, and "behavior is hard to teach, even to really smart people."
 
 ### Luck and risk are the same thing
 
-Housel recalls asking the economist Robert Shiller what he would most like to know about investing that cannot be known. The answer was "the exact role of luck in successful outcomes." Nobody denies luck matters, but because it cannot be measured, and because it is rude to credit someone's success to it, people tend to ignore it. The same blindness applies to failure, which is too easily put down to mistakes.
+Housel once put a question to the economist Robert Shiller: what about investing would he like to know that nobody can know? Shiller's reply was "the exact role of luck in successful outcomes." Everyone accepts that chance plays a part. The trouble, as Housel sees it, is that chance comes with no number attached and that calling a winner lucky sounds like an insult, so in practice it is left out of the account. Failure gets the same treatment in reverse: it is blamed on bad decisions when bad luck may be the explanation.
 
 The practical lesson is to be careful about whom you copy and whom you judge, including yourself.
 
 ### You see the world through your own history
 
-In the essay's words, your personal experiences make up a tiny fraction of what has happened in the world but perhaps 80% of how you think the world works. Someone who came of age in the Great Depression, or during high inflation, or in a long boom, carries a different sense of what is risky. This is the idea behind the chapter title "No One's Crazy": other people's money decisions often look foolish only because they have lived a different life.
+Housel's claim is that what any one person has lived through is a vanishingly small sample of events, yet it supplies most of their picture of how things work. He puts that share at perhaps 80%. Someone who came of age in the Great Depression, or during high inflation, or in a long boom, carries a different sense of what is risky. This is the idea behind the chapter title "No One's Crazy": other people's money decisions often look foolish only because they have lived a different life.
 
 ### Compounding is not intuitive
 
-Housel argues that people think in straight lines, while growth that builds on itself curves upward. His example is hard-drive storage, which crept up for forty years and then exploded. His sharper one is Warren Buffett: there are thousands of books on how Buffett invests, he notes, and none titled for the plain fact that he has been investing consistently for three-quarters of a century.
+Housel argues that people think in straight lines, while growth that builds on itself curves upward. His example is hard-drive storage, which crept up for forty years and then shot up. His sharper one is Warren Buffett. Of the thousands of books about how Buffett made his fortune, he notes, none takes as its title the plain fact that Buffett has kept at it without a break for some seventy-five years.
 
-The conclusion is that good investing "isn't necessarily about earning the highest returns". It is about earning reasonable returns that you can stick with for a very long time.
+His conclusion is that good investing "isn't necessarily about earning the highest returns". What counts for more is a decent return that the investor can go on earning, undisturbed, for decades.
 
 *An illustration with round numbers, not taken from the book:* 1,000 growing at 7% a year becomes about 1,970 after 10 years, about 7,600 after 30 years and about 29,500 after 50 years. The last twenty years add far more than the first thirty.
 
 ### Wealth is what you don't see
 
-Housel once parked cars at a hotel and assumed the customers in Ferraris were rich. Many were not. If you see someone driving a $200,000 car, he writes, the only thing you know about their wealth is that they have $200,000 less than before they bought it. Wealth is the cars not bought and the upgrades declined: money that has not been turned into things.
+Housel once worked parking cars at a hotel and took it for granted that a customer with a Ferrari was rich. Getting to know some of them taught him otherwise: a number had put most of what they had into the car. A $200,000 car, he argues, tells an onlooker one thing for certain about its owner's finances, which is that $200,000 has left them. Wealth, on this view, is the part of a person's money that never became something visible.
 
 A related chapter, the "Man in the Car Paradox", makes the point that people buy expensive things to be admired, while onlookers are mostly imagining themselves in the car.
 
 ### Room for error, and the pull of pessimism
 
-Housel borrows Benjamin Graham's idea of a margin of safety and widens it. Room for error is usually seen as timid. He argues it is the opposite: it lets you survive long enough for the rare large gains, which arrive seldom and take time, to reach you. He adds a warning about risks where the odds are good but the downside is unacceptable in any circumstance.
+Housel borrows Benjamin Graham's idea of a margin of safety and widens it. Leaving slack in a plan tends to be read as a lack of nerve. Housel reads it the other way round. The biggest gains are uncommon and slow to arrive, and only an investor who has not been knocked out in the meantime is still there to collect them. He adds a separate warning about bets that will probably pay off but would be ruinous if they did not: no such bet is worth taking, however good the odds.
 
-He also explains why gloomy forecasts get more attention than hopeful ones. Pessimism sounds smarter and demands action ("Sell! Get out!"), while optimism mostly asks you to stay put. That makes pessimism persuasive even in a world where, in his view, optimism has been the more reasonable stance.
+He also explains why gloomy forecasts get more attention than hopeful ones. A warning calls for something to be done at once, while good news mostly asks the listener to carry on as before, so the warning feels more urgent. Gloom also tends to pass for wisdom. The result is that pessimism persuades, even though Housel regards optimism as the more reasonable position for most people.
 
 ## What works
 
