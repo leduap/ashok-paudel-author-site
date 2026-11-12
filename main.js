@@ -149,11 +149,24 @@
   });
   showSection("writing", articles.length > 0);
   articles.forEach(function (article) {
-    $("article-list").appendChild(el("li", {}, [
-      link(article.title, article.url, "title"),
-      el("span", { className: "meta" }, [article.outlet, formatDate(article.date)].filter(Boolean).join(" · "))
-    ]));
+    // One card per article: the publication's name (as plain text), the headline as the link, the date.
+    var parts = [];
+    if (article.outlet) { parts.push(el("span", { className: "outlet" }, article.outlet)); }
+    parts.push(link(article.title, article.url, "title"));
+    if (article.date) { parts.push(el("span", { className: "meta" }, formatDate(article.date))); }
+    $("article-list").appendChild(el("li", {}, parts));
   });
+  // The line near the top of the home page: "Published in Fortune", each publication named once,
+  // newest first, linking down to the list of articles.
+  var outlets = [];
+  articles.forEach(function (article) {
+    var name = String(article.outlet || "").trim();
+    if (name && outlets.indexOf(name) < 0) { outlets.push(name); }
+  });
+  if ($("featured")) {
+    $("featured-outlets").textContent = outlets.join(", ");
+    $("featured").hidden = !outlets.length;
+  }
 
   // Events: upcoming soonest first, past most recent first
   var today = new Date();

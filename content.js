@@ -196,16 +196,31 @@ const SITE = {
   },
 
   // -------------------------------------------------------------------------
-  // The four parts below are SWITCHED OFF because there is nothing real to show
-  // yet. Each one appears on the home page as soon as you fill it in.
+  // Of the parts below, Events, Press and the Newsletter are SWITCHED OFF because
+  // there is nothing real to show yet. Each one appears on the home page as soon
+  // as you fill it in.
   // -------------------------------------------------------------------------
 
-  // "Writing elsewhere": articles published on other sites or in magazines.
+  // "Writing elsewhere": articles of yours published on other sites or in magazines.
   // (Your own blog posts are separate: they live in the posts/ folder.)
-  // To switch on, add lines like the example between the square brackets.
-  // Dates use the form YYYY-MM-DD.
+  //
+  // Each article is one block between { and }, with four lines:
+  //   title   the headline, exactly as the publication printed it
+  //   outlet  the name of the publication
+  //   date    the day it was published, in the form YYYY-MM-DD
+  //   url     the full https:// address of the article
+  // To add the next one, copy a whole block, from { to }, paste it above the
+  // first one, and change the four lines. Keep a comma between blocks.
+  // The newest article is shown first. The home page also shows the line
+  // "Published in ..." near the top, naming each publication once.
+  // While the list is empty the section, its menu link and that line are hidden.
   articles: [
-    // { title: "Article title", outlet: "Publication", date: "2026-10-01", url: "https://..." },
+    {
+      title: "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
+      outlet: "Fortune",
+      date: "2026-11-10",
+      url: "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/"
+    }
   ],
 
   // Events. Upcoming ones are shown first; past ones move below automatically.
