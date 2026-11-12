@@ -123,7 +123,7 @@ The author's alternative to a budget: take-home pay split into fixed costs, inve
 
 ## Sources
 
-1. [Hachette Book Group: I Will Teach You to Be Rich, second edition](https://www.hachettebookgroup.com/titles/ramit-sethi/i-will-teach-you-to-be-rich-second-edition/9781523505746/), checked 12 November 2026
+1. [Hachette Book Group: I Will Teach You to Be Rich, second edition](https://www.hachettebookgroup.com/titles/ramit-sethi/i-will-teach-you-to-be-rich-second-edition/9781523505746/), checked 11 November 2026
 2. [Ramit Sethi: Conscious Spending Basics](https://www.iwillteachyoutoberich.com/conscious-spending-basics/), checked 12 November 2026
 3. [Ramit Sethi: How to automate your finances](https://www.iwillteachyoutoberich.com/automate-your-finances/), checked 12 November 2026
 4. [Open Library: first edition record with the table of contents, 2009](https://openlibrary.org/books/OL23002222M), checked 11 November 2026

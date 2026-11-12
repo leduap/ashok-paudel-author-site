@@ -125,8 +125,8 @@ The book says yes, and in order. In practice many readers take the real hourly w
 ## Sources
 
 1. [Penguin Random House: Your Money or Your Life, revised and updated for 2018](https://www.penguinrandomhouse.com/books/isbn/9780143115762/), checked 11 November 2026
-2. [Vicki Robin: Your Money or Your Life summary](https://vickirobin.com/your-money-or-your-life-summary/), checked 12 November 2026
-3. [Vicki Robin: history of Your Money or Your Life](https://vickirobin.com/history/), checked 12 November 2026
+2. [Vicki Robin: Your Money or Your Life summary](https://vickirobin.com/your-money-or-your-life-summary/), checked 11 November 2026
+3. [Vicki Robin: history of Your Money or Your Life](https://vickirobin.com/history/), checked 11 November 2026
 
 ---
 

@@ -119,7 +119,7 @@ Buying shares for clearly less than a careful estimate of what the underlying bu
 
 ## Sources
 
-1. [Wikipedia: The Intelligent Investor](https://en.wikipedia.org/wiki/The_Intelligent_Investor) (editions and the contents of the 2003 edition), checked 12 November 2026
+1. [Wikipedia: The Intelligent Investor](https://en.wikipedia.org/wiki/The_Intelligent_Investor) (editions and the contents of the 2003 edition), checked 11 November 2026
 2. [Open Library: The Intelligent Investor](https://openlibrary.org/isbn/0060555661), checked 11 November 2026
 3. [Wikipedia: Benjamin Graham](https://en.wikipedia.org/wiki/Benjamin_Graham), checked 12 November 2026
 4. [Wikipedia: Mr. Market](https://en.wikipedia.org/wiki/Mr._Market), checked 12 November 2026
