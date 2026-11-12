@@ -58,12 +58,6 @@ The book is divided into four parts, and they follow the order of a purchase:
 
 A good first map for anyone curious about buying a business. Treat it as an introduction to the stages and the vocabulary, not as the instructions. If reading company accounts is new to you, start with the book reviewed in [Financial Intelligence](../2026-10-26-review-financial-intelligence/).
 
-## From the author
-
-Ashok Paudel's own spreadsheet model for small business purchases. It is his product, separate from the book reviewed above.
-
-::template bhcdrq
-
 ## FAQ
 
 ### What is acquisition entrepreneurship?

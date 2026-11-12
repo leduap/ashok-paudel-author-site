@@ -79,6 +79,8 @@ AMAZON_STORES = [("us", "www.amazon.com", "Amazon US"), ("uk", "www.amazon.co.uk
 AMAZON_ID = re.compile(r"^(\d{9}[\dX]|B0[A-Z0-9]{8})$")
 AMAZON_TAG = re.compile(r"^[A-Za-z0-9]+-[A-Za-z0-9]+$")
 # Any web address pointing at Amazon. Posts must not contain one: the build makes them.
+# Gumroad links in posts are allowed only while templates.show is true in content.js.
+GUMROAD_URL = re.compile(r"\bgumroad\.com\b|\bgum\.co\b", re.I)
 AMAZON_URL = re.compile(r"(?:https?:)?//[^\s)>\]]*\b(?:amazon\.[a-z]{2,3}(?:\.[a-z]{2})?|amzn\.(?:to|eu|com))\b", re.I)
 FILENAME = re.compile(r"^(\d{4}-\d{2}-\d{2})-([a-z0-9]+(?:-[a-z0-9]+)*)\.md$")
 TAG = re.compile(r"^[a-z0-9]+(?:[ -][a-z0-9]+)*$")
@@ -283,7 +285,11 @@ def blocks(lines):
         directive = DIRECTIVE.match(line)
         if directive:
             name, key = directive.group(1), directive.group(2) or ""
-            if name in ("book", "template") and key:
+            if name == "template" and key and not CTX["site"].get("templates_on"):
+                CTX["problems"].append(
+                    f"line '{line.strip()}' links a Gumroad template, and Gumroad links are switched off for now. "
+                    "Remove the line. (They come back when templates.show is set to true in content.js.)")
+            elif name in ("book", "template") and key:
                 out.append(own_card(name, key))
             else:
                 CTX["problems"].append(
@@ -709,6 +715,9 @@ def load_post(path, problems):
         bad("the text contains a link to Amazon. Do not write Amazon links or affiliate tags in a post: "
             "for a review, set book_title, book_author and (optionally) amazon_id, and the build adds "
             "the 'Get the book' buttons with the right tags")
+    elif GUMROAD_URL.search(body) and not (CTX["site"] or {}).get("templates_on"):
+        bad("the text contains a link to Gumroad. Gumroad links are switched off for now, so remove it. "
+            "(They come back when templates.show is set to true in content.js.)")
     else:
         CTX["problems"], CTX["affiliate"] = [], False
         parts = structure(body, kind if kind in TYPES else "post", bad)
@@ -836,6 +845,10 @@ def load_site():
         "photo": content_string(content, "photo") or "",
         "books": content_items(content, "books"),
         "templates": content_items(content, "items"),
+        # One switch for everything Gumroad: the home page section and links from posts.
+        "templates_on": bool(re.search(r"^\s*templates\s*:\s*\{[^{}\[\]]*?\bshow\s*:\s*true\b", content, re.M)),
+        "articles": [item for item in content_items(content, "articles")
+                     if re.match(r"^https?://[^\s.]+\.\S+$", item.get("url", ""))],
         "url": public_address(),
         "home": page,
     }
@@ -887,6 +900,9 @@ def fill_text(markup, site):
         markup = re.sub(r'(<a[^>]*data-nav="newsletter"[^>]*?) hidden(?=[ >])', r"\1", markup)
     else:
         markup = re.sub(r'\s*<a\b[^>]*data-nav="newsletter"[^>]*>.*?</a>', "", markup, flags=re.S)
+    # "Articles" links: shown once content.js lists at least one article with a real address.
+    if site.get("articles"):
+        markup = re.sub(r'(<a[^>]*data-nav="writing"[^>]*?) hidden(?=[ >])', r"\1", markup)
     return markup
 
 

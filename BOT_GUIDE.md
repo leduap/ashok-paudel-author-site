@@ -21,7 +21,7 @@ Accuracy matters more than length. A short review that is right is better than a
 - **Quote sparingly and exactly.** Only quote words you saw on a source page, and say where they come from (for example "the publisher says"). Never invent a quotation, an endorsement, an award, a sales figure or a statistic.
 - **Be balanced.** `## What to be aware of` must list real weaknesses or limits, not polite filler. If the author sells services connected to the book, say so.
 - **No star ratings.** Leave the `rating` line out unless Ashok asks for one.
-- **No promises.** Do not say or suggest that a book, a method, a template or one of Ashok's own books will produce any investment result. Do not give personalised financial advice, and do not tell readers to buy, sell or hold any specific security.
+- **No promises.** Do not say or suggest that a book, a method or one of Ashok's own books will produce any investment result. Do not give personalised financial advice, and do not tell readers to buy, sell or hold any specific security.
 - **Plain English.** Short sentences. Explain a technical term the first time it appears.
 
 ## Nothing invented about Ashok
@@ -124,7 +124,11 @@ Do not repeat the title at the top of the body; the site adds it. The body must 
 
 ## Links
 
-Ashok's instruction: posts may link freely to his Gumroad templates, to his own books, to other relevant products on Amazon and to other posts on this site. There is no limit on the number. The rules below keep those links honest and working.
+Posts may link to Ashok's own books and to other posts on this site. The rules below keep those links honest and working.
+
+**Switched off for now: Gumroad.** Ashok has asked that posts do not link to his Gumroad templates yet. Do not write `::template` lines, do not link to any `gumroad.com` address, and do not mention the templates or the store. The build fails if you do. See "Gumroad templates (switched off)" below for how this comes back.
+
+**Switched off for now: the newsletter.** There is no newsletter at present. Do not mention one or invite readers to sign up for anything.
 
 **Useful, not spammy.** Add a link where a reader of that post would want it. A link must never change what a review says about a book. Most posts need only a few.
 
@@ -132,19 +136,23 @@ Ashok's instruction: posts may link freely to his Gumroad templates, to his own 
 | --- | --- | --- |
 | Another post or review on this site | `[The Psychology of Money](../2026-09-14-review-the-psychology-of-money/)` | A normal link. The address is `../`, then the other post's file name without `.md`, then `/`. The build fails if no such post exists. |
 | One of Ashok's own published books, as a card | A line containing only `::book B0HQVWGD1R` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and tagged Amazon buttons. |
-| One of Ashok's own templates, as a card | A line containing only `::template zxcrtz` | A "From the author: his own template" card with the picture, title and description from `content.js`, and a button to its Gumroad page. |
 | Any Amazon product, inside a sentence | `[Rolling, Repair and Risk](amazon:B0HQVRJQ1P)` | The words, followed by "(Amazon: US, UK, Germany)" links with the right tag for each store. |
-| A Gumroad template, inside a sentence | `[Month-End Close Starter Kit](https://financea2z.gumroad.com/l/utrxle)` | A normal link. Gumroad links are not affiliate links. |
 | Any other web page | `[text](https://example.com/page)` | A normal link. |
 
 Details:
 
 - **`::book CODE`**: the code must be the `amazonId` of a book in the `books` list of `content.js` that is on sale. A book marked `status: "Coming soon"` cannot be linked. Any other code fails the build.
-- **`::template ID`**: the ID is the last part of the template's `url` in `content.js`, after `/l/`. Any other ID fails the build.
 - **`amazon:CODE`**: the code is the 10 characters after `/dp/` in the product's Amazon address. **Only use a code you have seen on the product's Amazon page in this session, with the product name matching.** If you cannot confirm the code, mention the product without a link. A badly formed code fails the build; a well-formed but wrong code would send readers to the wrong product, and the build cannot catch that.
 - Any other line starting with `::` fails the build.
-- **Say plainly whose products they are.** Put `::book` and `::template` cards under a `## From the author` heading placed after `## The verdict`, with one sentence saying they are Ashok's own products and separate from the book reviewed. The cards carry the label too.
+- **Say plainly whose products they are.** Put `::book` cards under a `## From the author` heading placed after `## The verdict`, with one sentence saying they are Ashok's own products and separate from the book reviewed. The cards carry the label too.
 - **Disclosure.** Any post that ends up with Amazon links gets the affiliate disclosure near its top automatically, as well as the one in the footer. You do not write it.
+
+### Gumroad templates (switched off)
+
+One setting controls everything to do with Gumroad: `templates.show` in `content.js`. While it is `false` (as now), the templates section is hidden on the home page and the build rejects `::template` lines and Gumroad links in posts. Only Ashok changes it. If it is ever set to `true`, these two forms work again, and until then they must not be used:
+
+- a line containing only `::template ID`, where the ID is the last part of the template's `url` in `content.js` after `/l/`. It makes a "From the author: his own template" card under `## From the author`.
+- an ordinary link to the template's Gumroad address inside a sentence.
 
 ## The sections of a review
 
@@ -227,9 +235,9 @@ A good first budgeting book. For the next step, see the review of [The Psycholog
 
 ## From the author
 
-Ashok Paudel's own calculator on a related subject. It is his product, separate from the book reviewed above.
+Ashok Paudel's own book on a related subject. It is his product, separate from the book reviewed above.
 
-::template zxcrtz
+::book B0HQVWGD1R
 
 ## FAQ
 
@@ -302,7 +310,8 @@ The difference between any two of these is called a **variance**.
 - [ ] nothing is claimed about Ashok beyond "CPA, MBA", and his products are described only as `content.js` describes them
 - [ ] `amazon_id` and every `amazon:` code were copied from the product's Amazon page in this session (not guessed)
 - [ ] the text contains no hand-written Amazon links and no affiliate tags
-- [ ] every `::book` and `::template` code is in `content.js`, and the post says they are Ashok's own
+- [ ] every `::book` code is in `content.js`, and the post says the book is Ashok's own
+- [ ] no `::template` line, no Gumroad link, no mention of a newsletter
 - [ ] links to other posts use `../file-name-without-md/` and that post exists
 - [ ] no `rating` line
 - [ ] The body is markdown, has no HTML, and does not repeat the title
@@ -321,7 +330,8 @@ Besides the file name and front matter rules above:
 - a review with no opening paragraph, or that does not end with the italic closing line
 - any hand-written Amazon address or affiliate tag
 - an `amazon:` code that is not a well-formed Amazon code
-- a `::book` code that is not one of Ashok's published books, a `::template` ID that is not in `content.js`, or any other line starting with `::`
+- a `::book` code that is not one of Ashok's published books, or any other line starting with `::`
+- a `::template` line or a link to Gumroad (switched off for now)
 - a link to another post that does not exist
 
 ## What happens after the commit

@@ -68,8 +68,6 @@ Ashok Paudel has written about one strategy that combines two of the positions M
 
 ::book B0HQPBQVBJ
 
-::template intixr
-
 ## FAQ
 
 ### Is Options as a Strategic Investment suitable for beginners?

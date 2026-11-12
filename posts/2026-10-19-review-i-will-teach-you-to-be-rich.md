@@ -62,12 +62,6 @@ Later chapters deal with maintaining the system and with larger decisions under 
 
 A strong first book for an American reader in their twenties or thirties who wants things set up properly and then left alone. Elsewhere, read it for the approach and find the local equivalents yourself. For the thinking behind the investing chapters, see the review of [The Little Book of Common Sense Investing](../2026-09-21-review-the-little-book-of-common-sense-investing/).
 
-## From the author
-
-Ashok Paudel's own toolkit for one large money decision, buying a home. It is his product, separate from the book reviewed above.
-
-::template lnnfke
-
 ## FAQ
 
 ### What is new in the second edition?

@@ -139,7 +139,7 @@
       el("div", { className: "book-body" }, parts)
     ]));
   });
-  var hasStore = isRealUrl(templates.storeUrl);
+  var hasStore = templates.show !== false && isRealUrl(templates.storeUrl);
   if (hasStore) { $("store-link").href = templates.storeUrl; }
   $("store-line").hidden = !hasStore;
 

@@ -63,11 +63,9 @@ A good book to give a colleague outside finance, and a sound first read for anyo
 
 ## From the author
 
-Ashok Paudel's own book on corporate finance work, and his starter kit for the month-end close. Both are his own products, separate from the book reviewed above.
+Ashok Paudel's own book on corporate finance work. It is his product, separate from the book reviewed above.
 
 ::book B0HQW1LKZB
-
-::template utrxle
 
 ## FAQ
 

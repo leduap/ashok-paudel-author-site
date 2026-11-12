@@ -104,11 +104,9 @@ A good first book on index investing for an American reader, and the clearest st
 
 ## From the author
 
-Ashok Paudel has written on the same subject and offers a free calculator for it. Both are his own products, separate from the book reviewed above.
+Ashok Paudel's own book on the same subject. It is his product, separate from the book reviewed above.
 
 ::book B0HQVWGD1R
-
-::template zxcrtz
 
 ## FAQ
 
