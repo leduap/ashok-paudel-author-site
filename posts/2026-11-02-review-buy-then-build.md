@@ -1,7 +1,7 @@
 ---
 title: Review: Buy Then Build by Walker Deibel
 date: 2026-11-02
-updated: 2026-11-11
+updated: 2026-11-12
 type: review
 tags: books, corporate finance, careers
 summary: Argues that buying an existing small business can be a better route into ownership than starting one. A useful map of the process, with an optimistic view of the risks.
@@ -16,7 +16,9 @@ Most books about entrepreneurship assume you will start from nothing. Buy Then B
 
 ## The short answer
 
-A clear, start-to-finish overview of how an individual might find, assess, buy and take over a small business. It is good at showing that this path exists and what its stages are. It is written by someone who works in the field and is enthusiastic about it, and it gives less room to what can go wrong. A real purchase needs professional advice well beyond any book.
+A clear, start-to-finish overview of how an individual might find, assess, buy and take over a small business. It is good at showing that this path exists and what its stages are. It is written by someone who works in the field, sells courses on it and is enthusiastic about it, and it gives less room to what can go wrong. A real purchase needs professional advice well beyond any book.
+
+This review is shorter than the others on this site. I could confirm the book's structure, its main argument and its named tools from an independent review and the author's own pages, but not the chapter-level detail, so I have not described what I could not check.
 
 ## Who it is for
 
@@ -30,33 +32,60 @@ A clear, start-to-finish overview of how an individual might find, assess, buy a
 - Readers outside the United States who need local detail on lending and law.
 - Anyone expecting a low-risk route to ownership. Buying a company with borrowed money is a serious commitment.
 
+## How the book is organised
+
+The paperback is 310 pages according to its Open Library record. The book is divided into four parts that follow the order of a purchase: Opportunity, Evaluation, Analysis and Execution. In the words of an independent review, it sets out how to go about finding a company to buy, making an offer, purchasing the business and transitioning ownership. The author draws on his own acquisitions, which that review puts at seven companies, along with research and interviews.
+
 ## Key ideas
 
-The book is divided into four parts, and they follow the order of a purchase:
+### Skip the start-up stage
 
-- **Opportunity.** The case for buying over starting. An independent review quotes the author's line that "the startup phase is a company killer". The book also points to the number of established small businesses being sold by owners of the baby boom generation.
-- **Evaluation.** Working out what kind of business suits you before looking at listings. The author's tools here are an "opportunity profile" and a "target statement".
-- **Analysis.** The basics of evaluating a business, reading its financial statements and valuing it.
-- **Execution.** Making an offer, completing the purchase and taking over. A chapter deals with the seller's state of mind and how to hold useful conversations with them. The book closes with a three-month plan for the handover of ownership.
+The opening argument is that "the startup phase is a company killer", and that there is "a path that could bypass the startup phase altogether". The cover copy puts the problem this way: almost all start-ups either fail or never reach a sustainable size. A business that is already trading has got past that stage. It has customers, income and a record that can be examined, so the buyer begins, in the book's phrase, with profitable revenue from day one.
+
+The author also claims the idea "hasn't penetrated the entrepreneurship community much beyond the elite universities", which is his explanation for why so few would-be founders consider it.
+
+### A wave of sellers
+
+The strategic case rests on supply. The book points to owners of the baby boom generation, who, it says, "are already selling off their established, successful small businesses at record rates". More sellers means more choice for buyers. Readers should treat this as the author's reading of the market in 2018, and check current conditions.
+
+### Start with the buyer: the opportunity profile and target statement
+
+Before looking at listings, the book asks the buyer to define what they are looking for. Its two tools are an "opportunity profile" and a "target statement". The principle, as far as the sources describe it, is to decide what kind of company suits you and to write that down as a search brief, so that you judge businesses against a standard set in advance instead of falling for whatever is on offer.
+
+### Analysis: evaluating, reading the accounts, valuing
+
+The third part covers the basics of evaluating a business, analysing its financial statements and valuing it. The independent review says this section should help to demystify valuation for many entrepreneurs. It is an introduction to those skills, not a substitute for them.
+
+*An illustration with round numbers, not taken from the book:* small businesses are often priced as a multiple of yearly profit. A firm earning 200,000 a year and priced at three times earnings costs 600,000. If the true earnings turn out to be 150,000 because the seller's figures were flattering, the same price is four times earnings. That gap is why checking the figures, known as due diligence, matters so much.
+
+### The seller is a person
+
+One chapter deals with the seller's state of mind and gives techniques for holding meaningful, non-threatening conversations with them. For an owner who has spent decades building a company, the sale is not only a transaction, and the book treats trust as part of getting a deal done. The final part ends with a three-month plan for the handover of ownership.
 
 ## What works
 
 - **It opens up an option many people have not considered.** The idea that you can buy your way past the start-up stage is new to most readers.
 - **The order is logical.** Each part answers the question the previous one raises.
-- **It starts with the buyer.** Asking what you are good at before choosing a business is sound advice.
+- **It starts with the buyer.** Asking what suits you before choosing a business is sound advice.
 - **It pays attention to the seller.** Many guides treat a purchase as numbers only.
+- **It covers the whole process,** from the first search to the first three months of ownership.
 
 ## What to be aware of
 
-- **It is optimistic.** The author is an advocate, and the risks of borrowing to buy a company get less attention than the rewards. An existing business can still fail under a new owner.
+- **It is optimistic.** The author is an advocate, and the risks of borrowing to buy a company get less attention than the rewards. An existing business can still fail under a new owner, and a buyer who has borrowed against it can lose more than a founder who started small.
+- **Buying replaces one risk with others.** A start-up may never find customers. A purchased business may have customers who were loyal to the old owner, figures that looked better than they were, or a price that leaves no room for a bad year.
 - **It is an overview.** Valuing a business and checking a seller's figures are skills in themselves, and a buyer will need an accountant and a lawyer for both.
-- **The author works in this field** and offers courses and other services on the subject, which is worth knowing when weighing how positive the picture is.
+- **The author sells related services.** His website offers a course, a masterclass and a paid "accelerator" programme for people buying businesses. The book is the entry point to those, which is worth knowing when weighing how positive the picture is.
 - **It was written in 2018.** Borrowing costs and market conditions for small businesses change.
 - **It is written for the United States.**
 
+## How it compares
+
+It is the only book on this site about buying a company, so the useful comparisons are with what it assumes. [Financial Intelligence](../2026-10-26-review-financial-intelligence/) teaches the statement-reading that the Analysis part introduces, and its warning that profit is not cash applies with full force to a business bought with a loan. [The Intelligent Investor](../2026-10-05-review-the-intelligent-investor/) is about shares, not whole companies, but its margin of safety, paying well below a careful estimate of value so that errors can be absorbed, is the right habit of mind for any buyer.
+
 ## The verdict
 
-A good first map for anyone curious about buying a business. Treat it as an introduction to the stages and the vocabulary, not as the instructions. If reading company accounts is new to you, start with the book reviewed in [Financial Intelligence](../2026-10-26-review-financial-intelligence/).
+A good first map for anyone curious about buying a business. Treat it as an introduction to the stages and the vocabulary, not as the instructions, and read it alongside something more sceptical before committing money.
 
 ## FAQ
 
@@ -70,13 +99,18 @@ It covers the basics of reading financial statements and valuing a company. It i
 
 ### How long is it?
 
-An independent review lists 310 pages.
+The paperback is 310 pages according to its Open Library record.
+
+### Why is this review shorter than the others?
+
+Fewer independent sources describe the book's contents in detail, and this site does not describe what it has not been able to check.
 
 ## Sources
 
 1. [Kirkus Reviews: Buy Then Build](https://www.kirkusreviews.com/book-reviews/walker-deibel/buy-then-build/), checked 11 November 2026
 2. [Buy Then Build: the author's site for the book](https://buythenbuild.com/), checked 11 November 2026
-3. [Wikipedia: Buy Then Build](https://en.wikipedia.org/wiki/Buy_Then_Build), checked 11 November 2026
+3. [Open Library: Buy Then Build, 2018 paperback](https://openlibrary.org/isbn/1544501137), checked 12 November 2026
+4. [Wikipedia: Buy Then Build](https://en.wikipedia.org/wiki/Buy_Then_Build), checked 11 November 2026
 
 ---
 
