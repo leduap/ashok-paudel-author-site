@@ -113,10 +113,11 @@
     if (buyButtons.length) {
       parts.push(el("div", { className: amazonButtons.length ? "buy buy-more" : "buy" }, buyButtons));
     }
-    $("book-list").appendChild(el("article", { className: "book" }, [
-      el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }),
-      el("div", { className: "book-body" }, parts)
-    ]));
+    var card = [el("div", { className: "book-body" }, parts)];
+    if (book.cover) {
+      card.unshift(el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }));
+    }
+    $("book-list").appendChild(el("article", { className: book.cover ? "book" : "book no-cover" }, card));
   });
 
   // Finance templates (sold on Gumroad)
@@ -156,17 +157,6 @@
     if (article.date) { parts.push(el("span", { className: "meta" }, formatDate(article.date))); }
     $("article-list").appendChild(el("li", {}, parts));
   });
-  // The line near the top of the home page: "Published in Fortune", each publication named once,
-  // newest first, linking down to the list of articles.
-  var outlets = [];
-  articles.forEach(function (article) {
-    var name = String(article.outlet || "").trim();
-    if (name && outlets.indexOf(name) < 0) { outlets.push(name); }
-  });
-  if ($("featured")) {
-    $("featured-outlets").textContent = outlets.join(", ");
-    $("featured").hidden = !outlets.length;
-  }
 
   // Events: upcoming soonest first, past most recent first
   var today = new Date();

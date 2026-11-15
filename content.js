@@ -117,14 +117,20 @@ const SITE = {
       amazonId: "B0HQW1LKZB"
     },
     {
-      // NOT YET PUBLISHED (planned for January 2027). There is no description yet.
-      // When the book is live: fill in blurb, add its amazonId, and delete the status line.
-      title: "The Smartest Woman in the Town",
-      subtitle: "Clear Thinking, Steady Habits, and the Quiet Power of Systems",
-      cover: "assets/the-smartest-woman-in-the-town.jpg",
-      status: "Coming January 2027",
+      // Live Kindle book. No cover file is on the site yet, so the card has no picture.
+      title: "Cash-Secured Puts: How to Get Paid to Buy Stocks at Your Price",
+      subtitle: "",
+      cover: "",
       blurb: "",
-      amazonId: ""
+      amazonId: "B0GX32LW9S"
+    },
+    {
+      // Live Kindle book. No cover file is on the site yet, so the card has no picture.
+      title: "LEAPS and the Poor Man's Covered Call: The Wheel Strategy Playbook for Smaller Accounts",
+      subtitle: "",
+      cover: "",
+      blurb: "",
+      amazonId: "B0HRRW92Y3"
     }
   ],
 
@@ -212,9 +218,8 @@ const SITE = {
   //   url     the full https:// address of the article
   // To add the next one, copy a whole block, from { to }, paste it above the
   // first one, and change the four lines. Keep a comma between blocks.
-  // The newest article is shown first. The home page also shows the line
-  // "Published in ..." near the top, naming each publication once.
-  // While the list is empty the section, its menu link and that line are hidden.
+  // The newest article is shown first.
+  // While the list is empty the section and its menu link are hidden.
   articles: [
     {
       title: "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
