@@ -117,11 +117,10 @@ const SITE = {
       amazonId: "B0HQW1LKZB"
     },
     {
-      // Live Kindle book. No cover file is on the site yet, so the card has no picture.
-      title: "Cash-Secured Puts: How to Get Paid to Buy Stocks at Your Price",
-      subtitle: "",
-      cover: "",
-      blurb: "",
+      title: "Cash-Secured Puts",
+      subtitle: "How to Get Paid to Buy Stocks at Your Price",
+      cover: "assets/cash-secured-puts.jpg",
+      blurb: "A cash-secured put is a promise to buy a stock at a price you choose, and you are paid for making it. Book 4 of The Wheel Strategy series shows how to pick the stock, the price and the strike, ladder puts over time and plan for every outcome, with the downside shown in dollars in every example.",
       amazonId: "B0GX32LW9S"
     },
     {
