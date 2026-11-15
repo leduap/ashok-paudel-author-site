@@ -124,11 +124,10 @@ const SITE = {
       amazonId: "B0GX32LW9S"
     },
     {
-      // Live Kindle book. No cover file is on the site yet, so the card has no picture.
-      title: "LEAPS and the Poor Man's Covered Call: The Wheel Strategy Playbook for Smaller Accounts",
-      subtitle: "",
-      cover: "",
-      blurb: "",
+      title: "LEAPS and the Poor Man's Covered Call",
+      subtitle: "The Wheel Strategy Playbook for Smaller Accounts",
+      cover: "assets/leaps-and-the-poor-mans-covered-call.jpg",
+      blurb: "A long-dated call, a LEAPS, can stand in for 100 shares at a fraction of the cash. That is the poor man's covered call, and it is a leveraged trade. The book shows the worst case first, then the rules that keep the trade sound, for readers who know the wheel and want to run it with less capital.",
       amazonId: "B0HRRW92Y3"
     }
   ],
