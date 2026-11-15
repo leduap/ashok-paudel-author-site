@@ -42,7 +42,7 @@ const SITE = {
   // The site adds the right tag to every Amazon link it makes: the buy buttons
   // on your own books and the "Get the book" buttons on reviews. To change a tag,
   // change it here. To switch a store off, set its tag to "".
-  // disclosure is the line Amazon requires; it is shown in the footer of every page except the home page and,
+  // disclosure is the line Amazon requires; it is shown in the footer of every page and,
   // on book reviews, again near the top, just above the store buttons.
   // note is the sentence shown straight after it on review pages.
   affiliate: {
