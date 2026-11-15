@@ -884,6 +884,11 @@ def load_site():
     if problems:
         raise BuildError(problems)
     site["header"], site["footer"] = header.group(0), footer.group(0)
+    # The home page footer leaves out the Amazon Associates line; every other page shows it.
+    if 'data-text="affiliate.disclosure"' not in site["footer"]:
+        site["footer"] = re.sub(r'(\n(\s*)<p class="footer-legal" data-text="disclaimer">.*?</p>)',
+                                r'\1\n\2<p class="footer-legal" data-text="affiliate.disclosure"></p>',
+                                site["footer"], count=1, flags=re.S)
     CTX["site"] = site
     return site
 
