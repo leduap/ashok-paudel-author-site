@@ -3,23 +3,66 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ashok Paudel, CPA | Finance books and reviews</title>
+  <title>Ashok Paudel, CPA, MBA | Finance author and book reviews</title>
   <meta name="description" content="Ashok Paudel, CPA, MBA, writes plain-English finance books, including Own the Whole Market, The Wheel Strategy and Inside FP&amp;A, plus reviews of books on money and business.">
-  <meta property="og:title" content="Ashok Paudel, CPA | Finance books and reviews">
+  <meta property="og:title" content="Ashok Paudel, CPA, MBA | Finance author and book reviews">
   <meta property="og:description" content="Plain-English finance books by Ashok Paudel, CPA, MBA, including Own the Whole Market, The Wheel Strategy and Inside FP&amp;A, plus book reviews.">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="profile">
   <meta property="og:url" content="https://ashokpaudel.com/">
+  <meta property="og:site_name" content="Ashok Paudel">
+  <meta property="og:image" content="https://ashokpaudel.com/assets/author-photo.jpg">
+  <meta property="og:image:alt" content="Portrait of Ashok Paudel">
+  <meta property="profile:first_name" content="Ashok">
+  <meta property="profile:last_name" content="Paudel">
+  <meta name="twitter:card" content="summary">
+  <!-- sameAs lists only profiles that exist and are his. Add his Amazon author page here once
+       it is set up in Amazon Author Central. Never add a profile of another person of the same name. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Ashok Paudel",
-    "honorificSuffix": "CPA, MBA",
-    "jobTitle": "Finance author",
-    "url": "https://ashokpaudel.com/",
-    "image": "https://ashokpaudel.com/assets/author-photo.jpg",
-    "description": "Ashok Paudel, CPA, MBA, writes plain-English finance books, including Own the Whole Market, The Wheel Strategy and Inside FP&A.",
-    "knowsAbout": ["investing", "index funds", "options", "corporate finance"]
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://ashokpaudel.com/#person",
+        "name": "Ashok Paudel",
+        "honorificSuffix": "CPA, MBA",
+        "jobTitle": "Finance author",
+        "url": "https://ashokpaudel.com/",
+        "image": "https://ashokpaudel.com/assets/author-photo.jpg",
+        "description": "Ashok Paudel, CPA, MBA, writes plain-English finance books, including Own the Whole Market, The Wheel Strategy and Inside FP&A.",
+        "knowsAbout": ["investing", "index funds", "options", "corporate finance", "financial planning and analysis"],
+        "sameAs": [
+          "https://fortune.com/author/ashok-paudel/"
+        ],
+        "subjectOf": {
+          "@type": "NewsArticle",
+          "headline": "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
+          "url": "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/",
+          "datePublished": "2026-11-10",
+          "author": { "@id": "https://ashokpaudel.com/#person" },
+          "publisher": { "@type": "Organization", "name": "Fortune" }
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://ashokpaudel.com/#website",
+        "url": "https://ashokpaudel.com/",
+        "name": "Ashok Paudel",
+        "alternateName": "Ashok Paudel, CPA, MBA",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://ashokpaudel.com/#person" },
+        "author": { "@id": "https://ashokpaudel.com/#person" }
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": "https://ashokpaudel.com/#webpage",
+        "url": "https://ashokpaudel.com/",
+        "name": "Ashok Paudel, CPA, MBA | Finance author and book reviews",
+        "isPartOf": { "@id": "https://ashokpaudel.com/#website" },
+        "mainEntity": { "@id": "https://ashokpaudel.com/#person" },
+        "about": { "@id": "https://ashokpaudel.com/#person" }
+      }
+    ]
   }
   </script>
   <link rel="stylesheet" href="styles.css">
@@ -51,8 +94,8 @@
       <div class="wrap hero-inner">
         <img class="portrait" id="photo" src="assets/author-photo.jpg" alt="Portrait of Ashok Paudel" width="280" height="280">
         <div>
-          <p class="eyebrow" id="eyebrow">Ashok Paudel · CPA, MBA</p>
-          <h1 data-text="headline">Finance, made simple.</h1>
+          <h1 class="eyebrow hero-name" id="eyebrow">Ashok Paudel · CPA, MBA</h1>
+          <p class="hero-headline" data-text="headline">Finance, made simple.</p>
           <p class="tagline" data-text="tagline"></p>
           <p class="hero-actions">
             <a class="button" href="#books">See the books</a>

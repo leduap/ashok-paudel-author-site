@@ -80,7 +80,6 @@
     var value = lookup(node.getAttribute("data-text"));
     if (typeof value === "string") { node.textContent = value; }
   });
-  document.title = SITE.name + " | Finance author";
   $("eyebrow").textContent = [SITE.name, SITE.credentials].filter(Boolean).join(" · ");
   $("year").textContent = String(new Date().getFullYear());
 
