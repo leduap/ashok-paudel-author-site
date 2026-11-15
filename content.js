@@ -56,6 +56,7 @@ const SITE = {
   },
 
   // Titles, covers and descriptions are taken from the Amazon.de listings (November 2026).
+  // Covers were last checked against amazon.com and amazon.de on 15 November 2026.
   // Blurbs are shortened from the published descriptions.
   //
   // Optional: status. For a book that is not for sale yet, add the line
