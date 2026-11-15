@@ -113,10 +113,11 @@
     if (buyButtons.length) {
       parts.push(el("div", { className: amazonButtons.length ? "buy buy-more" : "buy" }, buyButtons));
     }
-    $("book-list").appendChild(el("article", { className: "book" }, [
-      el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }),
-      el("div", { className: "book-body" }, parts)
-    ]));
+    var card = [el("div", { className: "book-body" }, parts)];
+    if (book.cover) {
+      card.unshift(el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }));
+    }
+    $("book-list").appendChild(el("article", { className: book.cover ? "book" : "book no-cover" }, card));
   });
 
   // Finance templates (sold on Gumroad)
