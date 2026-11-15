@@ -1071,16 +1071,27 @@ def newsletter_block(site):
     </section>"""
 
 
-def render_page(site, path, title, description, main, kind="website", extra_head="", image=""):
+def person_id(site):
+    """The address that names Ashok in structured data. The home page defines the Person with this @id."""
+    return site["url"] + "/#person"
+
+
+def render_page(site, path, title, description, main, kind="website", extra_head="", image="", index=True):
     root = root_for(path)
     head = [
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
         f"<title>{esc(title)} | {esc(site['name'])}</title>",
         f'<meta name="description" content="{esc(description)}">',
+    ]
+    if not index:
+        head.append('<meta name="robots" content="noindex, follow">')
+    head += [
         f'<meta property="og:title" content="{esc(title)}">',
         f'<meta property="og:description" content="{esc(description)}">',
         f'<meta property="og:type" content="{kind}">',
+        f'<meta property="og:site_name" content="{esc(site["name"])}">',
+        '<meta name="twitter:card" content="summary">',
         f'<link rel="stylesheet" href="{root}styles.css">',
         f'<link rel="icon" href="{root}assets/icons/monogram/favicon.ico" sizes="48x48">',
         f'<link rel="icon" href="{root}assets/icons/monogram/icon.svg" type="image/svg+xml">',
@@ -1088,7 +1099,10 @@ def render_page(site, path, title, description, main, kind="website", extra_head
         f'<link rel="alternate" type="application/rss+xml" title="{esc(site["name"])}: blog" href="{root}feed.xml">',
     ]
     if site["url"]:
-        head.append(f'<link rel="canonical" href="{esc(site["url"] + "/" + page_url(path))}">')
+        address = site["url"] + "/" + page_url(path)
+        head.append(f'<link rel="canonical" href="{esc(address)}">')
+        head.append(f'<meta property="og:url" content="{esc(address)}">')
+        image = image or site["photo"]
         if image:
             head.append(f'<meta property="og:image" content="{esc(site["url"] + "/" + image)}">')
     if extra_head:
@@ -1141,7 +1155,8 @@ def render_post(site, post, posts, newer, older):
               f'<a href="{root}blog/">Blog</a> <span>/</span> <a href="{root}blog/{folder}/">{type_label}</a></nav>')
     photo = (f'<img class="byline-photo" src="{root}{esc(site["photo"])}" width="40" height="40" alt="">'
              if site["photo"] else "")
-    author = esc(site["name"]) + (f', {esc(site["credentials"])}' if site["credentials"] else "")
+    author = (f'<a href="{root}#about" rel="author">{esc(site["name"])}</a>'
+              + (f', {esc(site["credentials"])}' if site["credentials"] else ""))
     meta = [f'<span>By {author}</span>',
             f'<span><time datetime="{post["day"].isoformat()}">{pretty_date(post["day"])}</time></span>']
     if post["updated"]:
@@ -1199,20 +1214,55 @@ def render_post(site, post, posts, newer, older):
         </p>
       </div>
     </article>{newsletter_block(site)}"""
-    data = {
-        "@context": "https://schema.org", "@type": "BlogPosting",
+    person = {"@type": "Person", "name": site["name"]}
+    if site["credentials"]:
+        person["honorificSuffix"] = site["credentials"]
+    article = {
+        "@type": "BlogPosting",
         "headline": post["title"], "description": post["summary"],
         "datePublished": post["day"].isoformat(),
         "dateModified": (post["updated"] or post["day"]).isoformat(),
-        "author": {"@type": "Person", "name": site["name"]},
+        "inLanguage": "en", "keywords": post["tags"],
+        "author": person, "publisher": person,
     }
+    graph = [article]
     if site["url"]:
-        data["url"] = site["url"] + "/" + post["url"]
+        address = site["url"] + "/" + post["url"]
+        person.update({"@id": person_id(site), "url": site["url"] + "/"})
+        if site["photo"]:
+            person["image"] = site["url"] + "/" + site["photo"]
+        article.update({"@id": address + "#article", "url": address, "mainEntityOfPage": address,
+                        "isPartOf": {"@type": "WebSite", "@id": site["url"] + "/#website",
+                                     "name": site["name"], "url": site["url"] + "/"}})
         if post["cover"]:
-            data["image"] = site["url"] + "/" + post["cover"]
+            article["image"] = site["url"] + "/" + post["cover"]
+    if review:
+        book = {"@type": "Book", "name": post["book_title"],
+                "author": {"@type": "Person", "name": post["book_author"]}}
+        if post["amazon_id"] and post["amazon_id"][0] != "B":
+            book["isbn"] = post["amazon_id"]
+        if site["url"] and post["cover"]:
+            book["image"] = site["url"] + "/" + post["cover"]
+        verdict = {"@type": "Review", "name": post["title"], "reviewBody": post["summary"],
+                   "datePublished": post["day"].isoformat(), "inLanguage": "en", "itemReviewed": book,
+                   "author": {"@id": person_id(site)} if site["url"] else person}
+        if site["url"]:
+            verdict["url"] = address
+            verdict["mainEntityOfPage"] = address
+            verdict["publisher"] = {"@id": person_id(site)}
+        if post["rating"]:
+            verdict["reviewRating"] = {"@type": "Rating", "ratingValue": post["rating"],
+                                       "bestRating": 5, "worstRating": 1}
+        article["about"] = book
+        graph.append(verdict)
+    data = {"@context": "https://schema.org", "@graph": graph}
     # "<" is written as \u003c so nothing in a post can close the script tag.
     extra = ('<script type="application/ld+json">'
              + json.dumps(data, ensure_ascii=False).replace("<", "\\u003c") + "</script>")
+    extra += f'\n  <meta property="article:published_time" content="{post["day"].isoformat()}">'
+    if post["updated"]:
+        extra += f'\n  <meta property="article:modified_time" content="{post["updated"].isoformat()}">'
+    extra += f'\n  <meta property="article:author" content="{esc(site["name"])}">'
     return path, render_page(site, path, post["title"], post["summary"], main, "article", extra, post["cover"])
 
 
@@ -1285,7 +1335,8 @@ def render_listings(site, posts):
             page_title = title + (f" (page {number})" if number > 1 else "")
             description = f"Posts and book reviews from {site['name']}." if key == "all" else \
                 f"{heading}: from the blog of {site['name']}."
-            pages[path] = render_page(site, path, page_title, description, main)
+            # An empty list ("Nothing here yet") is a thin page: kept for visitors, hidden from search engines.
+            pages[path] = render_page(site, path, page_title, description, main, index=bool(chunk))
     return pages
 
 
@@ -1345,8 +1396,17 @@ def render_feed(site, posts):
         + "\n".join(items) + ("\n" if items else "") + "  </channel>\n</rss>\n")
 
 
-def render_sitemap(site, paths):
-    urls = "".join(f"  <url><loc>{esc(site['url'] + '/' + page_url(p))}</loc></url>\n" for p in sorted(paths))
+def render_sitemap(site, pages, posts):
+    """Every indexable page, the home page first. Pages marked noindex are left out."""
+    newest = max((p["updated"] or p["day"] for p in posts), default=None)
+    changed = {p["url"] + "index.html": p["updated"] or p["day"] for p in posts}
+    paths = sorted((p for p, markup in pages.items() if 'name="robots" content="noindex' not in markup),
+                   key=lambda p: (p != "index.html", p))
+    urls = ""
+    for path in paths:
+        day = changed.get(path, newest)
+        lastmod = f"<lastmod>{day.isoformat()}</lastmod>" if day else ""
+        urls += f"  <url><loc>{esc(site['url'] + '/' + page_url(path))}</loc>{lastmod}</url>\n"
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
 
@@ -1369,7 +1429,7 @@ def build():
     pages.update(render_listings(site, posts))
     extras = {"feed.xml": render_feed(site, posts), ".nojekyll": ""}
     if site["url"]:
-        extras["sitemap.xml"] = render_sitemap(site, pages)
+        extras["sitemap.xml"] = render_sitemap(site, pages, posts)
         extras["robots.txt"] = f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\n"
 
     if OUT.exists():
