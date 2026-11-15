@@ -212,9 +212,8 @@ const SITE = {
   //   url     the full https:// address of the article
   // To add the next one, copy a whole block, from { to }, paste it above the
   // first one, and change the four lines. Keep a comma between blocks.
-  // The newest article is shown first. The home page also shows the line
-  // "Published in ..." near the top, naming each publication once.
-  // While the list is empty the section, its menu link and that line are hidden.
+  // The newest article is shown first.
+  // While the list is empty the section and its menu link are hidden.
   articles: [
     {
       title: "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
