@@ -145,6 +145,7 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   box-shadow: 0 14px 34px rgba(35, 48, 64, 0.2);
   margin-inline: auto;
 }
+.about-portrait { width: min(180px, 46vw); margin: 0 0 1.5rem; display: block; }
 .tagline {
   font-family: var(--display); font-weight: 600;
   font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.3;

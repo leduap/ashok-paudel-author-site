@@ -161,7 +161,7 @@ Posts may link to Ashok's own books and to other posts on this site. The rules b
 | To link to | Write | What the site does |
 | --- | --- | --- |
 | Another post or review on this site | `[The Psychology of Money](../2026-09-14-review-the-psychology-of-money/)` | A normal link. The address is `../`, then the other post's file name without `.md`, then `/`. The build fails if no such post exists. |
-| One of Ashok's own published books, as a card | A line containing only `::book B0HRS8HQWT` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and a button to the Books section of this site's home page. It has no Amazon buttons. |
+| One of Ashok's own published books, as a card | A line containing only `::book B0HRS8HQWT` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and a button to the Books page. It has no Amazon buttons. |
 | Any other web page | `[text](https://example.com/page)` | A normal link. |
 
 Details:

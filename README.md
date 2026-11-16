@@ -23,7 +23,8 @@ An author website with a blog. The home page is plain HTML, CSS and JavaScript. 
 
 What the build produces inside `_site/`:
 
-- `index.html`: the home page, with the six latest posts added
+- `index.html`: the home page, with the latest opinion pieces and, below them, the latest book reviews
+- `books/`, `about/`, `for-editors/` and `contact/`: those parts of the site, each on its own page
 - `blog/`: the blog index, newest first
 - `blog/opinion/` and `blog/reviews/`: the same list filtered to opinion pieces or to book reviews
 - `blog/tag/<tag>/`: the list filtered to one tag
@@ -51,9 +52,9 @@ Open `content.js`, change the text between the quotes, save, and rebuild.
 - Lines marked `DRAFT` (the headline and tagline) were written for you; replace them with your own words.
 - Lines marked `PLACEHOLDER` (further social profiles, newsletter address) are waiting for your details.
 - **Empty means hidden.** While a value is `""` or a list is `[]`, that part of the page does not appear. The Newsletter and the Events and Press sections are switched off this way. Fill one in and it appears, together with its menu link where it has one.
-- **Articles published elsewhere.** The `articles` list holds pieces of yours that other publications have run (the first is the Fortune article of 10 November 2026). To add the next one, copy a whole block from `{` to `}`, paste it above the first one with a comma between them, and change its four lines: `title` (the headline exactly as printed), `outlet` (the publication's name), `date` (`YYYY-MM-DD`) and `url` (the article's full address). Each line must stay on its own line, as in the existing block. The article then appears in the "Writing elsewhere" section, newest first, and the "Articles" menu link shows. Use the publication's name as text only, never its logo, and do not copy the article's text onto the site.
+- **Articles published elsewhere.** The `articles` list holds pieces of yours that other publications have run (the first is the Fortune article of 10 November 2026). To add the next one, copy a whole block from `{` to `}`, paste it above the first one with a comma between them, and change its four lines: `title` (the headline exactly as printed), `outlet` (the publication's name), `date` (`YYYY-MM-DD`) and `url` (the article's full address). Each line must stay on its own line, as in the existing block. The article then appears on the About page and in For editors, newest first. Use the publication's name as text only, never its logo, and do not copy the article's text onto the site.
 - **Book rows and series.** The Books section shows one row per entry in `bookGroups` (the Wheel Strategy series, other finance books, other books). Each book's `group` line says which row it belongs to, and its optional `series` line (for example `"Book 2"`) is the small label above its title. Within a row, books keep the order of the `books` list.
-- **For editors.** The `editors` block fills the introduction, the two bios (each with a Copy button) and the headshot download. The build lists the opinion articles and the pieces in `articles` above that, newest first, so the section shows the writing itself. The "Published in Fortune" line under the About text is made from the `articles` list, one link per publication.
+- **For editors.** This is its own page. The `editors` block fills the introduction, the two bios (each with a Copy button) and the headshot download. The build lists the opinion articles and the pieces in `articles` above that, newest first. The "Published in Fortune" line on the About page is made from the `articles` list, one link per publication.
 - **Books not yet for sale.** A book in the `books` list may carry the optional line `status: "Coming soon",`. Its card then shows that label and no buy button, and an empty `blurb` and `amazonId` leave no gap. "The Own the Whole Market Workbook" is set up this way, with a placeholder cover (`assets/own-the-whole-market-workbook-placeholder.svg`). Once the book is live: put the real cover in `assets/` and point `cover` at it, add the `blurb` and the book's `amazonId`, and delete the `status` line.
 - Dates use `YYYY-MM-DD`. Events sort themselves into Upcoming and Past.
 - A link without a real `https://` address is never shown as a link.
@@ -140,4 +141,4 @@ The small "AP" icon in the browser tab comes from the files in `assets/icons/mon
 
 ## Settings in build.py
 
-Near the top of `build.py`: `HOME_POSTS` (how many posts the home page shows, 6), `POSTS_PER_PAGE` (posts per page in the blog lists, 20) and `FEED_ITEMS` (posts in the RSS feed, 30).
+Near the top of `build.py`: `HOME_OPINIONS` and `HOME_REVIEWS` (how many of each the home page shows, 3), `POSTS_PER_PAGE` (posts per page in the blog lists, 20) and `FEED_ITEMS` (posts in the RSS feed, 30).

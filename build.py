@@ -37,7 +37,8 @@ OUT = ROOT / "_site"
 POSTS_DIR = ROOT / "posts"
 
 # --- Settings you may change -------------------------------------------------
-HOME_POSTS = 6          # how many of the latest posts appear on the home page
+HOME_OPINIONS = 3       # latest opinion pieces on the home page, above the reviews
+HOME_REVIEWS = 3        # latest book reviews on the home page, below the opinions
 POSTS_PER_PAGE = 20     # how many posts per page in the blog archive
 FEED_ITEMS = 30         # how many posts the RSS feed carries
 # The public address of the site, e.g. "https://www.example.com". Leave "" when
@@ -147,7 +148,7 @@ def own_card(kind, key):
             return ""
         label, image, alt = "From the author: his own book", item.get("cover", ""), "Cover of "
         # No store buttons here: a review carries Amazon links in one place only, the box at its end.
-        action = (f'<p class="bookbox-buttons"><a class="button button-small button-quiet" href="{POST_ROOT}#books">'
+        action = (f'<p class="bookbox-buttons"><a class="button button-small button-quiet" href="{POST_ROOT}books/">'
                   'See it on the Books page</a></p>')
     else:
         item = next((t for t in site["templates"] if t.get("url", "").rstrip("/").endswith("/l/" + key)), None)
@@ -962,13 +963,17 @@ def fill_text(markup, site):
     return markup
 
 
-def shared(block, site, root):
-    """The home page header or footer, with its links pointed back at the home page."""
+def shared(block, site, root, current=""):
+    """The home page header or footer, with its links pointed back at the right pages."""
     block = fill_text(block, site)
     block = re.sub(r'href="#top"', f'href="{root}"', block)
     block = re.sub(r'href="#([^"]+)"', lambda m: f'href="{root}#{m.group(1)}"', block)
-    block = re.sub(r'href="(blog/|feed\.xml)"', lambda m: f'href="{root}{m.group(1)}"', block)
-    return block.replace('data-nav="blog"', 'data-nav="blog" aria-current="page"')
+    block = re.sub(r'href="((?:books|about|for-editors|contact|blog)/|feed\.xml)',
+                   lambda m: f'href="{root}{m.group(1)}', block)
+    if current:
+        block = re.sub(rf'href="{re.escape(root + current)}"',
+                       f'href="{root}{current}" aria-current="page"', block)
+    return block
 
 
 # ---------------------------------------------------------------------------
@@ -1147,7 +1152,8 @@ def person_id(site):
     return site["url"] + "/#person"
 
 
-def render_page(site, path, title, description, main, kind="website", extra_head="", image="", index=True):
+def render_page(site, path, title, description, main, kind="website", extra_head="", image="", index=True,
+                current=""):
     root = root_for(path)
     head = [
         '<meta charset="utf-8">',
@@ -1181,9 +1187,9 @@ def render_page(site, path, title, description, main, kind="website", extra_head
     script = f'\n  <script src="{root}signup.js"></script>' if site["form_action"] else ""
     return (
         '<!DOCTYPE html>\n<html lang="en">\n<head>\n  ' + "\n  ".join(head) + "\n</head>\n<body>\n  "
-        + shared(site["header"], site, root)
+        + shared(site["header"], site, root, current)
         + f'\n\n  <main id="top">{main}\n  </main>\n\n  '
-        + shared(site["footer"], site, root)
+        + shared(site["footer"], site, root, current)
         + script + "\n</body>\n</html>\n"
     )
 
@@ -1226,7 +1232,7 @@ def render_post(site, post, posts, newer, older):
               f'<a href="{root}blog/">Blog</a> <span>/</span> <a href="{root}blog/{folder}/">{type_label}</a></nav>')
     photo = (f'<img class="byline-photo" src="{root}{esc(site["photo"])}" width="40" height="40" alt="">'
              if site["photo"] else "")
-    author = (f'<a href="{root}#about" rel="author">{esc(site["name"])}</a>'
+    author = (f'<a href="{root}about/" rel="author">{esc(site["name"])}</a>'
               + (f', {esc(site["credentials"])}' if site["credentials"] else ""))
     meta = [f'<span>By {author}</span>',
             f'<span><time datetime="{post["day"].isoformat()}">{pretty_date(post["day"])}</time></span>']
@@ -1281,7 +1287,7 @@ def render_post(site, post, posts, newer, older):
         </div>
         <ul class="tag-list" aria-label="Tags">{tags}</ul>{related}{nav}
         <p class="post-cta">
-          <a class="button" href="{root}#books">See the books by {esc(site["name"])}</a>
+          <a class="button" href="{root}books/">See the books by {esc(site["name"])}</a>
           <a class="button button-quiet" href="{root}blog/">All posts and reviews</a>
         </p>
       </div>
@@ -1336,7 +1342,7 @@ def render_post(site, post, posts, newer, older):
         extra += f'\n  <meta property="article:modified_time" content="{post["updated"].isoformat()}">'
     extra += f'\n  <meta property="article:author" content="{esc(site["name"])}">'
     return path, render_page(site, path, post["title"], post["summary"], main, "article", extra,
-                             post["cover"] or post["image"])
+                             post["cover"] or post["image"], current=f"blog/{folder}/")
 
 
 def render_listings(site, posts):
@@ -1411,7 +1417,9 @@ def render_listings(site, posts):
             description = f"Opinion pieces and book reviews from {site['name']}." if key == "all" else \
                 f"{heading}: from the blog of {site['name']}."
             # An empty list ("Nothing here yet") is a thin page: kept for visitors, hidden from search engines.
-            pages[path] = render_page(site, path, page_title, description, main, index=bool(chunk))
+            current = {"post": "blog/opinion/", "review": "blog/reviews/"}.get(key, "")
+            pages[path] = render_page(site, path, page_title, description, main, index=bool(chunk),
+                                      current=current)
     return pages
 
 
@@ -1441,22 +1449,45 @@ def editor_showcase(site, posts):
             + "".join(card for _day, card in cards) + "</ul>" + more)
 
 
-def render_home(site, posts):
-    latest = ""
-    if posts:
-        items = "\n          ".join(post_item(p, "", "h3") for p in posts[:HOME_POSTS])
-        latest = f"""
-    <section id="latest">
-      <div class="wrap">
-        <p class="eyebrow">From the blog</p>
-        <h2>Latest writing</h2>
-        <ul class="post-list post-cards">
+def home_writing(posts, kind, limit, section_id, eyebrow, heading, list_class, more_href, more_label, band=False):
+    """One home-page block: a few opinion pieces, or a few book reviews."""
+    chosen = [post for post in posts if post["type"] == kind][:limit]
+    if not chosen:
+        return ""
+    items = "\n          ".join(post_item(post, "", "h3") for post in chosen)
+    width = "wrap narrow" if kind == "review" else "wrap"
+    klass = ' class="band"' if band else ""
+    return f"""
+    <section id="{section_id}"{klass}>
+      <div class="{width}">
+        <p class="eyebrow">{eyebrow}</p>
+        <h2>{heading}</h2>
+        <ul class="{list_class}">
           {items}
         </ul>
-        <p class="more"><a class="button button-quiet" href="blog/">All posts and reviews</a></p>
+        <p class="more"><a class="button button-quiet" href="{more_href}">{more_label}</a></p>
       </div>
     </section>
     """
+
+
+def content_page(site, path, title, description, body, current):
+    """A page such as Books or About. The text is filled in by content.js and main.js."""
+    root = root_for(path)
+    body = re.sub(r"<h2>", '<h1 class="page-title">', body, count=1)
+    body = re.sub(r"</h2>", "</h1>", body, count=1)
+    body = re.sub(r'(src|href)="(assets/)', rf'\1="{root}\2', body)
+    scripts = (f'\n    <script>window.SITE_ROOT="{root}";</script>'
+               f'\n    <script src="{root}content.js"></script>'
+               f'\n    <script src="{root}main.js"></script>')
+    return render_page(site, path, title, description, "\n" + body + scripts, current=current)
+
+
+def render_home(site, posts):
+    latest = home_writing(posts, "post", HOME_OPINIONS, "opinions", "Opinion", "Latest opinion",
+                          "post-list opinion-grid", "blog/opinion/", "All opinion articles")
+    latest += home_writing(posts, "review", HOME_REVIEWS, "reviews", "Book reviews", "Latest book reviews",
+                           "post-list", "blog/reviews/", "All book reviews", band=True)
     page = re.sub(r"<!-- BUILD:EDITORS -->.*?<!-- /BUILD:EDITORS -->",
                   lambda m: "<!-- BUILD:EDITORS -->" + editor_showcase(site, posts) + "<!-- /BUILD:EDITORS -->",
                   site["home"], flags=re.S)
@@ -1467,11 +1498,37 @@ def render_home(site, posts):
     page = re.sub(r"<!-- BUILD:NEWSLETTER -->.*?<!-- /BUILD:NEWSLETTER -->",
                   lambda m: "<!-- BUILD:NEWSLETTER -->" + newsletter_block(site) + "\n    <!-- /BUILD:NEWSLETTER -->",
                   page, flags=re.S)
+    bodies = {}
+    for name in ("books", "about", "editors", "contact"):
+        found = re.search(rf"<!-- PAGE:{name} -->(.*?)<!-- /PAGE:{name} -->", page, re.S)
+        if not found:
+            raise BuildError([f"index.html: the markers <!-- PAGE:{name} --> and <!-- /PAGE:{name} --> are missing"])
+        bodies[name] = found.group(1).strip()
+    page = re.sub(r"<!-- PAGE:[a-z-]+ -->.*?<!-- /PAGE:[a-z-]+ -->", "", page, flags=re.S)
+    name = site["name"]
+    extras = {
+        "books/index.html": content_page(
+            site, "books/index.html", "Books",
+            f"Plain-English finance books by {name}, including Own the Whole Market, The Wheel Strategy and Inside FP&A.",
+            bodies["books"], "books/"),
+        "about/index.html": content_page(
+            site, "about/index.html", f"About {name}",
+            f"{name}, CPA, MBA, writes plain-English books on investing, options and corporate finance.",
+            bodies["about"], "about/"),
+        "for-editors/index.html": content_page(
+            site, "for-editors/index.html", "For editors",
+            f"Recent writing, a short biography and a headshot of {name}, for editors and producers.",
+            bodies["editors"], "for-editors/"),
+        "contact/index.html": content_page(
+            site, "contact/index.html", "Contact",
+            f"Email {name} about press, speaking, podcasts and rights.",
+            bodies["contact"], "contact/"),
+    }
     if not site["form_action"]:
         page = re.sub(r'\s*<script src="signup\.js"></script>', "", page)
     if site["url"]:
         page = page.replace("</head>", f'  <link rel="canonical" href="{esc(site["url"] + "/")}">\n</head>', 1)
-    return fill_text(page, site)
+    return fill_text(page, site), extras
 
 
 def render_feed(site, posts):
@@ -1524,7 +1581,8 @@ def build():
     posts = load_posts()
 
     # Work out every page first, so a problem never leaves a half-built site.
-    pages = {"index.html": render_home(site, posts)}
+    home, extras = render_home(site, posts)
+    pages = {"index.html": home, **extras}
     for index, post in enumerate(posts):
         newer = posts[index - 1] if index > 0 else None
         older = posts[index + 1] if index + 1 < len(posts) else None

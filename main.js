@@ -75,28 +75,43 @@
   function isRealUrl(url) { return /^https?:\/\/[^\s.]+\.\S+$/.test(url || "") && !/\.\.\.|TODO/.test(url); }
   function isRealEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || "") && !/TODO|example\.com$/i.test(email); }
 
+  // Pages other than the home page live in a folder, so pictures need the site root in front.
+  var ROOT = window.SITE_ROOT || "";
+  function asset(path) {
+    if (!path || /^(https?:|mailto:|data:|#)/.test(path)) { return path; }
+    return ROOT + String(path).replace(/^\//, "");
+  }
+
   // Simple text fields
   document.querySelectorAll("[data-text]").forEach(function (node) {
     var value = lookup(node.getAttribute("data-text"));
     if (typeof value === "string") { node.textContent = value; }
   });
-  $("eyebrow").textContent = [SITE.name, SITE.credentials].filter(Boolean).join(" · ");
-  $("year").textContent = String(new Date().getFullYear());
+  if ($("eyebrow")) { $("eyebrow").textContent = [SITE.name, SITE.credentials].filter(Boolean).join(" · "); }
+  if ($("year")) { $("year").textContent = String(new Date().getFullYear()); }
 
-  // Bio and photo
-  (SITE.bio || []).forEach(function (paragraph) { $("bio").appendChild(el("p", {}, paragraph)); });
-  if (SITE.photo) { $("photo").src = SITE.photo; }
-  $("photo").alt = "Portrait of " + SITE.name;
+  // Bio and photo. The home page has the hero photo; the About page has its own.
+  if ($("bio")) {
+    (SITE.bio || []).forEach(function (paragraph) { $("bio").appendChild(el("p", {}, paragraph)); });
+  }
+  if ($("photo") && SITE.photo) {
+    $("photo").src = asset(SITE.photo);
+    $("photo").alt = "Portrait of " + SITE.name;
+  }
+  if ($("about-photo") && SITE.photo) {
+    $("about-photo").src = asset(SITE.photo);
+    $("about-photo").alt = "Portrait of " + SITE.name;
+  }
 
   // Books, in rows by group (see bookGroups in content.js). Books without a known group go last.
   var books = SITE.books || [];
-  showSection("books", books.length > 0);
+  if ($("book-list")) { showSection("books", books.length > 0); }
   var groups = (SITE.bookGroups || []).slice();
   var groupIds = groups.map(function (group) { return group.id; });
   if (books.some(function (book) { return groupIds.indexOf(book.group) < 0; })) {
     groups.push({ id: "", title: groups.length ? "More books" : "", text: "" });
   }
-  groups.forEach(function (group) {
+  if ($("book-list")) { groups.forEach(function (group) {
     var members = books.filter(function (book) {
       return group.id ? book.group === group.id : groupIds.indexOf(book.group) < 0;
     });
@@ -108,7 +123,7 @@
     parts.push(grid);
     $("book-list").appendChild(el("div", { className: "book-group" }, parts));
     members.forEach(function (book) { grid.appendChild(bookCard(book)); });
-  });
+  }); }
 
   function bookCard(book) {
     // A book with a status (e.g. "Coming soon") is not for sale yet: it gets a label and no buy button.
@@ -134,7 +149,7 @@
     }
     var card = [el("div", { className: "book-body" }, parts)];
     if (book.cover) {
-      card.unshift(el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }));
+      card.unshift(el("img", { src: asset(book.cover), alt: "Cover of " + book.title, loading: "lazy" }));
     }
     return el("article", { className: book.cover ? "book" : "book no-cover" }, card);
   }
@@ -143,8 +158,8 @@
   var templates = SITE.templates || {};
   var templateItems = templates.show === false ? [] :
     (templates.items || []).filter(function (item) { return isRealUrl(item.url); });
-  showSection("templates", templateItems.length > 0);
-  templateItems.forEach(function (item) {
+  if ($("template-list")) { showSection("templates", templateItems.length > 0); }
+  if ($("template-list")) { templateItems.forEach(function (item) {
     var free = /^free$/i.test(String(item.tag || "").trim());
     var parts = [];
     if (item.tag) { parts.push(el("p", { className: "book-status" }, item.tag)); }
@@ -155,27 +170,27 @@
       link(free ? "Get it free on Gumroad" : "Get it on Gumroad", item.url, "button button-small")
     ]));
     $("template-list").appendChild(el("article", { className: "book template" }, [
-      el("img", { src: item.image, alt: "Preview of " + item.title, loading: "lazy" }),
+      el("img", { src: asset(item.image), alt: "Preview of " + item.title, loading: "lazy" }),
       el("div", { className: "book-body" }, parts)
     ]));
-  });
+  }); }
   var hasStore = templates.show !== false && isRealUrl(templates.storeUrl);
-  if (hasStore) { $("store-link").href = templates.storeUrl; }
-  $("store-line").hidden = !hasStore;
+  if ($("store-link") && hasStore) { $("store-link").href = templates.storeUrl; }
+  if ($("store-line")) { $("store-line").hidden = !hasStore; }
 
   // Articles, newest first
   var articles = (SITE.articles || []).slice().sort(function (a, b) {
     return parseDate(b.date) - parseDate(a.date);
   });
-  showSection("writing", articles.length > 0);
-  articles.forEach(function (article) {
+  if ($("article-list")) { showSection("writing", articles.length > 0); }
+  if ($("article-list")) { articles.forEach(function (article) {
     // One card per article: the publication's name (as plain text), the headline as the link, the date.
     var parts = [];
     if (article.outlet) { parts.push(el("span", { className: "outlet" }, article.outlet)); }
     parts.push(link(article.title, article.url, "title"));
     if (article.date) { parts.push(el("span", { className: "meta" }, formatDate(article.date))); }
     $("article-list").appendChild(el("li", {}, parts));
-  });
+  }); }
 
   // Under the About text: "Published in Fortune", one link per outlet, newest article first.
   var outlets = [];
@@ -185,21 +200,22 @@
       outlets.push(article);
     }
   });
-  if (outlets.length) {
+  if ($("featured-in") && outlets.length) {
     $("featured-in").appendChild(document.createTextNode("Published in "));
     outlets.forEach(function (article, i) {
       if (i) { $("featured-in").appendChild(document.createTextNode(i === outlets.length - 1 ? " and " : ", ")); }
       $("featured-in").appendChild(link(article.outlet, article.url));
     });
   }
-  $("featured-in").hidden = !outlets.length;
+  if ($("featured-in")) { $("featured-in").hidden = !outlets.length; }
 
   // For editors: the article list is written by the build. This adds the bios, headshot and email.
   var editors = SITE.editors || {};
   var editorEmail = isRealEmail((SITE.contact || {}).email) ? SITE.contact.email : "";
+  if ($("editors-intro")) {
   showSection("editors", Boolean(editors.intro || editors.shortBio || editors.longBio));
   $("editors-intro").textContent = editors.intro || "";
-  $("editors-intro").hidden = !editors.intro;
+  $("editors-intro").hidden = !editors.intro; }
   [["Short bio", editors.shortBio], ["Longer bio", editors.longBio]].forEach(function (pair) {
     if (!pair[1]) { return; }
     var copy = el("button", { type: "button", className: "button button-quiet button-small" }, "Copy");
@@ -210,13 +226,19 @@
         setTimeout(function () { copy.textContent = "Copy"; }, 2000);
       });
     });
-    $("bio-blocks").appendChild(el("h3", {}, pair[0]));
-    $("bio-blocks").appendChild(el("div", { className: "bio-block" }, [el("p", {}, pair[1]), copy]));
+    if ($("bio-blocks")) {
+      $("bio-blocks").appendChild(el("h3", {}, pair[0]));
+      $("bio-blocks").appendChild(el("div", { className: "bio-block" }, [el("p", {}, pair[1]), copy]));
+    }
   });
-  if (editors.photo) { $("headshot-link").href = editors.photo; }
-  $("headshot-link").hidden = !editors.photo;
-  if (editorEmail) { $("editors-email").href = "mailto:" + editorEmail; }
-  $("editors-email").hidden = !editorEmail;
+  if ($("headshot-link")) {
+    if (editors.photo) { $("headshot-link").href = asset(editors.photo); }
+    $("headshot-link").hidden = !editors.photo;
+  }
+  if ($("editors-email")) {
+    if (editorEmail) { $("editors-email").href = "mailto:" + editorEmail; }
+    $("editors-email").hidden = !editorEmail;
+  }
 
   // Events: upcoming soonest first, past most recent first
   var today = new Date();
@@ -233,25 +255,29 @@
       el("span", { className: "meta" }, [formatDate(event.date), event.location].filter(Boolean).join(" · "))
     ]);
   }
-  upcoming.forEach(function (event) { $("upcoming-list").appendChild(eventRow(event)); });
-  past.forEach(function (event) { $("past-list").appendChild(eventRow(event)); });
-  $("upcoming-block").hidden = !upcoming.length;
-  $("past-block").hidden = !past.length;
+  if ($("upcoming-list")) {
+    upcoming.forEach(function (event) { $("upcoming-list").appendChild(eventRow(event)); });
+    past.forEach(function (event) { $("past-list").appendChild(eventRow(event)); });
+    $("upcoming-block").hidden = !upcoming.length;
+    $("past-block").hidden = !past.length;
+  }
 
   // Press
   var press = SITE.press || {};
   var mentions = press.mentions || [];
-  mentions.forEach(function (mention) {
-    $("press-list").appendChild(el("blockquote", {}, [
-      el("p", {}, "\u201C" + mention.quote + "\u201D"),
-      el("cite", {}, mention.url ? [link(mention.source, mention.url)] : mention.source)
-    ]));
-  });
-  var hasKit = isRealUrl(press.kitUrl);
-  if (hasKit) { $("kit-link").href = press.kitUrl; }
-  $("kit-line").hidden = !hasKit;
-  $("press-block").hidden = !mentions.length && !hasKit;
-  showSection("events", events.length > 0 || !$("press-block").hidden);
+  if ($("press-list")) {
+    mentions.forEach(function (mention) {
+      $("press-list").appendChild(el("blockquote", {}, [
+        el("p", {}, "\u201C" + mention.quote + "\u201D"),
+        el("cite", {}, mention.url ? [link(mention.source, mention.url)] : mention.source)
+      ]));
+    });
+    var hasKit = isRealUrl(press.kitUrl);
+    if (hasKit) { $("kit-link").href = press.kitUrl; }
+    $("kit-line").hidden = !hasKit;
+    $("press-block").hidden = !mentions.length && !hasKit;
+    showSection("events", events.length > 0 || !$("press-block").hidden);
+  }
 
   // Newsletter: build.py writes the sign-up box and un-hides the "Newsletter" links, but only
   // once newsletter.formAction is set in content.js. signup.js handles the form itself.
@@ -259,23 +285,27 @@
   // Contact: shown only when there is a real email address or at least one real profile link
   var contact = SITE.contact || {};
   var hasEmail = isRealEmail(contact.email);
-  if (hasEmail) {
+  if ($("email-link") && hasEmail) {
     $("email-link").textContent = contact.email;
     $("email-link").href = "mailto:" + contact.email;
   }
-  $("email-line").hidden = !hasEmail;
+  if ($("email-line")) { $("email-line").hidden = !hasEmail; }
   var socials = (contact.socials || []).filter(function (social) { return isRealUrl(social.url); });
-  socials.forEach(function (social) {
-    $("social-list").appendChild(el("li", {}, [link(social.label, social.url, "button button-quiet button-small")]));
-  });
+  if ($("social-list")) {
+    socials.forEach(function (social) {
+      $("social-list").appendChild(el("li", {}, [link(social.label, social.url, "button button-quiet button-small")]));
+    });
+  }
   // The kinds of request, as short descriptions. There is one button for all of them:
   // the email address above.
   var inquiries = (hasEmail || socials.length > 0) ? (contact.inquiries || []) : [];
-  inquiries.forEach(function (inquiry) {
-    var parts = [el("h3", {}, inquiry.title)];
-    if (inquiry.text) { parts.push(el("p", {}, inquiry.text)); }
-    $("inquiry-list").appendChild(el("li", { className: "inquiry" }, parts));
-  });
-  $("inquiry-list").hidden = !inquiries.length;
-  showSection("contact", hasEmail || socials.length > 0);
+  if ($("inquiry-list")) {
+    inquiries.forEach(function (inquiry) {
+      var parts = [el("h3", {}, inquiry.title)];
+      if (inquiry.text) { parts.push(el("p", {}, inquiry.text)); }
+      $("inquiry-list").appendChild(el("li", { className: "inquiry" }, parts));
+    });
+  }
+  if ($("inquiry-list")) { $("inquiry-list").hidden = !inquiries.length; }
+  if ($("contact")) { showSection("contact", hasEmail || socials.length > 0); }
 })();
