@@ -1,6 +1,7 @@
 ---
 title: Giving Every Child a Stake Is the Easy Part
 date: 2026-10-02
+updated: 2026-11-16
 type: post
 tags: saving, children, investing
 summary: Governments and billionaires are seeding investment accounts for children. Whether the money helps depends on making sure it finds its owner.
@@ -10,7 +11,7 @@ image_credit: damianosullivan, Wikimedia Commons (CC BY-SA 3.0)
 image_source: https://commons.wikimedia.org/wiki/File:Piggybank.jpg
 ---
 
-In finance there is a special place for money that nobody can match to an owner. Accountants call it a suspense account. Every company has one, and every controller I know treats it with suspicion, because a balance that cannot be traced to a person or a purpose is not yet an asset. It is a question. I have spent much of my career, first as a consultant and now running global controlling for an aerospace manufacturer, chasing those questions until they had answers.
+In finance there is a special place for money that nobody can match to an owner. Accountants call it a suspense account. Every company has one, and every controller I know treats it with suspicion, because a balance that cannot be traced to a person or a purpose is not yet an asset. It is a question. I have spent much of my career in finance chasing those questions until they had answers.
 
 I have been thinking about suspense accounts since Oct. 1, when the U.S. Treasury [announced](https://home.treasury.gov/news/press-releases/sb0642) that it had automatically created investment accounts, known officially as Trump Accounts, for more than 60 million children. Add the [$1,000 federal deposit](https://www.irs.gov/trumpaccounts) for babies born from 2025 through 2028 and Michael and Susan Dell's [$6.25 billion pledge](https://www.onedell.com/investamerica/) to put $250 into the accounts of 25 million young children, and this is one of the most ambitious attempts any country has made to give a generation a financial stake from birth.
 
@@ -26,7 +27,7 @@ None of this comes from fraud or bad intentions. It comes from a design that put
 
 The American accounts begin with the same weakness. Treasury has automated their creation, which is a real improvement. But a parent must still [claim](https://home.treasury.gov/news/press-releases/sb0642) the account in an app, verifying identity and relationship, before the child can receive the $1,000 federal seed or contributions from relatives and employers. The families most likely to skip that step are the ones the policy most wants to reach.
 
-Anyone who has moved a company's finances onto one system, as I did for teams in seven countries, learns that the hard part is not the software. It is settling, before go-live, who owns each balance and how that ownership will be proven every month, so that nothing drifts into suspense and stays there. Public programs for children need the same discipline, and most of it comes down to choices made at the start, not at 18.
+Anyone who has moved a company's finances onto a new system learns that the hard part is not the software. It is settling, before go-live, who owns each balance and how that ownership will be proven every month, so that nothing drifts into suspense and stays there. Public programs for children need the same discipline, and most of it comes down to choices made at the start, not at 18.
 
 The first choice is to make the system, not the family, responsible for keeping the link alive. An account should be tied to the identifier a person keeps for life, a Social Security number in America or a National Insurance number in Britain, and whoever administers it should be required to check contact details against official records every year. If an account can be created automatically, it can be found automatically.
 
