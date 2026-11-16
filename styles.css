@@ -583,6 +583,43 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   .post-item.has-thumb { gap: 0.9rem; }
 }
 
+/* Opinion pieces as cards: photo across the top, then the title, the way a book card is set up */
+.opinion-grid {
+  display: grid; gap: 1.25rem; align-items: stretch;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+}
+.opinion-grid .post-item,
+.opinion-grid .post-item:first-child,
+.opinion-grid .post-item:last-child {
+  display: flex; flex-direction: column; gap: 0; height: 100%; margin: 0;
+  padding: 0 0 1.1rem; background: var(--card);
+  border: 1px solid var(--mint-line); border-top: 5px solid var(--bar-teal); border-radius: 8px;
+  overflow: hidden;
+}
+.opinion-grid .post-item.post-review { border-top-color: var(--bar-orange); }
+.opinion-grid .post-thumb { flex: none; width: 100%; }
+.opinion-grid .post-item.post-post .post-thumb,
+.opinion-grid .post-item.post-post .post-thumb-img,
+.opinion-grid .post-thumb-img {
+  flex-basis: auto; width: 100%; height: 10.5rem; max-width: none;
+  object-fit: cover; border-radius: 0; box-shadow: none; display: block;
+}
+.opinion-grid .post-item-body { padding: 0.95rem 1.1rem 0; }
+.opinion-grid .post-item.post-press { padding: 1.1rem 1.1rem 1.15rem; }
+.opinion-grid .post-press .post-item-body { padding: 0; }
+.opinion-grid .post-title { font-size: 1.15rem; }
+.opinion-grid .post-summary { font-size: 0.95rem; line-height: 1.55; }
+/* The same card when an opinion piece appears in the home-page grid */
+.post-cards .post-item.post-post {
+  flex-direction: column; gap: 0; padding: 0 0 1.1rem; overflow: hidden;
+}
+.post-cards .post-item.post-post .post-thumb,
+.post-cards .post-item.post-post .post-thumb-img {
+  flex-basis: auto; width: 100%; height: 9rem; max-width: none;
+  object-fit: cover; border-radius: 0; box-shadow: none; display: block;
+}
+.post-cards .post-item.post-post .post-item-body { padding: 0.9rem 1rem 0; }
+
 /* More from the blog, under a post */
 .related { padding: 2.5rem 0 0; margin-top: 2.5rem; border-top: 1px solid var(--mint-line); }
 .related > h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }

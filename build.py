@@ -1374,7 +1374,9 @@ def render_listings(site, posts):
             tag_row = f'\n          <ul class="tag-list" aria-label="Browse by tag">{tags}</ul>' if tags else ""
 
             if chunk:
-                listing = '<ul class="post-list">\n          ' + "\n          ".join(
+                # Opinion pieces use the same card grid as the book boxes: photo on top, text below.
+                list_class = "post-list opinion-grid" if key == "post" else "post-list"
+                listing = f'<ul class="{list_class}">\n          ' + "\n          ".join(
                     post_item(p, root) for p in chunk) + "\n        </ul>"
             else:
                 listing = '<p class="empty">Nothing here yet. Please check back soon.</p>'
@@ -1415,32 +1417,28 @@ def render_listings(site, posts):
 
 def editor_showcase(site, posts):
     """The articles in the For editors section: opinion pieces and pieces published elsewhere, newest first."""
-    rows = []
+    cards = []
     for post in posts:
-        if post["type"] != "post":
-            continue
-        rows.append((post["day"], "On this site", post["title"], post["url"], False, post["summary"]))
+        if post["type"] == "post":
+            cards.append((post["day"], post_item(post, "", "h3")))
     for article in site.get("articles") or []:
         try:
             day = dt.date.fromisoformat(article.get("date", ""))
         except ValueError:
             continue
-        rows.append((day, article.get("outlet") or "Published elsewhere", article["title"],
-                     article["url"], True, ""))
-    rows.sort(key=lambda row: row[0], reverse=True)
-    if not rows:
+        outlet = article.get("outlet") or "Published"
+        cards.append((day,
+                      f'<li class="post-item post-press"><div class="post-item-body">'
+                      f'<p class="post-kicker"><span class="badge">{esc(outlet)}</span> '
+                      f'<time datetime="{day.isoformat()}">{pretty_date(day)}</time></p>'
+                      f'<h3 class="post-title"><a href="{esc(article["url"])}" target="_blank" rel="noopener">'
+                      f'{esc(article["title"])}</a></h3></div></li>'))
+    cards.sort(key=lambda row: row[0], reverse=True)
+    if not cards:
         return ""
-    items = []
-    for day, where, title, url, external, summary in rows:
-        link = (f'<a class="title" href="{esc(url)}"'
-                + (' target="_blank" rel="noopener"' if external else "")
-                + f'>{esc(title)}</a>')
-        blurb = f'<p class="editor-summary">{esc(summary)}</p>' if summary else ""
-        items.append(f'<li><span class="outlet">{esc(where)}</span>{link}'
-                     f'<span class="meta">{pretty_date(day)}</span>{blurb}</li>')
     more = '<p class="more"><a class="button button-quiet" href="blog/opinion/">All opinion articles</a></p>'
-    return ('<h3>Recent articles</h3><ul class="rows article-cards editor-articles">'
-            + "".join(items) + "</ul>" + more)
+    return ('<h3>Recent articles</h3><ul class="post-list opinion-grid">'
+            + "".join(card for _day, card in cards) + "</ul>" + more)
 
 
 def render_home(site, posts):
