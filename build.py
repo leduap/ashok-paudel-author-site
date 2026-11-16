@@ -896,7 +896,9 @@ def load_site():
         "templates_on": bool(re.search(r"^\s*templates\s*:\s*\{[^{}\[\]]*?\bshow\s*:\s*true\b", content, re.M)),
         "articles": [item for item in content_items(content, "articles")
                      if re.match(r"^https?://[^\s.]+\.\S+$", item.get("url", ""))],
-        "editor_topics": content_items(content, "topics"),
+        "editors_on": bool(content_string(content, "shortBio", "editors")
+                           or content_string(content, "longBio", "editors")
+                           or content_string(content, "intro", "editors")),
         "url": public_address(),
         "home": page,
     }
@@ -921,6 +923,9 @@ def load_site():
     if not header or not footer:
         problems.append("index.html: could not find the <header class=\"site-header\"> or "
                         "<footer class=\"site-footer\"> block that every page shares")
+    if "<!-- BUILD:EDITORS -->" not in page or "<!-- /BUILD:EDITORS -->" not in page:
+        problems.append("index.html: the markers <!-- BUILD:EDITORS --> and <!-- /BUILD:EDITORS --> "
+                        "(where the For editors article list goes) are missing")
     if "<!-- BUILD:LATEST -->" not in page or "<!-- /BUILD:LATEST -->" not in page:
         problems.append("index.html: the markers <!-- BUILD:LATEST --> and <!-- /BUILD:LATEST --> "
                         "(where the latest posts go) are missing")
@@ -951,8 +956,8 @@ def fill_text(markup, site):
     # "Articles" links: shown once content.js lists at least one article with a real address.
     if site.get("articles"):
         markup = re.sub(r'(<a[^>]*data-nav="writing"[^>]*?) hidden(?=[ >])', r"\1", markup)
-    # "For editors" links: shown once content.js lists at least one topic.
-    if site.get("editor_topics"):
+    # "For editors" links: shown once the editors block in content.js has any text.
+    if site.get("editors_on"):
         markup = re.sub(r'(<a[^>]*data-nav="editors"[^>]*?) hidden(?=[ >])', r"\1", markup)
     return markup
 
@@ -1408,6 +1413,36 @@ def render_listings(site, posts):
     return pages
 
 
+def editor_showcase(site, posts):
+    """The articles in the For editors section: opinion pieces and pieces published elsewhere, newest first."""
+    rows = []
+    for post in posts:
+        if post["type"] != "post":
+            continue
+        rows.append((post["day"], "On this site", post["title"], post["url"], False, post["summary"]))
+    for article in site.get("articles") or []:
+        try:
+            day = dt.date.fromisoformat(article.get("date", ""))
+        except ValueError:
+            continue
+        rows.append((day, article.get("outlet") or "Published elsewhere", article["title"],
+                     article["url"], True, ""))
+    rows.sort(key=lambda row: row[0], reverse=True)
+    if not rows:
+        return ""
+    items = []
+    for day, where, title, url, external, summary in rows:
+        link = (f'<a class="title" href="{esc(url)}"'
+                + (' target="_blank" rel="noopener"' if external else "")
+                + f'>{esc(title)}</a>')
+        blurb = f'<p class="editor-summary">{esc(summary)}</p>' if summary else ""
+        items.append(f'<li><span class="outlet">{esc(where)}</span>{link}'
+                     f'<span class="meta">{pretty_date(day)}</span>{blurb}</li>')
+    more = '<p class="more"><a class="button button-quiet" href="blog/opinion/">All opinion articles</a></p>'
+    return ('<h3>Recent articles</h3><ul class="rows article-cards editor-articles">'
+            + "".join(items) + "</ul>" + more)
+
+
 def render_home(site, posts):
     latest = ""
     if posts:
@@ -1424,9 +1459,12 @@ def render_home(site, posts):
       </div>
     </section>
     """
+    page = re.sub(r"<!-- BUILD:EDITORS -->.*?<!-- /BUILD:EDITORS -->",
+                  lambda m: "<!-- BUILD:EDITORS -->" + editor_showcase(site, posts) + "<!-- /BUILD:EDITORS -->",
+                  site["home"], flags=re.S)
     page = re.sub(r"<!-- BUILD:LATEST -->.*?<!-- /BUILD:LATEST -->",
                   lambda m: "<!-- BUILD:LATEST -->" + latest + "<!-- /BUILD:LATEST -->",
-                  site["home"], flags=re.S)
+                  page, flags=re.S)
     # The sign-up box is written into the home page only when a Kit form address is set.
     page = re.sub(r"<!-- BUILD:NEWSLETTER -->.*?<!-- /BUILD:NEWSLETTER -->",
                   lambda m: "<!-- BUILD:NEWSLETTER -->" + newsletter_block(site) + "\n    <!-- /BUILD:NEWSLETTER -->",

@@ -639,7 +639,8 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 /* For editors */
 #editors .lede { font-size: 1.1rem; }
 #editors h3 { margin-top: 1.75rem; }
-#editors .inquiries { margin-top: 0.75rem; }
+.editor-articles { margin-top: 1.25rem; }
+.editor-summary { margin: 0.4rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
 .bio-block {
   background: var(--card); border: 1px solid var(--mint-line); border-radius: 8px;
   padding: 1rem 1.25rem; margin: 0.75rem 0 0;

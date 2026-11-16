@@ -251,18 +251,11 @@ const SITE = {
   ],
 
   // "For editors": what editors, producers and podcast hosts need before they get in touch.
-  // Topics are subjects you can write or comment on at short notice; keep them to what your
-  // books and published articles cover. The bios are ready to paste under an article.
+  // The articles themselves are listed by the build, from the opinion posts and the articles
+  // list above. The bios are ready to paste under an article.
   // photo is the headshot offered for download (use a large, sharp file). Leave "" to hide it.
-  // The section is hidden while topics is empty.
   editors: {
-    intro: "Working on a story about investing, saving or corporate finance? I write articles and give comment on these subjects, usually at short notice.",
-    topics: [
-      { title: "Saving for children and Trump Accounts", text: "What the new accounts are, why so few have been claimed and what families can do now." },
-      { title: "Index funds and long-term investing", text: "Low-cost investing in plain English, from a first paycheck to retirement." },
-      { title: "Options for income, and their risks", text: "Covered calls, cash-secured puts and the wheel strategy: how they work and where retail investors get hurt." },
-      { title: "How large companies plan and forecast", text: "Budgets, forecasts, board packs and why company guidance misses." }
-    ],
+    intro: "Working on a story about investing, saving or corporate finance? Here is recent writing. I also give comment, usually at short notice.",
     shortBio: "Ashok Paudel, CPA, MBA, is a finance professional and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A.",
     longBio: "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use. His commentary has appeared in Fortune.",
     photo: "assets/author-photo.jpg"

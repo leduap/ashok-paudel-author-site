@@ -194,18 +194,12 @@
   }
   $("featured-in").hidden = !outlets.length;
 
-  // For editors: topics, ready-to-paste bios, headshot and email
+  // For editors: the article list is written by the build. This adds the bios, headshot and email.
   var editors = SITE.editors || {};
-  var topics = editors.topics || [];
   var editorEmail = isRealEmail((SITE.contact || {}).email) ? SITE.contact.email : "";
-  showSection("editors", topics.length > 0);
+  showSection("editors", Boolean(editors.intro || editors.shortBio || editors.longBio));
   $("editors-intro").textContent = editors.intro || "";
   $("editors-intro").hidden = !editors.intro;
-  topics.forEach(function (topic) {
-    var parts = [el("h3", {}, topic.title)];
-    if (topic.text) { parts.push(el("p", {}, topic.text)); }
-    $("topic-list").appendChild(el("li", { className: "inquiry" }, parts));
-  });
   [["Short bio", editors.shortBio], ["Longer bio", editors.longBio]].forEach(function (pair) {
     if (!pair[1]) { return; }
     var copy = el("button", { type: "button", className: "button button-quiet button-small" }, "Copy");
