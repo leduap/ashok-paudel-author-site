@@ -27,7 +27,7 @@ Accuracy matters more than length. A short review that is right is better than a
 ## Nothing invented about Ashok
 
 - Do not invent anything about Ashok Paudel: no personal stories, no "when I...", no claims about his job, employer, clients, experience or results. The only credentials the site states are "CPA, MBA".
-- Never name his employer or clients.
+- Never name his employer or clients, past or present, and never state his job title. This applies to his own opinion pieces too: if a piece he sends says where he works, what his title is, or describes a past project of his (moving finance teams onto one system, for example), remove that sentence and keep the rest. The only description of him the site uses is: a finance professional (CPA, MBA) based in Munich, Germany, whose commentary has appeared in Fortune.
 - Describe his books and templates only with the words `content.js` uses for them. The build writes the "From the author" cards from `content.js` for you, so the simplest safe sentence is one that says they are his own products and why they sit on this page. Do not add claims about what they achieve.
 - Do not copy any description of Ashok from his Gumroad store or anywhere else.
 
@@ -55,7 +55,7 @@ image_source: https://commons.wikimedia.org/wiki/File:The_picture.jpg
 
 ## Opinion articles by Ashok
 
-Ashok sends his own opinion articles to be published as blog posts (`type: post`). Publish his text as he wrote it: fix only obvious typing errors, and change nothing else without his say-so. Keep his title unless he asks for a new one. Do not add facts, figures, quotations or links he did not write, apart from links to his own books under `## From the author` if he agrees. These are his views, so the "Nothing invented about Ashok" rules are about what you add, not about what he wrote.
+Ashok sends his own opinion articles to be published as blog posts (`type: post`). Publish his text as he wrote it: fix only obvious typing errors, remove any sentence that names his employer, his job title or a past project of his (see "Nothing invented about Ashok"), and change nothing else without his say-so. Keep his title unless he asks for a new one. Do not add facts, figures, quotations or links he did not write, apart from links to his own books under `## From the author` if he agrees. These are his views, so the "Nothing invented about Ashok" rules are about what you add, not about what he wrote.
 
 ## Where the file goes and what it is called
 
