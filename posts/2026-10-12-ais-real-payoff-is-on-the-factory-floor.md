@@ -1,6 +1,7 @@
 ---
 title: AI's Real Payoff Is on the Factory Floor
 date: 2026-10-12
+updated: 2026-11-16
 type: post
 tags: ai, manufacturing, productivity, corporate finance
 summary: Europe's own data show manufacturers are among the slowest adopters of artificial intelligence. That is the opportunity.
@@ -16,7 +17,7 @@ Most of the excitement around AI has gathered where it is easiest to see: chatbo
 
 Even among companies that do use AI, the factory gets surprisingly little of it. [Eurostat finds](https://ec.europa.eu/eurostat/documents/7870049/23260410/KS-01-26-009-EN-N.pdf) that 34.7% of AI-using firms apply it to marketing and sales and 31.1% to business administration. Only 20.8% use it in production processes. We have pointed our most powerful new tool at the slide deck rather than the machine.
 
-I see this gap from a particular seat. As head of global controlling for a manufacturing business, my job is to translate what happens on the shop floor into numbers a board can act on. Before that I worked at BCG and Deloitte, and I have led finance teams across seven countries, from the U.S. and Canada to Italy, Sweden, the U.K., Germany and China. In every one of those places the same lesson held: Money in manufacturing is made or lost in small, repeated decisions. How a machine is set up. When a part is inspected. How much material sits waiting. That is precisely the territory where AI, applied patiently, can do the most good.
+I see this gap from a particular seat: finance work that translates what happens on the shop floor into numbers a board can act on. Everywhere I have seen it done, the same lesson held: Money in manufacturing is made or lost in small, repeated decisions. How a machine is set up. When a part is inspected. How much material sits waiting. That is precisely the territory where AI, applied patiently, can do the most good.
 
 Consider what a production line generates every hour: sensor readings, maintenance logs, quality records, energy data. Factories are drowning in information no human has time to read. A system that spots the early signature of a wearing tool, flags a batch drifting out of tolerance, or sequences jobs to cut idle time isn't science fiction. It is pattern recognition, the thing these tools already do well.
 

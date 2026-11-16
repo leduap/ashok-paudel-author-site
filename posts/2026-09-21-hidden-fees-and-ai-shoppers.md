@@ -1,6 +1,7 @@
 ---
 title: Hidden fees were built for human eyes. AI shoppers can see through them.
 date: 2026-09-21
+updated: 2026-11-16
 type: post
 tags: ai, consumer prices, fees
 summary: As more people let AI assistants shop for them, businesses that bury the real price at checkout are about to lose the trick. The total has to travel with the data.
@@ -10,7 +11,7 @@ image_credit: Triplec85, Wikimedia Commons (CC BY-SA 4.0)
 image_source: https://commons.wikimedia.org/wiki/File:Supermarket_checkout_Tegut_Tauberbischofsheim.jpg
 ---
 
-At the manufacturer where I run global controlling, nobody is allowed to choose a supplier on the price per part. A quote that looks cheap on unit price can turn expensive once freight, duties, packaging, surcharges and payment terms are added. So we compare landed cost: one number, everything in. A buyer who picked a supplier on the headline price alone would have some explaining to do.
+In the corporate finance work I do, nobody is allowed to choose a supplier on the price per part. A quote that looks cheap on unit price can turn expensive once freight, duties, packaging, surcharges and payment terms are added. So we compare landed cost: one number, everything in. A buyer who picked a supplier on the headline price alone would have some explaining to do.
 
 Consumers have never had that discipline, and much of the economy is built on the fact. Concert tickets, hotel rooms, apartments, flights: the price you see first is rarely the price you pay. The fees arrive at checkout, after you have invested time and made up your mind.
 
