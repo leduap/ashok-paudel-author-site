@@ -23,7 +23,7 @@ An author website with a blog. The home page is plain HTML, CSS and JavaScript. 
 
 What the build produces inside `_site/`:
 
-- `index.html`: the home page, with the latest opinion pieces and, below them, the latest book reviews
+- `index.html`: the home page, with the profile and the books. Opinion, book reviews, For editors, Contact and About are each their own page
 - `books/`, `about/`, `for-editors/` and `contact/`: those parts of the site, each on its own page
 - `blog/`: the blog index, newest first
 - `blog/opinion/` and `blog/reviews/`: the same list filtered to opinion pieces or to book reviews
@@ -69,7 +69,7 @@ The first ten posts are book reviews dated weekly from 7 September to 9 November
 
 ### How a review page is laid out
 
-From top to bottom: a trail back to the blog, the title, the author line with the date and reading time, the summary, the affiliate disclosure, a box with the book's cover, title, author and three Amazon buttons, a contents list, and then the review in fixed sections: the short answer, who it is for and who it is not for, key ideas, what works and what to be aware of, the verdict (followed by the book box again), frequently asked questions, and sources. After that come the tags, three related posts, and the newsletter box when it is switched on. The blog list and the home page show a small cover beside each review.
+From top to bottom: a trail back to the blog, the title, the author line with the date and reading time, the summary, the affiliate disclosure, a box with the book's cover, title, author and three Amazon buttons, a contents list, and then the review in fixed sections: the short answer, who it is for and who it is not for, key ideas, what works and what to be aware of, the verdict (followed by the book box again), frequently asked questions, and sources. After that come the tags, three related posts, and the newsletter box when it is switched on. The blog list shows a small cover beside each review.
 
 The build checks all of this. A review that lacks a cover, a section, a source list or the closing line is refused, and the message names the file and the problem. `BOT_GUIDE.md` has the full rules.
 
@@ -141,4 +141,4 @@ The small "AP" icon in the browser tab comes from the files in `assets/icons/mon
 
 ## Settings in build.py
 
-Near the top of `build.py`: `HOME_OPINIONS` and `HOME_REVIEWS` (how many of each the home page shows, 3), `POSTS_PER_PAGE` (posts per page in the blog lists, 20) and `FEED_ITEMS` (posts in the RSS feed, 30).
+Near the top of `build.py`: `POSTS_PER_PAGE` (posts per page in the blog lists, 20) and `FEED_ITEMS` (posts in the RSS feed, 30).

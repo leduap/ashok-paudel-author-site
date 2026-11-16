@@ -11,7 +11,7 @@ What it does:
   * checks each one strictly (fields, dates, cover image, sections, no Amazon links),
   * writes a static HTML page for each one, a blog index with filters
     (all / posts / book reviews / each tag), an RSS feed and a sitemap,
-  * puts the latest posts on the home page,
+  * builds the home page (profile and books) and the other pages,
   * copies the home page files (index.html, styles.css, main.js, content.js,
     assets/) alongside.
 
@@ -37,8 +37,6 @@ OUT = ROOT / "_site"
 POSTS_DIR = ROOT / "posts"
 
 # --- Settings you may change -------------------------------------------------
-HOME_OPINIONS = 3       # latest opinion pieces on the home page, above the reviews
-HOME_REVIEWS = 3        # latest book reviews on the home page, below the opinions
 POSTS_PER_PAGE = 20     # how many posts per page in the blog archive
 FEED_ITEMS = 30         # how many posts the RSS feed carries
 # The public address of the site, e.g. "https://www.example.com". Leave "" when
@@ -1449,28 +1447,6 @@ def editor_showcase(site, posts):
             + "".join(card for _day, card in cards) + "</ul>" + more)
 
 
-def home_writing(posts, kind, limit, section_id, eyebrow, heading, list_class, more_href, more_label, band=False):
-    """One home-page block: a few opinion pieces, or a few book reviews."""
-    chosen = [post for post in posts if post["type"] == kind][:limit]
-    if not chosen:
-        return ""
-    items = "\n          ".join(post_item(post, "", "h3") for post in chosen)
-    width = "wrap narrow" if kind == "review" else "wrap"
-    klass = ' class="band"' if band else ""
-    return f"""
-    <section id="{section_id}"{klass}>
-      <div class="{width}">
-        <p class="eyebrow">{eyebrow}</p>
-        <h2>{heading}</h2>
-        <ul class="{list_class}">
-          {items}
-        </ul>
-        <p class="more"><a class="button button-quiet" href="{more_href}">{more_label}</a></p>
-      </div>
-    </section>
-    """
-
-
 def content_page(site, path, title, description, body, current):
     """A page such as Books or About. The text is filled in by content.js and main.js."""
     root = root_for(path)
@@ -1484,15 +1460,12 @@ def content_page(site, path, title, description, body, current):
 
 
 def render_home(site, posts):
-    latest = home_writing(posts, "post", HOME_OPINIONS, "opinions", "Opinion", "Latest opinion",
-                          "post-list opinion-grid", "blog/opinion/", "All opinion articles")
-    latest += home_writing(posts, "review", HOME_REVIEWS, "reviews", "Book reviews", "Latest book reviews",
-                           "post-list", "blog/reviews/", "All book reviews", band=True)
     page = re.sub(r"<!-- BUILD:EDITORS -->.*?<!-- /BUILD:EDITORS -->",
                   lambda m: "<!-- BUILD:EDITORS -->" + editor_showcase(site, posts) + "<!-- /BUILD:EDITORS -->",
                   site["home"], flags=re.S)
+    # Opinions and book reviews live on their own pages, not on the home page.
     page = re.sub(r"<!-- BUILD:LATEST -->.*?<!-- /BUILD:LATEST -->",
-                  lambda m: "<!-- BUILD:LATEST -->" + latest + "<!-- /BUILD:LATEST -->",
+                  "<!-- BUILD:LATEST --><!-- /BUILD:LATEST -->",
                   page, flags=re.S)
     # The sign-up box is written into the home page only when a Kit form address is set.
     page = re.sub(r"<!-- BUILD:NEWSLETTER -->.*?<!-- /BUILD:NEWSLETTER -->",
@@ -1504,7 +1477,10 @@ def render_home(site, posts):
         if not found:
             raise BuildError([f"index.html: the markers <!-- PAGE:{name} --> and <!-- /PAGE:{name} --> are missing"])
         bodies[name] = found.group(1).strip()
-    page = re.sub(r"<!-- PAGE:[a-z-]+ -->.*?<!-- /PAGE:[a-z-]+ -->", "", page, flags=re.S)
+    # Books stay on the home page. About, For editors and Contact do not.
+    for name in ("about", "editors", "contact"):
+        page = re.sub(rf"<!-- PAGE:{name} -->.*?<!-- /PAGE:{name} -->", "", page, flags=re.S)
+    page = page.replace("<!-- PAGE:books -->", "").replace("<!-- /PAGE:books -->", "")
     name = site["name"]
     extras = {
         "books/index.html": content_page(

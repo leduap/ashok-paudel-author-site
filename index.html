@@ -98,16 +98,17 @@
           <h1 class="eyebrow hero-name" id="eyebrow">Ashok Paudel · CPA, MBA</h1>
           <p class="hero-headline" data-text="headline">Finance, made simple.</p>
           <p class="tagline" data-text="tagline"></p>
+          <div id="bio" class="hero-bio"></div>
+          <p id="featured-in" class="featured-in" hidden></p>
           <p class="hero-actions">
-            <a class="button" href="books/">See the books</a>
-            <a class="button button-quiet" href="blog/opinion/">Read the opinion</a>
+            <a class="button" href="#books">See the books</a>
             <a class="button button-quiet" href="#newsletter" data-nav="newsletter" hidden>Join the newsletter</a>
           </p>
         </div>
       </div>
     </section>
 
-    <!-- build.py puts the latest opinion pieces, then the latest book reviews, between these markers. -->
+    <!-- BUILD:LATEST is unused on the home page. The markers stay so the build can find them. -->
     <!-- BUILD:LATEST --><!-- /BUILD:LATEST -->
 
     <!-- build.py puts the newsletter sign-up box between these two markers, but only once
@@ -115,7 +116,8 @@
          and the "Newsletter" links are removed from the page. Leave the markers in place. -->
     <!-- BUILD:NEWSLETTER --><!-- /BUILD:NEWSLETTER -->
 
-    <!-- The blocks below are lifted onto their own pages by build.py. They are not part of the home page. -->
+    <!-- Books stay on the home page and are also copied to the Books page.
+         About, For editors and Contact are copied onto their own pages and then removed from the home page. -->
     <!-- PAGE:books -->
     <section id="books" class="band">
       <div class="wrap">
