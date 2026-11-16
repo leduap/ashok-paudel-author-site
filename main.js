@@ -88,15 +88,35 @@
   if (SITE.photo) { $("photo").src = SITE.photo; }
   $("photo").alt = "Portrait of " + SITE.name;
 
-  // Books
+  // Books, in rows by group (see bookGroups in content.js). Books without a known group go last.
   var books = SITE.books || [];
   showSection("books", books.length > 0);
-  books.forEach(function (book) {
+  var groups = (SITE.bookGroups || []).slice();
+  var groupIds = groups.map(function (group) { return group.id; });
+  if (books.some(function (book) { return groupIds.indexOf(book.group) < 0; })) {
+    groups.push({ id: "", title: groups.length ? "More books" : "", text: "" });
+  }
+  groups.forEach(function (group) {
+    var members = books.filter(function (book) {
+      return group.id ? book.group === group.id : groupIds.indexOf(book.group) < 0;
+    });
+    if (!members.length) { return; }
+    var grid = el("div", { className: members.length === 4 ? "book-grid book-grid-4" : "book-grid" });
+    var parts = [];
+    if (group.title) { parts.push(el("h3", { className: "book-group-title" }, group.title)); }
+    if (group.text) { parts.push(el("p", { className: "book-group-text" }, group.text)); }
+    parts.push(grid);
+    $("book-list").appendChild(el("div", { className: "book-group" }, parts));
+    members.forEach(function (book) { grid.appendChild(bookCard(book)); });
+  });
+
+  function bookCard(book) {
     // A book with a status (e.g. "Coming soon") is not for sale yet: it gets a label and no buy button.
     var status = String(book.status || "").trim();
     var parts = [];
     if (status) { parts.push(el("p", { className: "book-status" }, status)); }
-    parts.push(el("h3", {}, book.title));
+    if (book.series) { parts.push(el("p", { className: "book-series" }, book.series)); }
+    parts.push(el("h4", {}, book.title));
     if (book.subtitle) { parts.push(el("p", { className: "subtitle" }, book.subtitle)); }
     // Empty parts are left out altogether, so they leave no gap.
     if (book.blurb) { parts.push(el("p", { className: "blurb" }, book.blurb)); }
@@ -116,8 +136,8 @@
     if (book.cover) {
       card.unshift(el("img", { src: book.cover, alt: "Cover of " + book.title, loading: "lazy" }));
     }
-    $("book-list").appendChild(el("article", { className: book.cover ? "book" : "book no-cover" }, card));
-  });
+    return el("article", { className: book.cover ? "book" : "book no-cover" }, card);
+  }
 
   // Finance templates (sold on Gumroad)
   var templates = SITE.templates || {};
@@ -156,6 +176,53 @@
     if (article.date) { parts.push(el("span", { className: "meta" }, formatDate(article.date))); }
     $("article-list").appendChild(el("li", {}, parts));
   });
+
+  // Under the About text: "Published in Fortune", one link per outlet, newest article first.
+  var outlets = [];
+  articles.forEach(function (article) {
+    if (article.outlet && isRealUrl(article.url) &&
+        !outlets.some(function (seen) { return seen.outlet === article.outlet; })) {
+      outlets.push(article);
+    }
+  });
+  if (outlets.length) {
+    $("featured-in").appendChild(document.createTextNode("Published in "));
+    outlets.forEach(function (article, i) {
+      if (i) { $("featured-in").appendChild(document.createTextNode(i === outlets.length - 1 ? " and " : ", ")); }
+      $("featured-in").appendChild(link(article.outlet, article.url));
+    });
+  }
+  $("featured-in").hidden = !outlets.length;
+
+  // For editors: topics, ready-to-paste bios, headshot and email
+  var editors = SITE.editors || {};
+  var topics = editors.topics || [];
+  var editorEmail = isRealEmail((SITE.contact || {}).email) ? SITE.contact.email : "";
+  showSection("editors", topics.length > 0);
+  $("editors-intro").textContent = editors.intro || "";
+  $("editors-intro").hidden = !editors.intro;
+  topics.forEach(function (topic) {
+    var parts = [el("h3", {}, topic.title)];
+    if (topic.text) { parts.push(el("p", {}, topic.text)); }
+    $("topic-list").appendChild(el("li", { className: "inquiry" }, parts));
+  });
+  [["Short bio", editors.shortBio], ["Longer bio", editors.longBio]].forEach(function (pair) {
+    if (!pair[1]) { return; }
+    var copy = el("button", { type: "button", className: "button button-quiet button-small" }, "Copy");
+    copy.addEventListener("click", function () {
+      if (!navigator.clipboard) { return; }
+      navigator.clipboard.writeText(pair[1]).then(function () {
+        copy.textContent = "Copied";
+        setTimeout(function () { copy.textContent = "Copy"; }, 2000);
+      });
+    });
+    $("bio-blocks").appendChild(el("h3", {}, pair[0]));
+    $("bio-blocks").appendChild(el("div", { className: "bio-block" }, [el("p", {}, pair[1]), copy]));
+  });
+  if (editors.photo) { $("headshot-link").href = editors.photo; }
+  $("headshot-link").hidden = !editors.photo;
+  if (editorEmail) { $("editors-email").href = "mailto:" + editorEmail; }
+  $("editors-email").hidden = !editorEmail;
 
   // Events: upcoming soonest first, past most recent first
   var today = new Date();

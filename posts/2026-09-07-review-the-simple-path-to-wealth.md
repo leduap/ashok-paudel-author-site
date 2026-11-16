@@ -106,7 +106,7 @@ A good first book on index investing for an American reader, and the clearest st
 
 Ashok Paudel's own book on the same subject. It is his product, separate from the book reviewed above.
 
-::book B0HQVWGD1R
+::book B0HRS8HQWT
 
 ## FAQ
 

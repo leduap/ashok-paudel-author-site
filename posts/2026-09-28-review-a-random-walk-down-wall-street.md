@@ -98,7 +98,7 @@ The best single book for a reader who wants to understand why the case for index
 
 Ashok Paudel's own book on index funds. It is his product, separate from the book reviewed above.
 
-::book B0HQVWGD1R
+::book B0HRS8HQWT
 
 ## FAQ
 

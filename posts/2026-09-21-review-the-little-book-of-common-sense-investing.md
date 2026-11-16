@@ -102,7 +102,7 @@ If you read one book on why low costs matter, this is a strong choice. Read the 
 
 Ashok Paudel's own book on index funds. It is his product, separate from the book reviewed above.
 
-::book B0HQVWGD1R
+::book B0HRS8HQWT
 
 ## FAQ
 

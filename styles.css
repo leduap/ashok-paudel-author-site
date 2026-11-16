@@ -190,7 +190,7 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   background: var(--mint);
   box-shadow: 0 8px 22px rgba(35, 48, 64, 0.18); margin-bottom: 1rem;
 }
-.book h3 { margin: 0 0 0.3rem; font-size: 1.1rem; }
+.book h3, .book h4 { margin: 0 0 0.3rem; font-size: 1.1rem; }
 .book .subtitle {
   font-family: var(--display); font-weight: 600; font-size: 0.85rem; line-height: 1.4;
   color: var(--green-label); margin-bottom: 0.75rem;
@@ -608,3 +608,31 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 .owncard .bookbox-buttons { margin-top: 0.5rem !important; }
 .owncard-template .bookbox-buttons { margin-top: 0.8rem !important; }
 @media (max-width: 30rem) { .owncard { grid-template-columns: 4.5rem 1fr; gap: 0.9rem; padding: 0.9rem; } }
+
+/* Books in rows: the Wheel Strategy series, other finance books, other books */
+.book-group + .book-group { margin-top: 2.5rem; }
+@media (min-width: 64rem) {
+  .book-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.book-group-title { margin: 0 0 0.25rem; font-size: 1.3rem; }
+.book-group-text { margin: 0 0 1rem; color: var(--ink-soft); }
+.book-group-title + .book-grid { margin-top: 1rem; }
+.book-series {
+  margin: 0 0 0.35rem; font-family: var(--display); font-weight: 600; font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 0.07em; color: var(--green-label);
+}
+
+/* "Published in Fortune" under the About text */
+.featured-in { margin-top: 1.25rem; font-family: var(--display); font-weight: 600; color: var(--green-label); }
+.featured-in a { color: inherit; }
+
+/* For editors */
+#editors .lede { font-size: 1.1rem; }
+#editors h3 { margin-top: 1.75rem; }
+#editors .inquiries { margin-top: 0.75rem; }
+.bio-block {
+  background: var(--card); border: 1px solid var(--mint-line); border-radius: 8px;
+  padding: 1rem 1.25rem; margin: 0.75rem 0 0;
+}
+.bio-block p { margin: 0 0 0.75rem; }
+.editor-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }

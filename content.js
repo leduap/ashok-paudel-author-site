@@ -70,8 +70,29 @@ const SITE = {
   // Each code below was checked on amazon.com, amazon.co.uk and amazon.de (November 2026).
   // Optional: buyLinks, for shops other than Amazon, e.g.
   //   buyLinks: [{ label: "Buy from the publisher", url: "https://..." }]
+  //
+  // group decides which row of the Books section a book appears in: one of the
+  // ids in bookGroups below. series is the small label above the title, e.g. "Book 2".
+  // Within a row, books appear in the order they are listed here.
+  bookGroups: [
+    { id: "wheel", title: "The Wheel Strategy series", text: "Selling options for income, one step at a time. Read them in order." },
+    { id: "finance", title: "Investing and corporate finance", text: "" },
+    { id: "other", title: "Other books", text: "" }
+  ],
+
   books: [
     {
+      group: "wheel",
+      series: "Book 1 · Start here",
+      title: "The Wheel Strategy",
+      subtitle: "From Zero to Hero",
+      cover: "assets/the-wheel-strategy.jpg",
+      blurb: "The wheel options strategy explained from zero. You do not need to know what an option is. The book walks through the wheel one step at a time, with order tickets, payoff tables and worked examples, including the parts that are easy to get wrong.",
+      amazonId: "B0HQPBQVBJ"
+    },
+    {
+      group: "wheel",
+      series: "Book 2",
       title: "Rolling, Repair and Risk",
       subtitle: "The Wheel Strategy Playbook for Real Markets",
       cover: "assets/rolling-repair-and-risk.jpg",
@@ -79,16 +100,36 @@ const SITE = {
       amazonId: "B0HQVRJQ1P"
     },
     {
+      group: "wheel",
+      series: "Book 3",
+      title: "LEAPS and the Poor Man's Covered Call",
+      subtitle: "The Wheel Strategy Playbook for Smaller Accounts",
+      cover: "assets/leaps-and-the-poor-mans-covered-call.jpg",
+      blurb: "A long-dated call, a LEAPS, can stand in for 100 shares at a fraction of the cash. That is the poor man's covered call, and it is a leveraged trade. The book shows the worst case first, then the rules that keep the trade sound, for readers who know the wheel and want to run it with less capital.",
+      amazonId: "B0HRRW92Y3"
+    },
+    {
+      group: "wheel",
+      series: "Book 4",
+      title: "Cash-Secured Puts",
+      subtitle: "How to Get Paid to Buy Stocks at Your Price",
+      cover: "assets/cash-secured-puts.jpg",
+      blurb: "A cash-secured put is a promise to buy a stock at a price you choose, and you are paid for making it. Book 4 of The Wheel Strategy series shows how to pick the stock, the price and the strike, ladder puts over time and plan for every outcome, with the downside shown in dollars in every example.",
+      amazonId: "B0GX32LW9S"
+    },
+    {
+      group: "finance",
       title: "Own the Whole Market",
       subtitle: "A Plain-English Playbook for Building Wealth with Low-Cost Index Funds, from First Paycheck to Financial Freedom",
       cover: "assets/own-the-whole-market.jpg",
       blurb: "Most people are never taught how money actually grows. This book fixes that in plain English, with real data and worked numbers, and without hype, from your first paycheck to the day your investments can pay for your life.",
-      amazonId: "B0HQVWGD1R"
+      amazonId: "B0HRS8HQWT"
     },
     {
       // NOT YET PUBLISHED. The cover is a placeholder and there is no description yet.
       // When the book is live: point cover at the real cover file, fill in blurb,
       // add its amazonId, and delete the status line.
+      group: "finance",
       title: "The Own the Whole Market Workbook",
       subtitle: "Build Your Money System: Worksheets, Trackers and Checklists for Every Stage, from First Paycheck to Financial Freedom",
       cover: "assets/own-the-whole-market-workbook-placeholder.svg",
@@ -97,20 +138,7 @@ const SITE = {
       amazonId: ""
     },
     {
-      title: "The Mindful Grid",
-      subtitle: "365 Sudokus & 365 Questions for the Soul",
-      cover: "assets/the-mindful-grid.jpg",
-      blurb: "A daily ritual for the mindful thinker: one Sudoku to focus your attention and one open-ended question for reflection, every day for a year. Questions are presented in English, German, Spanish, French and Italian.",
-      amazonId: "B0HQP95S6B"
-    },
-    {
-      title: "The Wheel Strategy",
-      subtitle: "From Zero to Hero",
-      cover: "assets/the-wheel-strategy.jpg",
-      blurb: "The wheel options strategy explained from zero. You do not need to know what an option is. The book walks through the wheel one step at a time, with order tickets, payoff tables and worked examples, including the parts that are easy to get wrong.",
-      amazonId: "B0HQPBQVBJ"
-    },
-    {
+      group: "finance",
       title: "Inside FP&A",
       subtitle: "How Planning, Forecasting and Analysis Really Work in Large Companies",
       cover: "assets/inside-fpa.jpg",
@@ -118,18 +146,12 @@ const SITE = {
       amazonId: "B0HQW1LKZB"
     },
     {
-      title: "Cash-Secured Puts",
-      subtitle: "How to Get Paid to Buy Stocks at Your Price",
-      cover: "assets/cash-secured-puts.jpg",
-      blurb: "A cash-secured put is a promise to buy a stock at a price you choose, and you are paid for making it. Book 4 of The Wheel Strategy series shows how to pick the stock, the price and the strike, ladder puts over time and plan for every outcome, with the downside shown in dollars in every example.",
-      amazonId: "B0GX32LW9S"
-    },
-    {
-      title: "LEAPS and the Poor Man's Covered Call",
-      subtitle: "The Wheel Strategy Playbook for Smaller Accounts",
-      cover: "assets/leaps-and-the-poor-mans-covered-call.jpg",
-      blurb: "A long-dated call, a LEAPS, can stand in for 100 shares at a fraction of the cash. That is the poor man's covered call, and it is a leveraged trade. The book shows the worst case first, then the rules that keep the trade sound, for readers who know the wheel and want to run it with less capital.",
-      amazonId: "B0HRRW92Y3"
+      group: "other",
+      title: "The Mindful Grid",
+      subtitle: "365 Sudokus & 365 Questions for the Soul",
+      cover: "assets/the-mindful-grid.jpg",
+      blurb: "A daily ritual for the mindful thinker: one Sudoku to focus your attention and one open-ended question for reflection, every day for a year. Questions are presented in English, German, Spanish, French and Italian.",
+      amazonId: "B0HQP95S6B"
     }
   ],
 
@@ -227,6 +249,24 @@ const SITE = {
       url: "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/"
     }
   ],
+
+  // "For editors": what editors, producers and podcast hosts need before they get in touch.
+  // Topics are subjects you can write or comment on at short notice; keep them to what your
+  // books and published articles cover. The bios are ready to paste under an article.
+  // photo is the headshot offered for download (use a large, sharp file). Leave "" to hide it.
+  // The section is hidden while topics is empty.
+  editors: {
+    intro: "Working on a story about investing, saving or corporate finance? I write articles and give comment on these subjects, usually at short notice.",
+    topics: [
+      { title: "Saving for children and Trump Accounts", text: "What the new accounts are, why so few have been claimed and what families can do now." },
+      { title: "Index funds and long-term investing", text: "Low-cost investing in plain English, from a first paycheck to retirement." },
+      { title: "Options for income, and their risks", text: "Covered calls, cash-secured puts and the wheel strategy: how they work and where retail investors get hurt." },
+      { title: "How large companies plan and forecast", text: "Budgets, forecasts, board packs and why company guidance misses." }
+    ],
+    shortBio: "Ashok Paudel, CPA, MBA, is a finance professional and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A.",
+    longBio: "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use. His commentary has appeared in Fortune.",
+    photo: "assets/author-photo.jpg"
+  },
 
   // Events. Upcoming ones are shown first; past ones move below automatically.
   events: [

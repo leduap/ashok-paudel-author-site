@@ -102,7 +102,7 @@ Worth reading for steps two to four alone. Even a reader who never draws the wal
 
 Ashok Paudel's own book covers the investing side that this programme treats briefly. It is his product, separate from the book reviewed above.
 
-::book B0HQVWGD1R
+::book B0HRS8HQWT
 
 ## FAQ
 
