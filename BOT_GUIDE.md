@@ -31,6 +31,17 @@ Accuracy matters more than length. A short review that is right is better than a
 - Describe his books and templates only with the words `content.js` uses for them. The build writes the "From the author" cards from `content.js` for you, so the simplest safe sentence is one that says they are his own products and why they sit on this page. Do not add claims about what they achieve.
 - Do not copy any description of Ashok from his Gumroad store or anywhere else.
 
+## Which books to review
+
+The site exists to show Ashok as a finance writer, so editors and readers see an expert in money, not a general book blog.
+
+- **Prefer books about money.** Choose business, economics, investing, personal finance, accounting and corporate-finance books first, especially ones on or near the New York Times bestseller lists. Review a general nonfiction bestseller only when Ashok names it or nothing suitable is available that day.
+- **Add a money lesson.** Every review should include a `## The money lesson` section, placed just before `## The verdict`: one or two paragraphs on what the book teaches about money, work, risk or decisions, in plain English. For a book that is not about money, draw the lesson honestly from what the book covers, or leave the section out rather than force one. The "Nothing invented" and "No promises" rules apply to it in full.
+
+## Opinion articles by Ashok
+
+Ashok sends his own opinion articles to be published as blog posts (`type: post`). Publish his text as he wrote it: fix only obvious typing errors, and change nothing else without his say-so. Keep his title unless he asks for a new one. Do not add facts, figures, quotations or links he did not write, apart from links to his own books under `## From the author` if he agrees. These are his views, so the "Nothing invented about Ashok" rules are about what you add, not about what he wrote.
+
 ## Where the file goes and what it is called
 
 ```
@@ -135,7 +146,7 @@ Posts may link to Ashok's own books and to other posts on this site. The rules b
 | To link to | Write | What the site does |
 | --- | --- | --- |
 | Another post or review on this site | `[The Psychology of Money](../2026-09-14-review-the-psychology-of-money/)` | A normal link. The address is `../`, then the other post's file name without `.md`, then `/`. The build fails if no such post exists. |
-| One of Ashok's own published books, as a card | A line containing only `::book B0HQVWGD1R` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and a button to the Books section of this site's home page. It has no Amazon buttons. |
+| One of Ashok's own published books, as a card | A line containing only `::book B0HRS8HQWT` | A "From the author: his own book" card with the cover, title, subtitle and description from `content.js`, and a button to the Books section of this site's home page. It has no Amazon buttons. |
 | Any other web page | `[text](https://example.com/page)` | A normal link. |
 
 Details:
@@ -256,7 +267,7 @@ A good first budgeting book. For the next step, see the review of [The Psycholog
 
 Ashok Paudel's own book on a related subject. It is his product, separate from the book reviewed above.
 
-::book B0HQVWGD1R
+::book B0HRS8HQWT
 
 ## FAQ
 

@@ -851,6 +851,7 @@ def load_site():
         "templates_on": bool(re.search(r"^\s*templates\s*:\s*\{[^{}\[\]]*?\bshow\s*:\s*true\b", content, re.M)),
         "articles": [item for item in content_items(content, "articles")
                      if re.match(r"^https?://[^\s.]+\.\S+$", item.get("url", ""))],
+        "editor_topics": content_items(content, "topics"),
         "url": public_address(),
         "home": page,
     }
@@ -905,6 +906,9 @@ def fill_text(markup, site):
     # "Articles" links: shown once content.js lists at least one article with a real address.
     if site.get("articles"):
         markup = re.sub(r'(<a[^>]*data-nav="writing"[^>]*?) hidden(?=[ >])', r"\1", markup)
+    # "For editors" links: shown once content.js lists at least one topic.
+    if site.get("editor_topics"):
+        markup = re.sub(r'(<a[^>]*data-nav="editors"[^>]*?) hidden(?=[ >])', r"\1", markup)
     return markup
 
 
