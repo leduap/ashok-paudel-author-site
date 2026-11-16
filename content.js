@@ -26,9 +26,22 @@ const SITE = {
   tagline: "Plain-English books on investing, options and corporate finance.",
 
   // "About" text. Each item is one paragraph.
-  // This is the "About the author" text from the back cover of Inside FP&A, word for word.
+  // The first two sentences are the agreed wording and stay as they are. Never add an
+  // employer, a job title or a claim about past projects here or anywhere else on the site.
   bio: [
-    "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He writes plain, practical guides that turn complex finance into steps anyone can use."
+    "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany. His commentary has appeared in Fortune.",
+    "He writes plain-English books on investing, options and corporate finance, including Own the Whole Market, The Wheel Strategy series and Inside FP&A, and reviews books on money and business on this site."
+  ],
+
+  // Where he is based, as it appears in the bio. Used in the structured data on the home page.
+  location: "Munich, Germany",
+
+  // His own public profiles, used for the sameAs list in the structured data and shown on the
+  // Contact page. Only profiles that exist and are his. Never add a profile of another person
+  // of the same name. Add the Amazon author page here once it is set up in Author Central.
+  profiles: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela" },
+    { label: "Fortune", url: "https://fortune.com/author/ashok-paudel/" }
   ],
 
   // Your own photo. It is shown as a square, cropped around the centre.
@@ -74,6 +87,10 @@ const SITE = {
   // group decides which row of the Books section a book appears in: one of the
   // ids in bookGroups below. series is the small label above the title, e.g. "Book 2".
   // Within a row, books appear in the order they are listed here.
+  //
+  // Every published book also gets its own page at /books/<title-as-a-slug>/, built from
+  // the lines below. topics lists blog tags (comma separated) whose reviews and posts are
+  // linked from that page as further reading. Leave it "" for none.
   bookGroups: [
     { id: "wheel", title: "The Wheel Strategy series", text: "Selling options for income, one step at a time. Read them in order." },
     { id: "finance", title: "Investing and corporate finance", text: "" },
@@ -88,7 +105,8 @@ const SITE = {
       subtitle: "From Zero to Hero",
       cover: "assets/the-wheel-strategy.jpg",
       blurb: "The wheel options strategy explained from zero. You do not need to know what an option is. The book walks through the wheel one step at a time, with order tickets, payoff tables and worked examples, including the parts that are easy to get wrong.",
-      amazonId: "B0HQPBQVBJ"
+      amazonId: "B0HQPBQVBJ",
+      topics: "options, investing"
     },
     {
       group: "wheel",
@@ -97,7 +115,8 @@ const SITE = {
       subtitle: "The Wheel Strategy Playbook for Real Markets",
       cover: "assets/rolling-repair-and-risk.jpg",
       blurb: "Most wheel trades end quietly. This book is about the ones that do not. A practical guide to rolling, repairing stuck positions and managing risk, for readers who already know how the wheel works.",
-      amazonId: "B0HQVRJQ1P"
+      amazonId: "B0HQVRJQ1P",
+      topics: "options, investing"
     },
     {
       group: "wheel",
@@ -106,7 +125,8 @@ const SITE = {
       subtitle: "The Wheel Strategy Playbook for Smaller Accounts",
       cover: "assets/leaps-and-the-poor-mans-covered-call.jpg",
       blurb: "A long-dated call, a LEAPS, can stand in for 100 shares at a fraction of the cash. That is the poor man's covered call, and it is a leveraged trade. The book shows the worst case first, then the rules that keep the trade sound, for readers who know the wheel and want to run it with less capital.",
-      amazonId: "B0HRRW92Y3"
+      amazonId: "B0HRRW92Y3",
+      topics: "options, investing"
     },
     {
       group: "wheel",
@@ -115,7 +135,8 @@ const SITE = {
       subtitle: "How to Get Paid to Buy Stocks at Your Price",
       cover: "assets/cash-secured-puts.jpg",
       blurb: "A cash-secured put is a promise to buy a stock at a price you choose, and you are paid for making it. Book 4 of The Wheel Strategy series shows how to pick the stock, the price and the strike, ladder puts over time and plan for every outcome, with the downside shown in dollars in every example.",
-      amazonId: "B0GX32LW9S"
+      amazonId: "B0GX32LW9S",
+      topics: "options, investing"
     },
     {
       group: "finance",
@@ -123,7 +144,8 @@ const SITE = {
       subtitle: "A Plain-English Playbook for Building Wealth with Low-Cost Index Funds, from First Paycheck to Financial Freedom",
       cover: "assets/own-the-whole-market.jpg",
       blurb: "Most people are never taught how money actually grows. This book fixes that in plain English, with real data and worked numbers, and without hype, from your first paycheck to the day your investments can pay for your life.",
-      amazonId: "B0HRS8HQWT"
+      amazonId: "B0HRS8HQWT",
+      topics: "index funds, investing, personal finance"
     },
     {
       // NOT YET PUBLISHED. The cover is a placeholder and there is no description yet.
@@ -143,7 +165,8 @@ const SITE = {
       subtitle: "How Planning, Forecasting and Analysis Really Work in Large Companies",
       cover: "assets/inside-fpa.jpg",
       blurb: "FP&A is learned on the job, one deadline at a time. Follow one fictional company through a full planning year, from the plan and the forecast call to the board pack, with worked numbers that tie out from chapter to chapter.",
-      amazonId: "B0HQW1LKZB"
+      amazonId: "B0HQW1LKZB",
+      topics: "corporate finance, accounting"
     },
     {
       group: "other",
@@ -151,7 +174,8 @@ const SITE = {
       subtitle: "365 Sudokus & 365 Questions for the Soul",
       cover: "assets/the-mindful-grid.jpg",
       blurb: "A daily ritual for the mindful thinker: one Sudoku to focus your attention and one open-ended question for reflection, every day for a year. Questions are presented in English, German, Spanish, French and Italian.",
-      amazonId: "B0HQP95S6B"
+      amazonId: "B0HQP95S6B",
+      topics: ""
     }
   ],
 
@@ -236,17 +260,20 @@ const SITE = {
   //   title   the headline, exactly as the publication printed it
   //   outlet  the name of the publication
   //   date    the day it was published, in the form YYYY-MM-DD
-  //   url     the full https:// address of the article
+  //   url     the full https:// address of the article, or "" to list it without a link
   // To add the next one, copy a whole block, from { to }, paste it above the
   // first one, and change the four lines. Keep a comma between blocks.
   // The newest article is shown first.
   // While the list is empty the section and its menu link are hidden.
+  //
+  // The Fortune piece is listed by name only: Ashok has asked that the site does not
+  // link to the article itself. Leave its url as "".
   articles: [
     {
       title: "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
       outlet: "Fortune",
       date: "2026-11-10",
-      url: "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/"
+      url: ""
     }
   ],
 
@@ -256,8 +283,8 @@ const SITE = {
   // photo is the headshot offered for download (use a large, sharp file). Leave "" to hide it.
   editors: {
     intro: "Working on a story about investing, saving or corporate finance? Here is recent writing. I also give comment, usually at short notice.",
-    shortBio: "Ashok Paudel, CPA, MBA, is a finance professional and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A.",
-    longBio: "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use. His commentary has appeared in Fortune.",
+    shortBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A. His commentary has appeared in Fortune.",
+    longBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use, and he reviews books on money and business at ashokpaudel.com. His commentary has appeared in Fortune.",
     photo: "assets/author-photo.jpg"
   },
 
@@ -298,6 +325,7 @@ const SITE = {
     // Optional: profile links, shown as small buttons under the contact details.
     // To add one, remove the // in front of a line and put in the full address.
     socials: [
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela" },
       // { label: "Goodreads", url: "https://www.goodreads.com/author/show/..." },
     ],
 

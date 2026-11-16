@@ -12,11 +12,19 @@
   <meta property="og:site_name" content="Ashok Paudel">
   <meta property="og:image" content="https://ashokpaudel.com/assets/author-photo.jpg">
   <meta property="og:image:alt" content="Portrait of Ashok Paudel">
+  <meta property="og:locale" content="en_GB">
   <meta property="profile:first_name" content="Ashok">
   <meta property="profile:last_name" content="Paudel">
   <meta name="twitter:card" content="summary">
-  <!-- sameAs lists only profiles that exist and are his. Add his Amazon author page here once
-       it is set up in Amazon Author Central. Never add a profile of another person of the same name. -->
+  <meta name="twitter:title" content="Ashok Paudel, CPA, MBA | Finance author and book reviews">
+  <meta name="twitter:description" content="Plain-English finance books by Ashok Paudel, CPA, MBA, including Own the Whole Market, The Wheel Strategy and Inside FP&amp;A, plus book reviews.">
+  <meta name="twitter:image" content="https://ashokpaudel.com/assets/author-photo.jpg">
+  <meta name="twitter:image:alt" content="Portrait of Ashok Paudel">
+  <meta name="author" content="Ashok Paudel">
+  <!-- The structured data below is rewritten by build.py from content.js (profiles, bio, books), so
+       edit content.js rather than this block. sameAs lists only profiles that exist and are his.
+       Never add a profile of another person of the same name. -->
+  <!-- BUILD:SCHEMA -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -27,21 +35,15 @@
         "name": "Ashok Paudel",
         "honorificSuffix": "CPA, MBA",
         "jobTitle": "Finance author",
+        "description": "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of plain-English finance books including Own the Whole Market, The Wheel Strategy and Inside FP&A. His commentary has appeared in Fortune.",
         "url": "https://ashokpaudel.com/",
         "image": "https://ashokpaudel.com/assets/author-photo.jpg",
-        "description": "Ashok Paudel, CPA, MBA, writes plain-English finance books, including Own the Whole Market, The Wheel Strategy and Inside FP&A.",
+        "homeLocation": { "@type": "Place", "name": "Munich, Germany" },
         "knowsAbout": ["investing", "index funds", "options", "corporate finance", "financial planning and analysis"],
         "sameAs": [
+          "https://www.linkedin.com/in/paudela",
           "https://fortune.com/author/ashok-paudel/"
-        ],
-        "subjectOf": {
-          "@type": "NewsArticle",
-          "headline": "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
-          "url": "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/",
-          "datePublished": "2026-11-10",
-          "author": { "@id": "https://ashokpaudel.com/#person" },
-          "publisher": { "@type": "Organization", "name": "Fortune" }
-        }
+        ]
       },
       {
         "@type": "WebSite",
@@ -65,6 +67,7 @@
     ]
   }
   </script>
+  <!-- /BUILD:SCHEMA -->
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="assets/icons/monogram/favicon.ico" sizes="48x48">
   <link rel="icon" href="assets/icons/monogram/icon.svg" type="image/svg+xml">
@@ -124,6 +127,7 @@
         <p class="eyebrow">Published work</p>
         <h2>Books</h2>
         <div id="book-list" class="book-groups"></div>
+        <p class="more-line books-more">Ashok also writes <a href="blog/reviews/">reviews of books on money, investing and business</a> and <a href="blog/opinion/">opinion pieces on finance and the economy</a>.</p>
       </div>
     </section>
 
