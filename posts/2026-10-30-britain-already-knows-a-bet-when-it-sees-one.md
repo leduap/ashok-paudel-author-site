@@ -1,6 +1,7 @@
 ---
 title: Britain already knows a bet when it sees one. It should keep saying so
 date: 2026-10-30
+updated: 2026-11-16
 type: post
 tags: gambling, regulation, finance
 summary: American prediction markets want to sell contracts on football to British young adults as trading. The customer, not the label, should decide the rules.
@@ -18,7 +19,7 @@ Britain has already answered the question America is fighting over in court. In 
 
 Any pressure to soften that position is likely to be polite. It may come as a request for a "proportionate" new category, a sandbox, or a nod to the value of forecasting, each resting on the idea that a contract which looks like a financial instrument on screen deserves to be treated like one in law.
 
-I head a global controlling team, and in my world this question was settled long ago. Accounting records transactions by their economic substance, not merely their legal form; the global accounting standard-setter's framework says so almost word for word. Calling a lease a service contract does not keep it off the balance sheet. Auditors look at what the contract does. Apply that test to a screen that says "buy yes at 62p" on Saturday's match. If the contract pays out when one team wins and loses everything when it does not, it does what a bet does, whatever the button says.
+I work in corporate finance, and in my world this question was settled long ago. Accounting records transactions by their economic substance, not merely their legal form; the global accounting standard-setter's framework says so almost word for word. Calling a lease a service contract does not keep it off the balance sheet. Auditors look at what the contract does. Apply that test to a screen that says "buy yes at 62p" on Saturday's match. If the contract pays out when one team wins and loses everything when it does not, it does what a bet does, whatever the button says.
 
 That matters because of what a licensed bet already comes with. In Britain an 18- or 19-year-old can legally bet on football, and nobody is proposing to change that. What protects them is the package attached to the bet. An online operator must verify a customer's age and identity before they can gamble. Since April 2020, no licensed operator may take a credit card for gambling, because gambling on borrowed money deepens harm. Online operators must run checks for signs of financial vulnerability, such as a county court judgment or a bankruptcy, once a customer's deposits minus withdrawals pass £150 in 30 days. They must sign up to GAMSTOP, so that one request can shut a person out of every licensed site at once. And since April 2025 every licensee pays a statutory levy that funds research, prevention and treatment of gambling harm.
 
