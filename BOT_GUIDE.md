@@ -38,6 +38,21 @@ The site exists to show Ashok as a finance writer, so editors and readers see an
 - **Prefer books about money.** Choose business, economics, investing, personal finance, accounting and corporate-finance books first, especially ones on or near the New York Times bestseller lists. Review a general nonfiction bestseller only when Ashok names it or nothing suitable is available that day.
 - **Add a money lesson.** Every review should include a `## The money lesson` section, placed just before `## The verdict`: one or two paragraphs on what the book teaches about money, work, risk or decisions, in plain English. For a book that is not about money, draw the lesson honestly from what the book covers, or leave the section out rather than force one. The "Nothing invented" and "No promises" rules apply to it in full.
 
+## A picture on an opinion article
+
+An opinion article may have one picture. It is optional. Use a picture that is free to reuse, and say who took it.
+
+Save it as `assets/images/<short-name>.jpg`: lower-case letters, digits and single hyphens, a real JPEG or PNG, at least 600 by 300 pixels and no larger than 500 KB. Then add these four lines to the front matter:
+
+```
+image: assets/images/the-picture.jpg
+image_alt: A short description of what the picture shows
+image_credit: Name of the photographer, Wikimedia Commons (CC BY 4.0)
+image_source: https://commons.wikimedia.org/wiki/File:The_picture.jpg
+```
+
+`image_source` is the page the picture came from, never an Amazon address. Take pictures from Wikimedia Commons or another source that says the picture is free to reuse, and keep the photographer's name and the licence in `image_credit`. All four lines go together: leave them all out if there is no picture.
+
 ## Opinion articles by Ashok
 
 Ashok sends his own opinion articles to be published as blog posts (`type: post`). Publish his text as he wrote it: fix only obvious typing errors, and change nothing else without his say-so. Keep his title unless he asks for a new one. Do not add facts, figures, quotations or links he did not write, apart from links to his own books under `## From the author` if he agrees. These are his views, so the "Nothing invented about Ashok" rules are about what you add, not about what he wrote.

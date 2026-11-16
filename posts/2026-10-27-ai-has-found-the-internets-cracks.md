@@ -4,6 +4,10 @@ date: 2026-10-27
 type: post
 tags: ai, cybersecurity, open source, europe
 summary: Machines can spot software flaws far faster than the small, underfunded teams who maintain the web's foundations can fix them. Europe should make sure the fixers are paid.
+image: assets/images/code-on-screen.jpg
+image_alt: Computer code on a monitor
+image_credit: Markus Spiske, Wikimedia Commons (CC0)
+image_source: https://commons.wikimedia.org/wiki/File:Code_on_computer_monitor_(Unsplash).jpg
 ---
 
 Last week two critical flaws were disclosed in PHP, the language behind about 69 per cent of websites whose server-side language can be identified. Researchers found them with the help of AI models, partly through a programme led by OpenAI. Details leaked before the planned release, and Cloudflare's chief executive reported "millions" of attempts to exploit the flaws within hours. All Nippon Airways and MUFG Bank pulled parts of their online services while they patched. The fixes were written, as they nearly always are, by PHP's own maintainers.

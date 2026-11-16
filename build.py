@@ -48,12 +48,16 @@ SITE_URL = ""
 TYPES = {"review": "Book review", "post": "Opinion"}
 TYPE_PAGES = {"post": ("opinion", "Opinion"), "review": ("reviews", "Book reviews")}
 FIELDS = ["title", "date", "updated", "type", "tags", "summary", "book_title", "book_author", "rating",
-          "amazon_id", "cover", "cover_source"]
+          "amazon_id", "cover", "cover_source", "image", "image_alt", "image_credit", "image_source"]
 REQUIRED = ["title", "date", "type", "tags", "summary"]
 REVIEW_ONLY = ["book_title", "book_author", "rating", "amazon_id", "cover", "cover_source"]
+POST_ONLY = ["image", "image_alt", "image_credit", "image_source"]
 # A review must show the book's cover: a JPEG or PNG saved in assets/covers/.
 COVER_PATH = re.compile(r"^assets/covers/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png)$")
 COVER_MIN_WIDTH, COVER_MIN_HEIGHT, COVER_MAX_BYTES = 120, 160, 400_000
+# An opinion piece may show one picture, a JPEG or PNG saved in assets/images/.
+IMAGE_PATH = re.compile(r"^assets/images/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png)$")
+IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT, IMAGE_MAX_BYTES = 600, 300, 500_000
 # Sections with a fixed meaning. The build gives each its own look (see BOT_GUIDE.md).
 SECTION_KINDS = {
     "the short answer": "answer", "who it is for": "for", "who it is not for": "notfor",
@@ -641,6 +645,10 @@ def load_post(path, problems):
         for key in REVIEW_ONLY:
             if key in meta:
                 bad(f"field '{key}' is only allowed when type is review")
+    if kind == "review":
+        for key in POST_ONLY:
+            if key in meta:
+                bad(f"field '{key}' is only allowed when type is post")
     rating = None
     if meta.get("rating"):
         if meta["rating"] in {"1", "2", "3", "4", "5"}:
@@ -708,6 +716,39 @@ def load_post(path, problems):
         elif not re.match(r"^https://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(/[^\s\"<>]*)?$", source):
             bad(f"cover_source '{source}' is not an https:// web address")
 
+    # An opinion piece may carry one picture. All four fields come together, or none of them.
+    image, image_width, image_height = "", 0, 0
+    if kind == "post" and any(key in meta for key in POST_ONLY):
+        image = meta.get("image", "")
+        if not image:
+            bad("an opinion piece with a picture needs the field 'image', for example "
+                "image: assets/images/the-picture.jpg")
+        elif not IMAGE_PATH.match(image):
+            bad(f"image '{image}' is not allowed. It must be a .jpg or .png file in assets/images/ named with "
+                "lower-case letters, digits and hyphens")
+        elif not (ROOT / image).is_file():
+            bad(f"image {image} does not exist. Add the image file in the same commit as the post")
+        else:
+            size = image_size(ROOT / image)
+            if not size:
+                bad(f"image {image} is not a real JPEG or PNG picture")
+            elif size[0] < IMAGE_MIN_WIDTH or size[1] < IMAGE_MIN_HEIGHT:
+                bad(f"image {image} is only {size[0]}x{size[1]} pixels. A picture must be at least "
+                    f"{IMAGE_MIN_WIDTH}x{IMAGE_MIN_HEIGHT}")
+            elif (ROOT / image).stat().st_size > IMAGE_MAX_BYTES:
+                bad(f"image {image} is larger than {IMAGE_MAX_BYTES // 1000} KB. Save a smaller copy")
+            else:
+                image_width, image_height = size
+        if not meta.get("image_alt"):
+            bad("an opinion piece with a picture needs 'image_alt': a short description of the picture")
+        elif len(meta["image_alt"]) > 140:
+            bad("image_alt is longer than 140 characters")
+        if not meta.get("image_credit"):
+            bad("an opinion piece with a picture needs 'image_credit': who took it and its licence")
+        source = meta.get("image_source", "")
+        if not re.match(r"^https://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(/[^\s\"<>]*)?$", source):
+            bad("an opinion piece with a picture needs 'image_source': the https:// page the picture came from")
+
     body = "\n".join(lines[end + 1:]).strip()
     parts = None
     if not body:
@@ -738,6 +779,10 @@ def load_post(path, problems):
         "amazon_id": amazon_id if kind == "review" else "",
         "cover": cover, "cover_width": cover_width, "cover_height": cover_height,
         "cover_source": meta.get("cover_source", "") if kind == "review" else "",
+        "image": image, "image_width": image_width, "image_height": image_height,
+        "image_alt": meta.get("image_alt", "") if kind == "post" else "",
+        "image_credit": meta.get("image_credit", "") if kind == "post" else "",
+        "image_source": meta.get("image_source", "") if kind == "post" else "",
         "parts": parts, "minutes": max(1, round(words / 220)),
         "affiliate": CTX["affiliate"],
         "links_to": re.findall(r"\]\(\s*(\.\.?/[^)\s]*)", body),
@@ -969,6 +1014,16 @@ def cover_img(post, root, css, lazy=True):
             + (' loading="lazy"' if lazy else "") + ' decoding="async">')
 
 
+def post_figure(post, root):
+    """The picture at the top of an opinion piece, with a credit line under it."""
+    if not post["image"]:
+        return ""
+    return (f'<figure class="post-figure"><img src="{root}{esc(post["image"])}" '
+            f'width="{post["image_width"]}" height="{post["image_height"]}" alt="{esc(post["image_alt"])}">'
+            f'<figcaption>Photo: <a href="{esc(post["image_source"])}" rel="noopener">{esc(post["image_credit"])}</a>'
+            f'</figcaption></figure>')
+
+
 def cover_credit(post):
     """Says where the cover picture came from, e.g. 'Cover image via Open Library'."""
     host = urllib.parse.urlsplit(post["cover_source"]).hostname or ""
@@ -1021,9 +1076,16 @@ def post_item(post, root, heading="h2"):
         book = (f'<p class="post-book">{esc(post["book_title"])} '
                 f'<span>by {esc(post["book_author"])}</span>'
                 + (" " + stars(post["rating"]) if post["rating"] else "") + "</p>")
+        picture = cover_img(post, root, "post-thumb-img").replace(
+            f'alt="Cover of {esc(post["book_title"])}"', 'alt=""')
+    elif post["image"]:
+        picture = (f'<img class="post-thumb-img" src="{root}{esc(post["image"])}" '
+                   f'width="{post["image_width"]}" height="{post["image_height"]}" alt="">')
+    else:
+        picture = ""
+    if picture:
         thumb = (f'<a class="post-thumb" href="{root}{post["url"]}" tabindex="-1" aria-hidden="true">'
-                 + cover_img(post, root, "post-thumb-img").replace(f'alt="Cover of {esc(post["book_title"])}"', 'alt=""')
-                 + "</a>")
+                 + picture + "</a>")
     return (
         f'<li class="post-item post-{post["type"]}{" has-thumb" if thumb else ""}">{thumb}<div class="post-item-body">'
         f'<p class="post-kicker"><span class="badge">{TYPES[post["type"]]}</span> '
@@ -1204,6 +1266,7 @@ def render_post(site, post, posts, newer, older):
           <h1 class="page-title">{esc(post["title"])}</h1>
           <p class="post-meta byline">{photo}{"".join(meta)}</p>
           <p class="post-lead">{esc(post["summary"])}</p>
+          {post_figure(post, root)}
         </div>
       </header>
       <div class="wrap narrow">
@@ -1238,8 +1301,8 @@ def render_post(site, post, posts, newer, older):
         article.update({"@id": address + "#article", "url": address, "mainEntityOfPage": address,
                         "isPartOf": {"@type": "WebSite", "@id": site["url"] + "/#website",
                                      "name": site["name"], "url": site["url"] + "/"}})
-        if post["cover"]:
-            article["image"] = site["url"] + "/" + post["cover"]
+        if post["cover"] or post["image"]:
+            article["image"] = site["url"] + "/" + (post["cover"] or post["image"])
     if review:
         book = {"@type": "Book", "name": post["book_title"],
                 "author": {"@type": "Person", "name": post["book_author"]}}
@@ -1267,7 +1330,8 @@ def render_post(site, post, posts, newer, older):
     if post["updated"]:
         extra += f'\n  <meta property="article:modified_time" content="{post["updated"].isoformat()}">'
     extra += f'\n  <meta property="article:author" content="{esc(site["name"])}">'
-    return path, render_page(site, path, post["title"], post["summary"], main, "article", extra, post["cover"])
+    return path, render_page(site, path, post["title"], post["summary"], main, "article", extra,
+                             post["cover"] or post["image"])
 
 
 def render_listings(site, posts):

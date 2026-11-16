@@ -4,6 +4,10 @@ date: 2026-10-12
 type: post
 tags: ai, manufacturing, productivity, corporate finance
 summary: Europe's own data show manufacturers are among the slowest adopters of artificial intelligence. That is the opportunity.
+image: assets/images/factory-floor.jpg
+image_alt: A car assembly line inside a factory
+image_credit: Marek Ślusarczyk, Wikimedia Commons (CC BY 3.0)
+image_source: https://commons.wikimedia.org/wiki/File:001_Car_factory_assembly_line_-_Opel_factory_in_Gliwice,_Poland.jpg
 ---
 
 When Andreessen Horowitz and Atlas Holdings said they would place AI entrepreneurs directly on the factory floors of manufacturing and distribution companies through a new venture, Foundry Management ([WSJ Pro, Oct. 1](https://www.wsj.com/pro/venture-capital/andreessen-horowitz-and-atlas-holdings-want-ai-entrepreneurs-on-the-factory-floor-fb5711dd)), it may have looked like a niche bet. It is one of the most sensible ideas of the artificial-intelligence boom.

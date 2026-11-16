@@ -4,6 +4,10 @@ date: 2026-11-04
 type: post
 tags: investing, index funds, ai
 summary: Retirement savers will own the AI boom's biggest IPO within weeks of its debut, at whatever price it trades. The index that makes new listings wait a year has the better rule.
+image: assets/images/stock-exchange.jpg
+image_alt: The trading floor of the New York Stock Exchange
+image_credit: Carol M. Highsmith, Wikimedia Commons (public domain)
+image_source: https://commons.wikimedia.org/wiki/File:New_York_Stock_Exchange_trading_floor_on_Wall_Street,_New_York,_New_York_LCCN2011634218.tif
 ---
 
 Anthropic filed an amended prospectus on Nov. 2 and could start trading on Nasdaq within weeks. Few American savers will get shares in the offering. Many of them will own the stock anyway, and soon. They won't choose to buy it, and they won't get any say in the price.

@@ -4,6 +4,10 @@ date: 2026-11-05
 type: post
 tags: ai, accounting, public policy
 summary: From Michigan's jobless claimants to Britain's postmasters, the damage came from treating a machine's output as proof. Let the computer point, and make a human prove it.
+image: assets/images/scales-of-justice.jpg
+image_alt: A statue of justice holding a set of scales
+image_credit: DP Singh Bhullar, Wikimedia Commons (CC BY-SA 4.0)
+image_source: https://commons.wikimedia.org/wiki/File:Close-up_of_Lady_Justice_statue_holding_scales,_symbolizing_justice_and_fairness.jpg
 ---
 
 In December 2014, Michigan's unemployment agency told Grant Bauserman, who had drawn jobless benefits, that he had collected money he was not entitled to and had misled the state to get it. With penalties and interest, he owed $19,910. He protested, and in June 2015, with the protest unresolved, the agency seized his tax refund. Months later it reviewed his paperwork, concluded he had been eligible all along and had concealed nothing, declared its own findings "null and void" and returned the money.

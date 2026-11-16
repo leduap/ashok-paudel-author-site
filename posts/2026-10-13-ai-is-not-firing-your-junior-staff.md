@@ -4,6 +4,10 @@ date: 2026-10-13
 type: post
 tags: ai, careers, accounting, corporate finance
 summary: Companies that let the first rung of the career ladder disappear are saving money today by dismantling the system that produced their own managers.
+image: assets/images/office-desks.jpg
+image_alt: A desk in an office, with a keyboard and papers
+image_credit: Javier Quesada, Wikimedia Commons (CC0)
+image_source: https://commons.wikimedia.org/wiki/File:Working_at_office_(Unsplash).jpg
 ---
 
 The most important number about artificial intelligence and work this autumn is not a lay-off count. It is a hiring rate. Revelio Labs, which tracks millions of worker profiles, [finds](https://www.reveliolabs.com/charts/after-a-decade-of-growth-global-call-center-employment-is-shrinking/fig-2) that global call-centre employment is 5.3 per cent below its December 2023 peak. Lay-offs explain little of that. In 12 middle-income countries, new hires per 100 call-centre workers fell from 25.1 to 17.2 after November 2022. Nobody was marched out of the building. The door simply stopped opening.

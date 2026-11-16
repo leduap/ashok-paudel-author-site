@@ -4,6 +4,10 @@ date: 2026-10-15
 type: post
 tags: ai, accounting, corporate finance
 summary: Boards copying hyperscaler spending without a controller's rules are turning this year's AI budget into next year's write-down.
+image: assets/images/server-racks.jpg
+image_alt: Rows of server racks in a data center
+image_credit: Carl Lender, Wikimedia Commons (CC BY 2.0)
+image_source: https://commons.wikimedia.org/wiki/File:Datacenter_Server_Racks_(22370909788).jpg
 ---
 
 Two of the world's biggest buyers of computing hardware looked at their servers last year and reached opposite conclusions. From January 2025 Amazon shortened the estimated useful life of a subset of its servers and networking equipment from six years to five, citing "the increased pace of technology development, particularly in the area of artificial intelligence and machine learning". The same month Meta lengthened the life of most of its servers and network assets to five and a half years, which cut its 2025 depreciation charge by $2.92bn. Both are defensible judgments, signed off by auditors. Together they show how much of AI's economics rests on an estimate.

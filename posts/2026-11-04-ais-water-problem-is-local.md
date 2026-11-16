@@ -4,6 +4,10 @@ date: 2026-11-04
 type: post
 tags: ai, data centers, water, economics
 summary: The national total is small, and one town's share is not. Site-by-site disclosure and a fair price for scarce water would turn a shouting match into a negotiation.
+image: assets/images/data-center-the-dalles.jpg
+image_alt: Google's data center in The Dalles, Oregon
+image_credit: Visitor7, Wikimedia Commons (CC BY-SA 3.0)
+image_source: https://commons.wikimedia.org/wiki/File:Google_Data_Center,_The_Dalles.jpg
 ---
 
 Google's data centers in Council Bluffs, Iowa, consumed 1.35 billion gallons of water in 2025, according to the company's own reporting. The Environmental Protection Agency's rule of thumb is that an average American family uses about 300 gallons a day at home. By that measure, one cluster of server halls used about a year's household water for 12,000 families. Google's campus in The Dalles, Oregon, consumed 469 million gallons.
