@@ -25,7 +25,7 @@ What the build produces inside `_site/`:
 
 - `index.html`: the home page, with the six latest posts added
 - `blog/`: the blog index, newest first
-- `blog/posts/` and `blog/reviews/`: the same list filtered to posts or to book reviews
+- `blog/opinion/` and `blog/reviews/`: the same list filtered to opinion pieces or to book reviews
 - `blog/tag/<tag>/`: the list filtered to one tag
 - `blog/<file-name>/`: one page per post or review
 - `feed.xml`: the RSS feed

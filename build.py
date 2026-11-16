@@ -45,8 +45,8 @@ FEED_ITEMS = 30         # how many posts the RSS feed carries
 SITE_URL = ""
 # -----------------------------------------------------------------------------
 
-TYPES = {"review": "Book review", "post": "Post"}
-TYPE_PAGES = {"post": ("posts", "Posts"), "review": ("reviews", "Book reviews")}
+TYPES = {"review": "Book review", "post": "Opinion"}
+TYPE_PAGES = {"post": ("opinion", "Opinion"), "review": ("reviews", "Book reviews")}
 FIELDS = ["title", "date", "updated", "type", "tags", "summary", "book_title", "book_author", "rating",
           "amazon_id", "cover", "cover_source"]
 REQUIRED = ["title", "date", "type", "tags", "summary"]
@@ -1278,7 +1278,7 @@ def render_listings(site, posts):
         for tag in post["tags"]:
             all_tags.setdefault(tag_slug(tag), [tag, 0])[1] += 1
 
-    views = [("blog/", "all", "Blog", "Posts and book reviews", posts)]
+    views = [("blog/", "all", "Blog", "Opinion and book reviews", posts)]
     for kind, (folder, label) in TYPE_PAGES.items():
         views.append((f"blog/{folder}/", kind, label, label, [p for p in posts if p["type"] == kind]))
     for slug, (tag, _count) in sorted(all_tags.items()):
@@ -1327,7 +1327,7 @@ def render_listings(site, posts):
       <div class="wrap narrow">
         <p class="eyebrow">Blog</p>
         <h1 class="page-title">{esc(heading)}</h1>
-        <p class="page-lede">Posts and book reviews from {esc(site["name"])}, newest first.</p>
+        <p class="page-lede">Opinion pieces and book reviews from {esc(site["name"])}, newest first.</p>
         <nav class="filters" aria-label="Filter">{tabs}</nav>{tag_row}
       </div>
     </header>
@@ -1337,7 +1337,7 @@ def render_listings(site, posts):
       </div>
     </section>{newsletter_block(site)}"""
             page_title = title + (f" (page {number})" if number > 1 else "")
-            description = f"Posts and book reviews from {site['name']}." if key == "all" else \
+            description = f"Opinion pieces and book reviews from {site['name']}." if key == "all" else \
                 f"{heading}: from the blog of {site['name']}."
             # An empty list ("Nothing here yet") is a thin page: kept for visitors, hidden from search engines.
             pages[path] = render_page(site, path, page_title, description, main, index=bool(chunk))
@@ -1395,7 +1395,7 @@ def render_feed(site, posts):
         f"    <title>{esc(site['name'])}: blog and book reviews</title>\n"
         f"    <link>{esc(base)}/blog/</link>\n"
         f'    <atom:link href="{esc(base)}/feed.xml" rel="self" type="application/rss+xml"/>\n'
-        f"    <description>{esc(site['tagline'] or 'Posts and book reviews')}</description>\n"
+        f"    <description>{esc(site['tagline'] or 'Opinion and book reviews')}</description>\n"
         "    <language>en</language>\n"
         + "\n".join(items) + ("\n" if items else "") + "  </channel>\n</rss>\n")
 
