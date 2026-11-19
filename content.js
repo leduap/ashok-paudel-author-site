@@ -15,6 +15,10 @@
 const SITE = {
   name: "Ashok Paudel",
 
+  // Name Google and social cards use for the site itself (og:site_name, WebSite schema).
+  // Keep name above for Person schema and author bylines.
+  siteName: "Ashok Paudel, Author",
+
   // Shown next to your name. As printed on the book covers. Leave "" to hide.
   credentials: "CPA, MBA",
 

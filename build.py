@@ -915,6 +915,7 @@ def load_site():
     editors = content_block(content, "editors")
     site = {
         "name": content_string(content, "name"),
+        "siteName": content_string(content, "siteName") or content_string(content, "name"),
         "credentials": content_string(content, "credentials"),
         "headline": content_string(content, "headline") or "",
         "bio": content_strings(content, "bio"),
@@ -1461,10 +1462,10 @@ def home_schema(site, posts):
     if site["profiles"]:
         person["sameAs"] = [p["url"] for p in site["profiles"]]
     title = re.search(r"<title>(.*?)</title>", site["home"], re.S)
-    website = {"@type": "WebSite", "@id": site["url"] + "/#website", "url": home, "name": site["name"],
+    website = {"@type": "WebSite", "@id": site["url"] + "/#website", "url": home,
+               "name": site["siteName"],
+               "alternateName": [site["name"], "ashokpaudel.com"],
                "inLanguage": "en", "publisher": {"@id": person_id(site)}, "author": {"@id": person_id(site)}}
-    if site["credentials"]:
-        website["alternateName"] = f"{site['name']}, {site['credentials']}"
     page = {"@type": "ProfilePage", "@id": site["url"] + "/#webpage", "url": home,
             "name": html.unescape(title.group(1).strip()) if title else site["name"],
             "isPartOf": {"@id": site["url"] + "/#website"}, "mainEntity": {"@id": person_id(site)},
@@ -1484,7 +1485,7 @@ def render_page(site, path, title, description, main, kind="website", extra_head
     address, so it uses "/")."""
     root = root_for(path) if root is None else root
     social_title = page_title or title
-    full_title = f"{title} | {site['name']}" if suffix else title
+    full_title = f"{title} | {site['siteName']}" if suffix else title
     head = [
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
@@ -1501,7 +1502,7 @@ def render_page(site, path, title, description, main, kind="website", extra_head
         f'<meta property="og:title" content="{esc(social_title)}">',
         f'<meta property="og:description" content="{esc(description)}">',
         f'<meta property="og:type" content="{kind}">',
-        f'<meta property="og:site_name" content="{esc(site["name"])}">',
+        f'<meta property="og:site_name" content="{esc(site["siteName"])}">',
         '<meta property="og:locale" content="en_GB">',
         '<meta name="twitter:card" content="summary">',
         f'<meta name="twitter:title" content="{esc(social_title)}">',
@@ -1652,7 +1653,7 @@ def render_post(site, post, posts, newer, older):
         address = site["url"] + "/" + post["url"]
         article.update({"@id": address + "#article", "url": address, "mainEntityOfPage": address,
                         "isPartOf": {"@type": "WebSite", "@id": site["url"] + "/#website",
-                                     "name": site["name"], "url": site["url"] + "/"}})
+                                     "name": site["siteName"], "url": site["url"] + "/"}})
         if post["cover"] or post["image"]:
             article["image"] = site["url"] + "/" + (post["cover"] or post["image"])
     if review:
