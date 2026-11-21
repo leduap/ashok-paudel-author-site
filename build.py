@@ -1462,9 +1462,12 @@ def home_schema(site, posts):
     if site["profiles"]:
         person["sameAs"] = [p["url"] for p in site["profiles"]]
     title = re.search(r"<title>(.*?)</title>", site["home"], re.S)
+    # Google reads this name from the home page. Use the person's name, not siteName:
+    # "Ashok Paudel, Author" reads as a tagline and Google ignores it. siteName stays
+    # the "| Ashok Paudel, Author" suffix on other pages' titles.
     website = {"@type": "WebSite", "@id": site["url"] + "/#website", "url": home,
-               "name": site["siteName"],
-               "alternateName": [site["name"], "ashokpaudel.com"],
+               "name": site["name"],
+               "alternateName": "ashokpaudel.com",
                "inLanguage": "en", "publisher": {"@id": person_id(site)}, "author": {"@id": person_id(site)}}
     page = {"@type": "ProfilePage", "@id": site["url"] + "/#webpage", "url": home,
             "name": html.unescape(title.group(1).strip()) if title else site["name"],
