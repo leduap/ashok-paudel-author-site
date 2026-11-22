@@ -30,21 +30,32 @@ const SITE = {
   tagline: "Plain-English books on investing, options and corporate finance.",
 
   // "About" text. Each item is one paragraph.
-  // The first two sentences are the agreed wording and stay as they are. Never add an
+  // The first paragraph is the agreed short bio and stays as it is. Never add an
   // employer, a job title or a claim about past projects here or anywhere else on the site.
   bio: [
-    "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany. His commentary has appeared in Fortune.",
+    "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune.",
     "He writes plain-English books on investing, options and corporate finance, including Own the Whole Market, The Wheel Strategy series and Inside FP&A, and reviews books on money and business on this site."
   ],
 
-  // Where he is based, as it appears in the bio. Used in the structured data on the home page.
+  // The one-line description in Person structured data. Not a job title.
+  personDescription: "Finance professional based in Munich, Germany; CPA, MBA",
+
+  // Where he is based, as it appears in the bio. City and country only: the structured data
+  // uses this as homeLocation and address, and must not add a street or a postcode.
   location: "Munich, Germany",
 
-  // His own public profiles, used for the sameAs list in the structured data and shown on the
-  // Contact page. Only profiles that exist and are his. Never add a profile of another person
-  // of the same name. Add the Amazon author page here once it is set up in Author Central.
+  // College, written as alumniOf with type CollegeOrUniversity. alumniOfUrl was checked
+  // against the live site. Leave the url "" if you are not sure of it.
+  alumniOf: "ESMT Berlin",
+  alumniOfUrl: "https://esmt.berlin/",
+
+  // His own public profiles, used for the sameAs list in the structured data.
+  // Only profiles that exist and are his. Never add a profile of another person
+  // of the same name. The Amazon address is his Author Central vanity URL.
+  // An article with a url in the articles list below is added to sameAs as well.
   profiles: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela" },
+    { label: "Amazon", url: "https://www.amazon.com/author/ashokpaudel" },
     { label: "Fortune", url: "https://fortune.com/author/ashok-paudel/" }
   ],
 
@@ -270,14 +281,14 @@ const SITE = {
   // The newest article is shown first.
   // While the list is empty the section and its menu link are hidden.
   //
-  // The Fortune piece is listed by name only: Ashok has asked that the site does not
-  // link to the article itself. Leave its url as "".
+  // The Fortune article is linked. Its live page was fetched on 22 November 2026 before
+  // the url was filled in. "Featured in Fortune" and sameAs both use this url.
   articles: [
     {
       title: "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
       outlet: "Fortune",
       date: "2026-11-10",
-      url: ""
+      url: "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/"
     }
   ],
 
@@ -287,8 +298,8 @@ const SITE = {
   // photo is the headshot offered for download (use a large, sharp file). Leave "" to hide it.
   editors: {
     intro: "Working on a story about investing, saving or corporate finance? Here is recent writing. I also give comment, usually at short notice.",
-    shortBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A. His commentary has appeared in Fortune.",
-    longBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use, and he reviews books on money and business at ashokpaudel.com. His commentary has appeared in Fortune.",
+    shortBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune.",
+    longBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune. His books include Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use, and he reviews books on money and business at ashokpaudel.com.",
     photo: "assets/author-photo.jpg"
   },
 
