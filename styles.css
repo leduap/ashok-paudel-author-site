@@ -676,6 +676,7 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 .featured-in { margin-top: 1.25rem; font-family: var(--display); font-weight: 600; color: var(--green-label); }
 .featured-in a { color: inherit; }
 .amazon-author { margin: 1.25rem 0 0; font-family: var(--display); font-weight: 600; }
+#amazon-author a + a { margin-left: 1.25rem; }
 
 /* For editors */
 #editors .lede { font-size: 1.1rem; }
