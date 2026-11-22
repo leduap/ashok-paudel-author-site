@@ -672,9 +672,10 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   text-transform: uppercase; letter-spacing: 0.07em; color: var(--green-label);
 }
 
-/* "Published in Fortune" under the About text */
+/* "Featured in Fortune" under the About text */
 .featured-in { margin-top: 1.25rem; font-family: var(--display); font-weight: 600; color: var(--green-label); }
 .featured-in a { color: inherit; }
+.amazon-author { margin: 1.25rem 0 0; font-family: var(--display); font-weight: 600; }
 
 /* For editors */
 #editors .lede { font-size: 1.1rem; }
