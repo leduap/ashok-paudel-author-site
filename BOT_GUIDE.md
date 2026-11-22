@@ -27,7 +27,7 @@ Accuracy matters more than length. A short review that is right is better than a
 ## Nothing invented about Ashok
 
 - Do not invent anything about Ashok Paudel: no personal stories, no "when I...", no claims about his job, employer, clients, experience or results. The only credentials the site states are "CPA, MBA".
-- Never name his employer or clients, past or present, and never state his job title. This applies to his own opinion pieces too: if a piece he sends says where he works, what his title is, or describes a past project of his (moving finance teams onto one system, for example), remove that sentence and keep the rest. The only description of him the site uses is: a finance professional (CPA, MBA) based in Munich, Germany, whose commentary has appeared in Fortune.
+- Never name his employer or clients, past or present, and never state his job title. This applies to his own opinion pieces too: if a piece he sends says where he works, what his title is, or describes a past project of his (moving finance teams onto one system, for example), remove that sentence and keep the rest. The only description of him the site uses is: Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune.
 - Describe his books and templates only with the words `content.js` uses for them. The build writes the "From the author" cards from `content.js` for you, so the simplest safe sentence is one that says they are his own products and why they sit on this page. Do not add claims about what they achieve.
 - Do not copy any description of Ashok from his Gumroad store or anywhere else.
 

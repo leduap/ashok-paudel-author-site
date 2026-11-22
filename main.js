@@ -201,7 +201,8 @@
     $("article-list").appendChild(el("li", {}, parts));
   }); }
 
-  // Under the About text: "Published in Fortune", one link per outlet, newest article first.
+  // Under the About text: "Featured in Fortune", one link per outlet, newest article first.
+  // The build writes this into the page. This copy runs only before a build.
   var outlets = [];
   articles.forEach(function (article) {
     if (article.outlet && isRealUrl(article.url) &&
@@ -209,14 +210,14 @@
       outlets.push(article);
     }
   });
-  if ($("featured-in") && outlets.length) {
-    $("featured-in").appendChild(document.createTextNode("Published in "));
+  if ($("featured-in") && !filled("featured-in") && outlets.length) {
+    $("featured-in").appendChild(document.createTextNode("Featured in "));
     outlets.forEach(function (article, i) {
       if (i) { $("featured-in").appendChild(document.createTextNode(i === outlets.length - 1 ? " and " : ", ")); }
       $("featured-in").appendChild(link(article.outlet, article.url));
     });
   }
-  if ($("featured-in")) { $("featured-in").hidden = !outlets.length; }
+  if ($("featured-in") && !filled("featured-in")) { $("featured-in").hidden = !outlets.length; }
 
   // For editors: the article list is written by the build. This adds the bios, headshot and email.
   var editors = SITE.editors || {};

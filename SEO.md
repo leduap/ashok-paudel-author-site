@@ -34,7 +34,7 @@ The site is new to Google and Bing (Search Console began recording impressions o
 Search engines rank a new site by who links to it. Each of these is a real profile of yours and takes a few minutes:
 
 - **LinkedIn** (linkedin.com/in/paudela): add `https://ashokpaudel.com/` as the website on your profile, and in the About section. Share the newest opinion piece or review as a post from time to time with its full address.
-- **Amazon Author Central** (author.amazon.com): claim the author page if you have not, add the site address to the bio, and make sure all seven books are attached to the page. When the author page is live, add its address to the `profiles` list in `content.js` so it appears in the site's structured data.
+- **Amazon Author Central** (author.amazon.com): the author page is `https://www.amazon.com/author/ashokpaudel`, and that address is already in `profiles` in `content.js`. Add the site address to the Amazon bio, and make sure all seven books are attached to the page.
 - **The books themselves**: put `ashokpaudel.com` on the "About the author" page of each Kindle and paperback edition (a KDP re-upload of the interior is free), and in the Amazon book descriptions where Amazon's rules allow a plain mention.
 - **X / Twitter, Goodreads, Medium, Substack** or any other profile that is actually yours: add the website field. Then add the address to `profiles` in `content.js`. Do not add profiles of other people called Ashok Paudel.
 - **Fortune**: the author page `fortune.com/author/ashok-paudel/` already links back to Fortune's own pages. If Fortune lets contributors add a website, add it.
@@ -55,5 +55,5 @@ Search engines rank a new site by who links to it. Each of these is a real profi
 ## Things that are deliberately not on the site
 
 - No employer, job title, former employers or project claims anywhere, including inside opinion pieces. The build does not check this automatically, so when adding or publishing a piece, read it once for such mentions.
-- No link to the Fortune article itself: it is listed by headline and date only.
+- The Fortune article is linked from "Featured in Fortune" and from the writing list. Do not copy the article's text onto the site.
 - No invented ratings, awards, quotes or profiles.

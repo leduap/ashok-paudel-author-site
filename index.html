@@ -30,39 +30,78 @@
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Person",
-        "@id": "https://ashokpaudel.com/#person",
-        "name": "Ashok Paudel",
-        "honorificSuffix": "CPA, MBA",
-        "jobTitle": "Finance author",
-        "description": "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of plain-English finance books including Own the Whole Market, The Wheel Strategy and Inside FP&A. His commentary has appeared in Fortune.",
-        "url": "https://ashokpaudel.com/",
-        "image": "https://ashokpaudel.com/assets/author-photo.jpg",
-        "homeLocation": { "@type": "Place", "name": "Munich, Germany" },
-        "knowsAbout": ["investing", "index funds", "options", "corporate finance", "financial planning and analysis"],
-        "sameAs": [
-          "https://www.linkedin.com/in/paudela",
-          "https://fortune.com/author/ashok-paudel/"
-        ]
-      },
-      {
         "@type": "WebSite",
         "@id": "https://ashokpaudel.com/#website",
         "url": "https://ashokpaudel.com/",
         "name": "Ashok Paudel",
         "alternateName": "ashokpaudel.com",
         "inLanguage": "en",
-        "publisher": { "@id": "https://ashokpaudel.com/#person" },
-        "author": { "@id": "https://ashokpaudel.com/#person" }
+        "publisher": {
+          "@id": "https://ashokpaudel.com/#person"
+        },
+        "author": {
+          "@id": "https://ashokpaudel.com/#person"
+        }
       },
       {
         "@type": "ProfilePage",
         "@id": "https://ashokpaudel.com/#webpage",
         "url": "https://ashokpaudel.com/",
         "name": "Ashok Paudel, Author | Finance books and commentary",
-        "isPartOf": { "@id": "https://ashokpaudel.com/#website" },
-        "mainEntity": { "@id": "https://ashokpaudel.com/#person" },
-        "about": { "@id": "https://ashokpaudel.com/#person" }
+        "inLanguage": "en",
+        "isPartOf": {
+          "@id": "https://ashokpaudel.com/#website"
+        },
+        "mainEntity": {
+          "@type": "Person",
+          "name": "Ashok Paudel",
+          "@id": "https://ashokpaudel.com/#person",
+          "url": "https://ashokpaudel.com",
+          "honorificSuffix": "CPA, MBA",
+          "description": "Finance professional based in Munich, Germany; CPA, MBA",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://ashokpaudel.com/assets/author-photo.jpg",
+            "width": 888,
+            "height": 884
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Munich",
+            "addressCountry": "DE"
+          },
+          "homeLocation": {
+            "@type": "Place",
+            "name": "Munich, Germany",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Munich",
+              "addressCountry": "DE"
+            }
+          },
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "ESMT Berlin",
+            "url": "https://esmt.berlin/"
+          },
+          "knowsAbout": [
+            "investing",
+            "index funds",
+            "options",
+            "corporate finance",
+            "financial planning and analysis"
+          ],
+          "sameAs": [
+            "https://www.linkedin.com/in/paudela",
+            "https://www.amazon.com/author/ashokpaudel",
+            "https://fortune.com/author/ashok-paudel/",
+            "https://fortune.com/2026/11/10/trump-accounts-unclaimed-children-investment-accounts-claim-rate-ashok-paudel/"
+          ]
+        },
+        "about": {
+          "@id": "https://ashokpaudel.com/#person"
+        },
+        "dateModified": "2026-11-16T00:00:00Z"
       }
     ]
   }

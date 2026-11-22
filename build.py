@@ -919,7 +919,10 @@ def load_site():
         "credentials": content_string(content, "credentials"),
         "headline": content_string(content, "headline") or "",
         "bio": content_strings(content, "bio"),
+        "person_description": content_string(content, "personDescription") or "",
         "location": content_string(content, "location") or "",
+        "alumni_of": content_string(content, "alumniOf") or "",
+        "alumni_of_url": content_string(content, "alumniOfUrl") or "",
         "profiles": [item for item in content_items(content, "profiles")
                      if re.match(r"^https://[^\s.]+\.\S+$", item.get("url", ""))],
         "disclaimer": content_string(content, "disclaimer"),
@@ -1215,20 +1218,86 @@ def newsletter_block(site):
 
 
 def person_id(site):
-    """The address that names Ashok in structured data. The home page defines the Person with this @id."""
+    """The stable address of the one Person node. Every page that names Ashok uses this @id."""
     return site["url"] + "/#person"
 
 
-def person_ref(site):
-    """Ashok as the author of something: a reference to the Person on the home page, with his name
-    repeated so the item still names its author when read on its own."""
+def iso_datetime(day):
+    """A full ISO 8601 datetime. The site stores calendar dates, so the time is midnight UTC."""
+    return f"{day.isoformat()}T00:00:00Z"
+
+
+def city_address(location):
+    """PostalAddress at city level only: the locality and the country, never a street or a postcode."""
+    parts = [part.strip() for part in (location or "").split(",") if part.strip()]
+    if not parts:
+        return None
+    codes = {
+        "germany": "DE", "deutschland": "DE",
+        "united kingdom": "GB", "uk": "GB",
+        "united states": "US", "united states of america": "US", "usa": "US",
+    }
+    address = {"@type": "PostalAddress", "addressLocality": parts[0]}
+    if len(parts) > 1:
+        address["addressCountry"] = codes.get(parts[1].lower(), parts[1])
+    return address
+
+
+def person_node(site):
+    """The one description of Ashok. Copy it whole wherever a page defines him.
+
+    Do not add jobTitle, an employer, or a street address. Pages must not invent a second
+    Person with this @id and different properties.
+    """
     person = {"@type": "Person", "name": site["name"]}
-    if site["credentials"]:
-        person["honorificSuffix"] = site["credentials"]
     if site["url"]:
         person["@id"] = person_id(site)
-        person["url"] = site["url"] + "/"
+        # The person's url is the site origin, without a trailing slash.
+        person["url"] = site["url"]
+    if site["credentials"]:
+        person["honorificSuffix"] = site["credentials"]
+    if site.get("person_description"):
+        person["description"] = site["person_description"]
+    if site["url"] and site["photo"] and (ROOT / site["photo"]).is_file():
+        image = {"@type": "ImageObject", "url": site["url"] + "/" + site["photo"]}
+        size = image_size(ROOT / site["photo"])
+        if size:
+            image["width"], image["height"] = size
+        person["image"] = image
+    address = city_address(site.get("location") or "")
+    if address:
+        person["address"] = dict(address)
+        located = {"@type": "PostalAddress", "addressLocality": address["addressLocality"]}
+        if "addressCountry" in address:
+            located["addressCountry"] = address["addressCountry"]
+        person["homeLocation"] = {"@type": "Place", "name": site["location"], "address": located}
+    if site.get("alumni_of"):
+        school = {"@type": "CollegeOrUniversity", "name": site["alumni_of"]}
+        school_url = site.get("alumni_of_url") or ""
+        if school_url.startswith("https://"):
+            school["url"] = school_url
+        person["alumniOf"] = school
+    person["knowsAbout"] = ["investing", "index funds", "options", "corporate finance",
+                            "financial planning and analysis"]
+    same = []
+    for profile in site.get("profiles") or []:
+        url = profile.get("url") or ""
+        if url.startswith("https://") and url not in same:
+            same.append(url)
+    for article in site.get("articles") or []:
+        url = article.get("url") or ""
+        if url.startswith("https://") and url not in same:
+            same.append(url)
+    if same:
+        person["sameAs"] = same
     return person
+
+
+def person_ref(site):
+    """Point at the Person already defined on this page. Not a second description of him."""
+    if site["url"]:
+        return {"@id": person_id(site)}
+    return {"@type": "Person", "name": site["name"]}
 
 
 def json_ld(data):
@@ -1351,6 +1420,26 @@ def books_html(site, root):
     return "".join(out)
 
 
+def featured_html(site):
+    """'Featured in Fortune': one link per publication that has a real article address."""
+    outlets = []
+    seen = set()
+    for article in sorted(site["articles"], key=lambda item: item.get("date", ""), reverse=True):
+        outlet = article.get("outlet") or ""
+        url = article.get("url") or ""
+        if outlet and url.startswith("https://") and outlet not in seen:
+            seen.add(outlet)
+            outlets.append((outlet, url))
+    if not outlets:
+        return ""
+    parts = ["Featured in "]
+    for index, (outlet, url) in enumerate(outlets):
+        if index:
+            parts.append(" and " if index == len(outlets) - 1 else ", ")
+        parts.append(f'<a href="{esc(url)}" target="_blank" rel="noopener">{esc(outlet)}</a>')
+    return "".join(parts)
+
+
 def article_cards_html(site):
     """The 'Writing elsewhere' list on the About page. An article without a url is listed as text."""
     items = []
@@ -1396,6 +1485,9 @@ def contact_html(site):
 def fill_static(markup, site, root):
     """Write the content main.js would add into the page, so it is there before any script runs."""
     markup = prerender(markup, "bio", bio_html(site))
+    featured = featured_html(site)
+    if featured:
+        markup = prerender(markup, "featured-in", featured)
     markup = prerender(markup, "book-list", books_html(site, root))
     if site["articles"]:
         markup = prerender(markup, "article-list", article_cards_html(site))
@@ -1414,14 +1506,20 @@ def fill_static(markup, site, root):
     return markup
 
 
-def book_schema(site, book):
-    """Structured data for one of Ashok's own books, from content.js only."""
+def book_schema(site, book, embed_author=True):
+    """Structured data for one of Ashok's own books, from content.js only.
+
+    embed_author writes the full Person. A page that already defines him passes False and
+    keeps a single Person node, referenced by @id.
+    """
     if not site["url"]:
         return None
     address = site["url"] + "/" + book["url"]
     data = {
         "@type": "Book", "@id": address + "#book", "url": address,
-        "name": book["title"], "author": person_ref(site), "inLanguage": "en",
+        "name": book["title"],
+        "author": person_node(site) if embed_author else person_ref(site),
+        "inLanguage": "en",
         "identifier": {"@type": "PropertyValue", "propertyID": "ASIN", "value": book["amazonId"]},
         "sameAs": f"https://www.amazon.com/dp/{book['amazonId']}",
     }
@@ -1440,43 +1538,53 @@ def book_schema(site, book):
     return data
 
 
+def profile_page_node(site, posts, url, name, page_id):
+    """A ProfilePage whose mainEntity is the one Person, with name on that object.
+
+    mainEntity carries the Person itself. A bare @id does not satisfy Google's required
+    name on mainEntity when the reference is not expanded. dateModified is a full ISO 8601
+    datetime, which is what ProfilePage asks for.
+    """
+    page = {
+        "@type": "ProfilePage", "@id": page_id, "url": url, "name": name, "inLanguage": "en",
+        "isPartOf": {"@id": site["url"] + "/#website"},
+        "mainEntity": person_node(site),
+        "about": {"@id": person_id(site)},
+    }
+    newest = max((p["updated"] or p["day"] for p in posts), default=None)
+    if newest:
+        page["dateModified"] = iso_datetime(newest)
+    return page
+
+
 def home_schema(site, posts):
-    """Person, WebSite and ProfilePage for the home page, written from content.js."""
+    """WebSite and ProfilePage for the home page. The Person is mainEntity, defined once."""
     if not site["url"]:
         return ""
     home = site["url"] + "/"
-    person = {
-        "@type": "Person", "@id": person_id(site), "name": site["name"], "url": home,
-        "jobTitle": "Finance author",
-        "knowsAbout": ["investing", "index funds", "options", "corporate finance",
-                       "financial planning and analysis"],
-    }
-    if site["credentials"]:
-        person["honorificSuffix"] = site["credentials"]
-    if site["bio"]:
-        person["description"] = " ".join(site["bio"])
-    if site["photo"]:
-        person["image"] = site["url"] + "/" + site["photo"]
-    if site["location"]:
-        person["homeLocation"] = {"@type": "Place", "name": site["location"]}
-    if site["profiles"]:
-        person["sameAs"] = [p["url"] for p in site["profiles"]]
     title = re.search(r"<title>(.*?)</title>", site["home"], re.S)
     # Google reads this name from the home page. Use the person's name, not siteName:
     # "Ashok Paudel, Author" reads as a tagline and Google ignores it. siteName stays
-    # the "| Ashok Paudel, Author" suffix on other pages' titles.
+    # the "| Ashok Paudel, Author" suffix on other pages' titles and in og:site_name.
     website = {"@type": "WebSite", "@id": site["url"] + "/#website", "url": home,
                "name": site["name"],
                "alternateName": "ashokpaudel.com",
                "inLanguage": "en", "publisher": {"@id": person_id(site)}, "author": {"@id": person_id(site)}}
-    page = {"@type": "ProfilePage", "@id": site["url"] + "/#webpage", "url": home,
-            "name": html.unescape(title.group(1).strip()) if title else site["name"],
-            "isPartOf": {"@id": site["url"] + "/#website"}, "mainEntity": {"@id": person_id(site)},
-            "about": {"@id": person_id(site)}}
-    newest = max((p["updated"] or p["day"] for p in posts), default=None)
-    if newest:
-        page["dateModified"] = newest.isoformat()
-    return json_ld({"@context": "https://schema.org", "@graph": [person, website, page]})
+    page = profile_page_node(
+        site, posts, home,
+        html.unescape(title.group(1).strip()) if title else site["name"],
+        site["url"] + "/#webpage")
+    return json_ld({"@context": "https://schema.org", "@graph": [website, page]})
+
+
+def about_schema(site, posts):
+    """ProfilePage for /about/, the page whose subject is the person. Same Person @id."""
+    if not site["url"]:
+        return ""
+    name = site["name"]
+    title = f"About {name}" + (f", {site['credentials']}" if site["credentials"] else "")
+    page = profile_page_node(site, posts, site["url"] + "/about/", title, site["url"] + "/about/#profile")
+    return json_ld({"@context": "https://schema.org", "@graph": [page]})
 
 
 def render_page(site, path, title, description, main, kind="website", extra_head="", image="", index=True,
@@ -1640,23 +1748,23 @@ def render_post(site, post, posts, newer, older):
         </p>
       </div>
     </article>{newsletter_block(site)}"""
-    person = person_ref(site)
-    if site["url"] and site["photo"]:
-        person["image"] = site["url"] + "/" + site["photo"]
+    # One Person on the page. The review points at that same @id rather than repeating him.
+    author = person_node(site) if site["url"] else person_ref(site)
+    author_ref = person_ref(site) if site["url"] else author
     article = {
         "@type": "BlogPosting",
         "headline": post["title"], "description": post["summary"],
         "datePublished": post["day"].isoformat(),
         "dateModified": (post["updated"] or post["day"]).isoformat(),
         "inLanguage": "en", "keywords": post["tags"], "articleSection": type_label,
-        "author": person, "publisher": person,
+        "author": author, "publisher": author_ref,
     }
     graph = [article]
     if site["url"]:
         address = site["url"] + "/" + post["url"]
         article.update({"@id": address + "#article", "url": address, "mainEntityOfPage": address,
                         "isPartOf": {"@type": "WebSite", "@id": site["url"] + "/#website",
-                                     "name": site["siteName"], "url": site["url"] + "/"}})
+                                     "name": site["name"], "url": site["url"] + "/"}})
         if post["cover"] or post["image"]:
             article["image"] = site["url"] + "/" + (post["cover"] or post["image"])
     if review:
@@ -1668,7 +1776,7 @@ def render_post(site, post, posts, newer, older):
             book["image"] = site["url"] + "/" + post["cover"]
         verdict = {"@type": "Review", "name": post["title"], "reviewBody": post["summary"],
                    "datePublished": post["day"].isoformat(), "inLanguage": "en", "itemReviewed": book,
-                   "author": person, "publisher": person}
+                   "author": author_ref, "publisher": author_ref}
         if site["url"]:
             verdict["url"] = address
             verdict["mainEntityOfPage"] = address
@@ -1987,11 +2095,12 @@ def render_home(site, posts):
     books_head = ""
     if site["url"] and published:
         books_head = json_ld({"@context": "https://schema.org", "@graph": [
+            person_node(site),
             {"@type": "CollectionPage", "@id": site["url"] + "/books/#webpage", "url": site["url"] + "/books/",
              "name": f"Books by {name}", "isPartOf": {"@id": site["url"] + "/#website"},
              "about": {"@id": person_id(site)},
              "mainEntity": {"@type": "ItemList", "itemListElement": [
-                 {"@type": "ListItem", "position": n, "item": book_schema(site, b)}
+                 {"@type": "ListItem", "position": n, "item": book_schema(site, b, embed_author=False)}
                  for n, b in enumerate(published, start=1)]}}]})
     extras = {
         "books/index.html": content_page(
@@ -2003,7 +2112,8 @@ def render_home(site, posts):
         "about/index.html": content_page(
             site, "about/index.html", f"About {name}, CPA, MBA",
             " ".join(site["bio"])[:300] or f"About {name}.",
-            bodies["about"], "about/", crumbs=[("Home", ""), (f"About {name}", "about/")], suffix=False),
+            bodies["about"], "about/", extra_head=about_schema(site, posts),
+            crumbs=[("Home", ""), (f"About {name}", "about/")], suffix=False),
         "for-editors/index.html": content_page(
             site, "for-editors/index.html", f"For editors: {name}, finance author and commentator",
             f"Recent writing, a short and a longer biography and a headshot of {name}, CPA, MBA, "
