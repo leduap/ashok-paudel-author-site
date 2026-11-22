@@ -219,6 +219,20 @@
   }
   if ($("featured-in") && !filled("featured-in")) { $("featured-in").hidden = !outlets.length; }
 
+  // "Books on Amazon" on the home page, the About page and the Books page.
+  // The build writes the link. This copy runs only before a build.
+  var amazonAuthor = ((SITE.profiles || []).filter(function (profile) {
+    return isRealUrl(profile.url) && /^https:\/\/www\.amazon\.com\/author\/[A-Za-z0-9-]+\/?$/.test(profile.url);
+  })[0] || {}).url;
+  document.querySelectorAll("#amazon-author").forEach(function (node) {
+    if (node.hasAttribute("data-prerendered")) { return; }
+    if (!amazonAuthor) { node.hidden = true; return; }
+    var authorLink = link("Books on Amazon", amazonAuthor);
+    authorLink.rel = "me noopener";
+    node.appendChild(authorLink);
+    node.hidden = false;
+  });
+
   // For editors: the article list is written by the build. This adds the bios, headshot and email.
   var editors = SITE.editors || {};
   var editorEmail = isRealEmail((SITE.contact || {}).email) ? SITE.contact.email : "";
@@ -311,7 +325,9 @@
   var socials = (contact.socials || []).filter(function (social) { return isRealUrl(social.url); });
   if ($("social-list") && !filled("social-list")) {
     socials.forEach(function (social) {
-      $("social-list").appendChild(el("li", {}, [link(social.label, social.url, "button button-quiet button-small")]));
+      var profileLink = link(social.label, social.url, "button button-quiet button-small");
+      if (profileLink.tagName === "A") { profileLink.rel = "me noopener"; }
+      $("social-list").appendChild(el("li", {}, [profileLink]));
     });
   }
   // The kinds of request, as short descriptions. There is one button for all of them:

@@ -1420,6 +1420,19 @@ def books_html(site, root):
     return "".join(out)
 
 
+def amazon_author_html(site):
+    """The visible 'Books on Amazon' link. The address is the author page in profiles, not a book page."""
+    url = ""
+    for profile in site.get("profiles") or []:
+        candidate = profile.get("url") or ""
+        if re.match(r"^https://www\.amazon\.com/author/[A-Za-z0-9-]+/?$", candidate):
+            url = candidate
+            break
+    if not url:
+        return ""
+    return f'<a href="{esc(url)}" target="_blank" rel="me noopener">Books on Amazon</a>'
+
+
 def featured_html(site):
     """'Featured in Fortune': one link per publication that has a real article address."""
     outlets = []
@@ -1488,6 +1501,9 @@ def fill_static(markup, site, root):
     featured = featured_html(site)
     if featured:
         markup = prerender(markup, "featured-in", featured)
+    amazon = amazon_author_html(site)
+    if amazon:
+        markup = prerender(markup, "amazon-author", amazon)
     markup = prerender(markup, "book-list", books_html(site, root))
     if site["articles"]:
         markup = prerender(markup, "article-list", article_cards_html(site))
