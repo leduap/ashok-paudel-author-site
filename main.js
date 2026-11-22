@@ -224,12 +224,23 @@
   var amazonAuthor = ((SITE.profiles || []).filter(function (profile) {
     return isRealUrl(profile.url) && /^https:\/\/www\.amazon\.com\/author\/[A-Za-z0-9-]+\/?$/.test(profile.url);
   })[0] || {}).url;
+  var goodreads = ((SITE.profiles || []).filter(function (profile) {
+    return isRealUrl(profile.url) && profile.url.indexOf("https://www.goodreads.com/author/") === 0;
+  })[0] || {}).url;
   document.querySelectorAll("#amazon-author").forEach(function (node) {
     if (node.hasAttribute("data-prerendered")) { return; }
-    if (!amazonAuthor) { node.hidden = true; return; }
-    var authorLink = link("Books on Amazon", amazonAuthor);
-    authorLink.rel = "me noopener";
-    node.appendChild(authorLink);
+    if (!amazonAuthor && !goodreads) { node.hidden = true; return; }
+    if (amazonAuthor) {
+      var authorLink = link("Books on Amazon", amazonAuthor);
+      authorLink.rel = "me noopener";
+      node.appendChild(authorLink);
+    }
+    if (goodreads) {
+      if (node.childNodes.length) { node.appendChild(document.createTextNode(" ")); }
+      var goodreadsLink = link("Goodreads", goodreads);
+      goodreadsLink.rel = "me noopener";
+      node.appendChild(goodreadsLink);
+    }
     node.hidden = false;
   });
 

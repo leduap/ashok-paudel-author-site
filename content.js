@@ -56,6 +56,7 @@ const SITE = {
   profiles: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela" },
     { label: "Amazon", url: "https://www.amazon.com/author/ashokpaudel" },
+    { label: "Goodreads", url: "https://www.goodreads.com/author/show/17965536.Ashok_Paudel" },
     { label: "Fortune", url: "https://fortune.com/author/ashok-paudel/" }
   ],
 

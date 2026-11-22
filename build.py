@@ -1428,9 +1428,15 @@ def amazon_author_html(site):
         if re.match(r"^https://www\.amazon\.com/author/[A-Za-z0-9-]+/?$", candidate):
             url = candidate
             break
-    if not url:
-        return ""
-    return f'<a href="{esc(url)}" target="_blank" rel="me noopener">Books on Amazon</a>'
+    parts = []
+    if url:
+        parts.append(f'<a href="{esc(url)}" target="_blank" rel="me noopener">Books on Amazon</a>')
+    for profile in site.get("profiles") or []:
+        candidate = profile.get("url") or ""
+        if candidate.startswith("https://www.goodreads.com/author/"):
+            parts.append(f'<a href="{esc(candidate)}" target="_blank" rel="me noopener">Goodreads</a>')
+            break
+    return " ".join(parts)
 
 
 def featured_html(site):
