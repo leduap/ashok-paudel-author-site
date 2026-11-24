@@ -6,6 +6,15 @@
 
   function $(id) { return document.getElementById(id); }
 
+  // build.py writes the books, the bio and the contact details into the page itself and marks
+  // each container data-prerendered, so search engines see them without running this script.
+  // Anything so marked is left alone here. (Opening index.html straight from disk, before a
+  // build, nothing is marked and this script fills the page as before.)
+  function filled(id) {
+    var node = $(id);
+    return node && node.hasAttribute("data-prerendered");
+  }
+
   // Build an element: el("a", { href: "#", className: "x" }, "text" or [children])
   function el(tag, props, children) {
     var node = document.createElement(tag);
@@ -91,7 +100,7 @@
   if ($("year")) { $("year").textContent = String(new Date().getFullYear()); }
 
   // Bio and photo. The home page has the hero photo; the About page has its own.
-  if ($("bio")) {
+  if ($("bio") && !filled("bio")) {
     (SITE.bio || []).forEach(function (paragraph) { $("bio").appendChild(el("p", {}, paragraph)); });
   }
   if ($("photo") && SITE.photo) {
@@ -111,7 +120,7 @@
   if (books.some(function (book) { return groupIds.indexOf(book.group) < 0; })) {
     groups.push({ id: "", title: groups.length ? "More books" : "", text: "" });
   }
-  if ($("book-list")) { groups.forEach(function (group) {
+  if ($("book-list") && !filled("book-list")) { groups.forEach(function (group) {
     var members = books.filter(function (book) {
       return group.id ? book.group === group.id : groupIds.indexOf(book.group) < 0;
     });
@@ -183,7 +192,7 @@
     return parseDate(b.date) - parseDate(a.date);
   });
   if ($("article-list")) { showSection("writing", articles.length > 0); }
-  if ($("article-list")) { articles.forEach(function (article) {
+  if ($("article-list") && !filled("article-list")) { articles.forEach(function (article) {
     // One card per article: the publication's name (as plain text), the headline as the link, the date.
     var parts = [];
     if (article.outlet) { parts.push(el("span", { className: "outlet" }, article.outlet)); }
@@ -192,7 +201,8 @@
     $("article-list").appendChild(el("li", {}, parts));
   }); }
 
-  // Under the About text: "Published in Fortune", one link per outlet, newest article first.
+  // Under the About text: "Featured in Fortune", one link per outlet, newest article first.
+  // The build writes this into the page. This copy runs only before a build.
   var outlets = [];
   articles.forEach(function (article) {
     if (article.outlet && isRealUrl(article.url) &&
@@ -200,37 +210,70 @@
       outlets.push(article);
     }
   });
-  if ($("featured-in") && outlets.length) {
-    $("featured-in").appendChild(document.createTextNode("Published in "));
+  if ($("featured-in") && !filled("featured-in") && outlets.length) {
+    $("featured-in").appendChild(document.createTextNode("Featured in "));
     outlets.forEach(function (article, i) {
       if (i) { $("featured-in").appendChild(document.createTextNode(i === outlets.length - 1 ? " and " : ", ")); }
       $("featured-in").appendChild(link(article.outlet, article.url));
     });
   }
-  if ($("featured-in")) { $("featured-in").hidden = !outlets.length; }
+  if ($("featured-in") && !filled("featured-in")) { $("featured-in").hidden = !outlets.length; }
+
+  // "Books on Amazon" on the home page, the About page and the Books page.
+  // The build writes the link. This copy runs only before a build.
+  var amazonAuthor = ((SITE.profiles || []).filter(function (profile) {
+    return isRealUrl(profile.url) && /^https:\/\/www\.amazon\.com\/author\/[A-Za-z0-9-]+\/?$/.test(profile.url);
+  })[0] || {}).url;
+  var goodreads = ((SITE.profiles || []).filter(function (profile) {
+    return isRealUrl(profile.url) && profile.url.indexOf("https://www.goodreads.com/author/") === 0;
+  })[0] || {}).url;
+  document.querySelectorAll("#amazon-author").forEach(function (node) {
+    if (node.hasAttribute("data-prerendered")) { return; }
+    if (!amazonAuthor && !goodreads) { node.hidden = true; return; }
+    if (amazonAuthor) {
+      var authorLink = link("Books on Amazon", amazonAuthor);
+      authorLink.rel = "me noopener";
+      node.appendChild(authorLink);
+    }
+    if (goodreads) {
+      if (node.childNodes.length) { node.appendChild(document.createTextNode(" ")); }
+      var goodreadsLink = link("Goodreads", goodreads);
+      goodreadsLink.rel = "me noopener";
+      node.appendChild(goodreadsLink);
+    }
+    node.hidden = false;
+  });
 
   // For editors: the article list is written by the build. This adds the bios, headshot and email.
   var editors = SITE.editors || {};
   var editorEmail = isRealEmail((SITE.contact || {}).email) ? SITE.contact.email : "";
   if ($("editors-intro")) {
   showSection("editors", Boolean(editors.intro || editors.shortBio || editors.longBio));
-  $("editors-intro").textContent = editors.intro || "";
+  if (!filled("editors-intro")) { $("editors-intro").textContent = editors.intro || ""; }
   $("editors-intro").hidden = !editors.intro; }
-  [["Short bio", editors.shortBio], ["Longer bio", editors.longBio]].forEach(function (pair) {
-    if (!pair[1]) { return; }
+  function copyButton(text) {
     var copy = el("button", { type: "button", className: "button button-quiet button-small" }, "Copy");
     copy.addEventListener("click", function () {
       if (!navigator.clipboard) { return; }
-      navigator.clipboard.writeText(pair[1]).then(function () {
+      navigator.clipboard.writeText(text).then(function () {
         copy.textContent = "Copied";
         setTimeout(function () { copy.textContent = "Copy"; }, 2000);
       });
     });
-    if ($("bio-blocks")) {
+    return copy;
+  }
+  if ($("bio-blocks") && filled("bio-blocks")) {
+    // The bios are already on the page; only the Copy buttons need JavaScript.
+    $("bio-blocks").querySelectorAll(".bio-block").forEach(function (block) {
+      block.appendChild(copyButton(block.textContent.trim()));
+    });
+  } else {
+    [["Short bio", editors.shortBio], ["Longer bio", editors.longBio]].forEach(function (pair) {
+      if (!pair[1] || !$("bio-blocks")) { return; }
       $("bio-blocks").appendChild(el("h3", {}, pair[0]));
-      $("bio-blocks").appendChild(el("div", { className: "bio-block" }, [el("p", {}, pair[1]), copy]));
-    }
-  });
+      $("bio-blocks").appendChild(el("div", { className: "bio-block" }, [el("p", {}, pair[1]), copyButton(pair[1])]));
+    });
+  }
   if ($("headshot-link")) {
     if (editors.photo) { $("headshot-link").href = asset(editors.photo); }
     $("headshot-link").hidden = !editors.photo;
@@ -291,15 +334,17 @@
   }
   if ($("email-line")) { $("email-line").hidden = !hasEmail; }
   var socials = (contact.socials || []).filter(function (social) { return isRealUrl(social.url); });
-  if ($("social-list")) {
+  if ($("social-list") && !filled("social-list")) {
     socials.forEach(function (social) {
-      $("social-list").appendChild(el("li", {}, [link(social.label, social.url, "button button-quiet button-small")]));
+      var profileLink = link(social.label, social.url, "button button-quiet button-small");
+      if (profileLink.tagName === "A") { profileLink.rel = "me noopener"; }
+      $("social-list").appendChild(el("li", {}, [profileLink]));
     });
   }
   // The kinds of request, as short descriptions. There is one button for all of them:
   // the email address above.
   var inquiries = (hasEmail || socials.length > 0) ? (contact.inquiries || []) : [];
-  if ($("inquiry-list")) {
+  if ($("inquiry-list") && !filled("inquiry-list")) {
     inquiries.forEach(function (inquiry) {
       var parts = [el("h3", {}, inquiry.title)];
       if (inquiry.text) { parts.push(el("p", {}, inquiry.text)); }

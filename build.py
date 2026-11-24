@@ -71,6 +71,11 @@ REVIEW_CLOSING = "A review describes a book. It is not advice"
 MIN_FAQ, MIN_REVIEW_SOURCES = 2, 2
 TOC_MIN_SECTIONS = 3    # a post with at least this many ## sections gets an "On this page" list
 RELATED_POSTS = 3       # how many "More from the blog" cards a post shows
+# A tag page with fewer posts than this is kept for visitors but marked noindex and left out of
+# the sitemap: a list of one post says nothing the post itself does not, and search engines
+# treat such near-duplicates as thin content.
+MIN_TAG_POSTS = 2
+BOOK_RELATED_POSTS = 3  # how many "From the blog" cards a book page shows
 # Newsletter: the sign-up form posts to whatever https:// address is in newsletter.formAction.
 # Kit (formerly ConvertKit) is understood to call its email field "email_address"; this has NOT
 # been confirmed against a live Kit form. Any other provider gets the usual name "email".
@@ -839,10 +844,13 @@ def content_string(source, key, scope=None):
 def content_items(source, key):
     """The items of a list in content.js such as  books: [ {...}, {...} ]  as dictionaries of their text values."""
     block = re.search(r"^\s*" + re.escape(key) + r"\s*:\s*\[(.*?)^\s*\]", source, re.S | re.M)
+    # Lines commented out with // are examples, not items.
+    body = re.sub(r"^\s*//.*$", "", block.group(1), flags=re.M) if block else ""
     items = []
-    for body in re.findall(r"\{(.*?)\}", block.group(1) if block else "", re.S):
+    for body in re.findall(r"\{(.*?)\}", body, re.S):
         item = {}
-        for name, value in re.findall(r'^\s*(\w+)\s*:\s*("(?:[^"\\\n]|\\.)*")', body, re.M):
+        # Fields may each sit on their own line or share one line:  { id: "a", title: "b" }
+        for name, value in re.findall(r'(?:^|[{,])\s*(\w+)\s*:\s*("(?:[^"\\\n]|\\.)*")', body, re.M):
             try:
                 item[name] = json.loads(value)
             except ValueError:
@@ -850,6 +858,34 @@ def content_items(source, key):
         if item:
             items.append(item)
     return items
+
+
+def content_strings(source, key):
+    """The strings of a list in content.js such as  bio: [ "...", "..." ]."""
+    block = re.search(r"^\s*" + re.escape(key) + r"\s*:\s*\[(.*?)^\s*\]", source, re.S | re.M)
+    if not block:
+        return []
+    body = re.sub(r"^\s*//.*$", "", block.group(1), flags=re.M)
+    out = []
+    for value in re.findall(r'"(?:[^"\\\n]|\\.)*"', body):
+        try:
+            out.append(json.loads(value))
+        except ValueError:
+            pass
+    return out
+
+
+def content_block(source, key):
+    """The text between  key: {  and its closing  }  in content.js, for reading nested values."""
+    match = re.search(r"^\s*" + re.escape(key) + r"\s*:\s*\{(.*?)^\s*\}", source, re.S | re.M)
+    return match.group(1) if match else ""
+
+
+def book_slug(title):
+    """The folder name of a book's own page: 'Rolling, Repair and Risk' becomes rolling-repair-and-risk,
+    'Inside FP&A' becomes inside-fpa."""
+    text = title.replace("&", "").replace("'", "").replace("\u2019", "")
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
 def public_address():
@@ -875,9 +911,20 @@ def load_site():
 
     content = (ROOT / "content.js").read_text(encoding="utf-8")
     page = (ROOT / "index.html").read_text(encoding="utf-8")
+    contact = content_block(content, "contact")
+    editors = content_block(content, "editors")
     site = {
         "name": content_string(content, "name"),
+        "siteName": content_string(content, "siteName") or content_string(content, "name"),
         "credentials": content_string(content, "credentials"),
+        "headline": content_string(content, "headline") or "",
+        "bio": content_strings(content, "bio"),
+        "person_description": content_string(content, "personDescription") or "",
+        "location": content_string(content, "location") or "",
+        "alumni_of": content_string(content, "alumniOf") or "",
+        "alumni_of_url": content_string(content, "alumniOfUrl") or "",
+        "profiles": [item for item in content_items(content, "profiles")
+                     if re.match(r"^https://[^\s.]+\.\S+$", item.get("url", ""))],
         "disclaimer": content_string(content, "disclaimer"),
         "affiliate.disclosure": content_string(content, "disclosure", "affiliate"),
         "affiliate_note": content_string(content, "note", "affiliate") or "",
@@ -889,18 +936,43 @@ def load_site():
         "newsletter_blurb": content_string(content, "blurb", "newsletter") or "",
         "newsletter_thanks": content_string(content, "thanks", "newsletter") or "Thank you.",
         "photo": content_string(content, "photo") or "",
+        "book_groups": content_items(content, "bookGroups"),
         "books": content_items(content, "books"),
         "templates": content_items(content, "items"),
         # One switch for everything Gumroad: the home page section and links from posts.
         "templates_on": bool(re.search(r"^\s*templates\s*:\s*\{[^{}\[\]]*?\bshow\s*:\s*true\b", content, re.M)),
+        # An article needs a title, an outlet and a date. The url may be "" (listed without a link).
         "articles": [item for item in content_items(content, "articles")
-                     if re.match(r"^https?://[^\s.]+\.\S+$", item.get("url", ""))],
+                     if item.get("title") and item.get("outlet") and item.get("date")],
+        "editors": {
+            "intro": content_string(editors, "intro") or "",
+            "shortBio": content_string(editors, "shortBio") or "",
+            "longBio": content_string(editors, "longBio") or "",
+            "photo": content_string(editors, "photo") or "",
+        },
         "editors_on": bool(content_string(content, "shortBio", "editors")
                            or content_string(content, "longBio", "editors")
                            or content_string(content, "intro", "editors")),
+        "contact_email": content_string(contact, "email") or "",
+        "socials": [item for item in content_items(contact, "socials")
+                    if re.match(r"^https?://[^\s.]+\.\S+$", item.get("url", ""))],
+        "inquiries": [item for item in content_items(contact, "inquiries") if item.get("title")],
         "url": public_address(),
         "home": page,
     }
+    if not re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", site["contact_email"]):
+        site["contact_email"] = ""
+    # Every published book (one with an Amazon code and no "Coming soon" status) gets its own page.
+    seen = set()
+    for book in site["books"]:
+        book["url"] = ""
+        if book.get("title") and book.get("amazonId") and not book.get("status"):
+            slug = book_slug(book["title"])
+            if slug in seen:
+                problems.append(f"content.js: two books would share the page address books/{slug}/. Change one title")
+            seen.add(slug)
+            book["url"] = f"books/{slug}/"
+        book["tags"] = [t.strip().lower() for t in (book.get("topics") or "").split(",") if t.strip()]
     if not site["name"]:
         problems.append('content.js: could not find the line  name: "..."  near the top')
     for key, tag in site["amazon_tags"].items():
@@ -1146,27 +1218,428 @@ def newsletter_block(site):
 
 
 def person_id(site):
-    """The address that names Ashok in structured data. The home page defines the Person with this @id."""
+    """The stable address of the one Person node. Every page that names Ashok uses this @id."""
     return site["url"] + "/#person"
 
 
+def iso_datetime(day):
+    """A full ISO 8601 datetime. The site stores calendar dates, so the time is midnight UTC."""
+    return f"{day.isoformat()}T00:00:00Z"
+
+
+def city_address(location):
+    """PostalAddress at city level only: the locality and the country, never a street or a postcode."""
+    parts = [part.strip() for part in (location or "").split(",") if part.strip()]
+    if not parts:
+        return None
+    codes = {
+        "germany": "DE", "deutschland": "DE",
+        "united kingdom": "GB", "uk": "GB",
+        "united states": "US", "united states of america": "US", "usa": "US",
+    }
+    address = {"@type": "PostalAddress", "addressLocality": parts[0]}
+    if len(parts) > 1:
+        address["addressCountry"] = codes.get(parts[1].lower(), parts[1])
+    return address
+
+
+def person_node(site):
+    """The one description of Ashok. Copy it whole wherever a page defines him.
+
+    Do not add jobTitle, an employer, or a street address. Pages must not invent a second
+    Person with this @id and different properties.
+    """
+    person = {"@type": "Person", "name": site["name"]}
+    if site["url"]:
+        person["@id"] = person_id(site)
+        # The person's url is the site origin, without a trailing slash.
+        person["url"] = site["url"]
+    if site["credentials"]:
+        person["honorificSuffix"] = site["credentials"]
+    if site.get("person_description"):
+        person["description"] = site["person_description"]
+    if site["url"] and site["photo"] and (ROOT / site["photo"]).is_file():
+        image = {"@type": "ImageObject", "url": site["url"] + "/" + site["photo"]}
+        size = image_size(ROOT / site["photo"])
+        if size:
+            image["width"], image["height"] = size
+        person["image"] = image
+    address = city_address(site.get("location") or "")
+    if address:
+        person["address"] = dict(address)
+        located = {"@type": "PostalAddress", "addressLocality": address["addressLocality"]}
+        if "addressCountry" in address:
+            located["addressCountry"] = address["addressCountry"]
+        person["homeLocation"] = {"@type": "Place", "name": site["location"], "address": located}
+    if site.get("alumni_of"):
+        school = {"@type": "CollegeOrUniversity", "name": site["alumni_of"]}
+        school_url = site.get("alumni_of_url") or ""
+        if school_url.startswith("https://"):
+            school["url"] = school_url
+        person["alumniOf"] = school
+    person["knowsAbout"] = ["investing", "index funds", "options", "corporate finance",
+                            "financial planning and analysis"]
+    same = []
+    for profile in site.get("profiles") or []:
+        url = profile.get("url") or ""
+        if url.startswith("https://") and url not in same:
+            same.append(url)
+    for article in site.get("articles") or []:
+        url = article.get("url") or ""
+        if url.startswith("https://") and url not in same:
+            same.append(url)
+    if same:
+        person["sameAs"] = same
+    return person
+
+
+def person_ref(site):
+    """Point at the Person already defined on this page. Not a second description of him."""
+    if site["url"]:
+        return {"@id": person_id(site)}
+    return {"@type": "Person", "name": site["name"]}
+
+
+def json_ld(data):
+    """A <script> block of structured data. "<" is written as \\u003c so nothing can close the tag."""
+    return ('<script type="application/ld+json">'
+            + json.dumps(data, ensure_ascii=False).replace("<", "\\u003c") + "</script>")
+
+
+def breadcrumb_schema(site, crumbs):
+    """BreadcrumbList structured data for a trail of (name, public path) pairs, home first."""
+    if not site["url"] or not crumbs:
+        return None
+    return {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": n, "name": name, "item": site["url"] + "/" + path}
+        for n, (name, path) in enumerate(crumbs, start=1)]}
+
+
+def crumbs_html(root, crumbs):
+    """The visible trail at the top of a page: Home / Books / The title. The last item is text only."""
+    parts = []
+    for name, path in crumbs[:-1]:
+        parts.append(f'<a href="{root}{path}">{esc(name)}</a>')
+    parts.append(f"<span>{esc(crumbs[-1][0])}</span>" if crumbs else "")
+    return ('<nav class="crumbs" aria-label="Breadcrumb">'
+            + " <span>/</span> ".join(p for p in parts if p) + "</nav>")
+
+
+# ---------------------------------------------------------------------------
+# The parts of the home, Books, About, For editors and Contact pages that main.js
+# used to fill in from content.js. They are written into the HTML here, so search
+# engines (and visitors without JavaScript) see the books and the biography without
+# running any script. main.js leaves anything marked data-prerendered alone.
+# ---------------------------------------------------------------------------
+
+def prerender(markup, element_id, inner, attrs=""):
+    """Put inner inside the element with that id and mark it as filled by the build."""
+    pattern = re.compile(rf'(<([a-z0-9]+)\b[^>]*\bid="{re.escape(element_id)}"[^>]*)>(.*?)(</\2>)', re.S)
+
+    def fill(match):
+        opening = match.group(1).replace(" hidden", "") if inner else match.group(1)
+        return f"{opening} data-prerendered{(' ' + attrs) if attrs else ''}>{inner}{match.group(4)}"
+    return pattern.sub(fill, markup, count=1)
+
+
+def bio_html(site):
+    return "".join(f"<p>{esc(paragraph)}</p>" for paragraph in site["bio"])
+
+
+def buy_buttons(site, book, long=False):
+    """The 'Buy on Amazon' buttons of one of Ashok's books: one per store with a tag, as main.js makes them.
+    The text is 'US', 'UK', 'Germany' on a card and 'Amazon US' and so on when long is set."""
+    code = book.get("amazonId", "")
+    if not AMAZON_ID.match(code):
+        return []
+    out = []
+    for key, host, label in AMAZON_STORES:
+        tag = site["amazon_tags"].get(key)
+        if not tag:
+            continue
+        text = label if long else label.replace("Amazon ", "")
+        out.append(f'<a href="https://{host}/dp/{code}?tag={tag}" class="button button-small" target="_blank" '
+                   f'rel="sponsored nofollow noopener" aria-label="Buy {esc(book.get("title", ""))} on {label} '
+                   f'(affiliate link, opens in a new tab)">{text}'
+                   + (' <span aria-hidden="true">↗</span>' if long else "") + "</a>")
+    return out
+
+
+def book_card(site, book, root, heading="h4"):
+    """One card in the Books grid: the same markup main.js builds, plus a link to the book's own page."""
+    status = (book.get("status") or "").strip()
+    parts = []
+    if status:
+        parts.append(f'<p class="book-status">{esc(status)}</p>')
+    if book.get("series"):
+        parts.append(f'<p class="book-series">{esc(book["series"])}</p>')
+    title = esc(book.get("title", ""))
+    if book["url"]:
+        title = f'<a href="{root}{book["url"]}">{title}</a>'
+    parts.append(f"<{heading}>{title}</{heading}>")
+    if book.get("subtitle"):
+        parts.append(f'<p class="subtitle">{esc(book["subtitle"])}</p>')
+    if book.get("blurb"):
+        parts.append(f'<p class="blurb">{esc(book["blurb"])}</p>')
+    if not status:
+        buttons = buy_buttons(site, book)
+        if buttons:
+            parts.append('<div class="buy buy-amazon"><span class="buy-label">Buy on Amazon</span>'
+                         + "".join(buttons) + "</div>")
+    cover = ""
+    css = "book no-cover"
+    if book.get("cover"):
+        css = "book"
+        size = image_size(ROOT / book["cover"]) if (ROOT / book["cover"]).is_file() else None
+        dims = f' width="{size[0]}" height="{size[1]}"' if size else ""
+        picture = f'<img src="{root}{esc(book["cover"])}" alt="Cover of {esc(book.get("title", ""))}"{dims} loading="lazy" decoding="async">'
+        cover = f'<a href="{root}{book["url"]}" tabindex="-1" aria-hidden="true">{picture}</a>' if book["url"] else picture
+    return f'<article class="{css}">{cover}<div class="book-body">{"".join(parts)}</div></article>'
+
+
+def books_html(site, root):
+    """The Books section: one row per group in content.js, in the order main.js uses."""
+    books = site["books"]
+    groups = list(site["book_groups"])
+    ids = [g.get("id") for g in groups]
+    if any(b.get("group") not in ids for b in books):
+        groups.append({"id": "", "title": "More books" if groups else "", "text": ""})
+    out = []
+    for group in groups:
+        members = [b for b in books if (b.get("group") == group["id"] if group["id"] else b.get("group") not in ids)]
+        if not members:
+            continue
+        grid = "book-grid book-grid-4" if len(members) == 4 else "book-grid"
+        parts = ""
+        if group.get("title"):
+            parts += f'<h3 class="book-group-title">{esc(group["title"])}</h3>'
+        if group.get("text"):
+            parts += f'<p class="book-group-text">{esc(group["text"])}</p>'
+        parts += f'<div class="{grid}">' + "".join(book_card(site, b, root) for b in members) + "</div>"
+        out.append(f'<div class="book-group">{parts}</div>')
+    return "".join(out)
+
+
+def amazon_author_html(site):
+    """The visible 'Books on Amazon' link. The address is the author page in profiles, not a book page."""
+    url = ""
+    for profile in site.get("profiles") or []:
+        candidate = profile.get("url") or ""
+        if re.match(r"^https://www\.amazon\.com/author/[A-Za-z0-9-]+/?$", candidate):
+            url = candidate
+            break
+    parts = []
+    if url:
+        parts.append(f'<a href="{esc(url)}" target="_blank" rel="me noopener">Books on Amazon</a>')
+    for profile in site.get("profiles") or []:
+        candidate = profile.get("url") or ""
+        if candidate.startswith("https://www.goodreads.com/author/"):
+            parts.append(f'<a href="{esc(candidate)}" target="_blank" rel="me noopener">Goodreads</a>')
+            break
+    return " ".join(parts)
+
+
+def featured_html(site):
+    """'Featured in Fortune': one link per publication that has a real article address."""
+    outlets = []
+    seen = set()
+    for article in sorted(site["articles"], key=lambda item: item.get("date", ""), reverse=True):
+        outlet = article.get("outlet") or ""
+        url = article.get("url") or ""
+        if outlet and url.startswith("https://") and outlet not in seen:
+            seen.add(outlet)
+            outlets.append((outlet, url))
+    if not outlets:
+        return ""
+    parts = ["Featured in "]
+    for index, (outlet, url) in enumerate(outlets):
+        if index:
+            parts.append(" and " if index == len(outlets) - 1 else ", ")
+        parts.append(f'<a href="{esc(url)}" target="_blank" rel="noopener">{esc(outlet)}</a>')
+    return "".join(parts)
+
+
+def article_cards_html(site):
+    """The 'Writing elsewhere' list on the About page. An article without a url is listed as text."""
+    items = []
+    for article in sorted(site["articles"], key=lambda a: a.get("date", ""), reverse=True):
+        parts = ""
+        if article.get("outlet"):
+            parts += f'<span class="outlet">{esc(article["outlet"])}</span>'
+        if re.match(r"^https?://", article.get("url", "")):
+            parts += (f'<a class="title" href="{esc(article["url"])}" target="_blank" rel="noopener">'
+                      f'{esc(article["title"])}</a>')
+        else:
+            parts += f'<span class="title">{esc(article["title"])}</span>'
+        try:
+            day = dt.date.fromisoformat(article.get("date", ""))
+            parts += f'<span class="meta">{pretty_date(day)}</span>'
+        except ValueError:
+            pass
+        items.append(f"<li>{parts}</li>")
+    return "".join(items)
+
+
+def editors_html(site):
+    """The two bios on the For editors page. main.js adds the Copy buttons."""
+    out = ""
+    for label, text in (("Short bio", site["editors"]["shortBio"]), ("Longer bio", site["editors"]["longBio"])):
+        if text:
+            out += f'<h3>{esc(label)}</h3><div class="bio-block"><p>{esc(text)}</p></div>'
+    return out
+
+
+def contact_html(site):
+    """The inquiry list and the profile links on the Contact page."""
+    inquiries = "".join(
+        f'<li class="inquiry"><h3>{esc(item["title"])}</h3>'
+        + (f'<p>{esc(item["text"])}</p>' if item.get("text") else "") + "</li>"
+        for item in site["inquiries"]) if site["contact_email"] or site["socials"] else ""
+    socials = "".join(
+        f'<li><a class="button button-quiet button-small" href="{esc(item["url"])}" target="_blank" '
+        f'rel="noopener me">{esc(item["label"])}</a></li>' for item in site["socials"] if item.get("label"))
+    return inquiries, socials
+
+
+def fill_static(markup, site, root):
+    """Write the content main.js would add into the page, so it is there before any script runs."""
+    markup = prerender(markup, "bio", bio_html(site))
+    featured = featured_html(site)
+    if featured:
+        markup = prerender(markup, "featured-in", featured)
+    amazon = amazon_author_html(site)
+    if amazon:
+        markup = prerender(markup, "amazon-author", amazon)
+    markup = prerender(markup, "book-list", books_html(site, root))
+    if site["articles"]:
+        markup = prerender(markup, "article-list", article_cards_html(site))
+        markup = re.sub(r'(<section id="writing")\s+hidden', r"\1", markup)
+    markup = prerender(markup, "editors-intro", esc(site["editors"]["intro"]))
+    markup = prerender(markup, "bio-blocks", editors_html(site))
+    if site["editors"]["photo"] and (ROOT / site["editors"]["photo"]).is_file():
+        markup = re.sub(r'(<a id="headshot-link"[^>]*href=")#(")', rf'\g<1>{root}{esc(site["editors"]["photo"])}\2', markup)
+    if site["contact_email"]:
+        email = esc(site["contact_email"])
+        markup = re.sub(r'(<a id="(?:editors-email|email-link)"[^>]*href=")#(")', rf"\1mailto:{email}\2", markup)
+        markup = re.sub(r'(<a id="email-link"[^>]*>)(?=</a>)', rf"\1{email}", markup)
+    inquiries, socials = contact_html(site)
+    markup = prerender(markup, "inquiry-list", inquiries)
+    markup = prerender(markup, "social-list", socials)
+    return markup
+
+
+def book_schema(site, book, embed_author=True):
+    """Structured data for one of Ashok's own books, from content.js only.
+
+    embed_author writes the full Person. A page that already defines him passes False and
+    keeps a single Person node, referenced by @id.
+    """
+    if not site["url"]:
+        return None
+    address = site["url"] + "/" + book["url"]
+    data = {
+        "@type": "Book", "@id": address + "#book", "url": address,
+        "name": book["title"],
+        "author": person_node(site) if embed_author else person_ref(site),
+        "inLanguage": "en",
+        "identifier": {"@type": "PropertyValue", "propertyID": "ASIN", "value": book["amazonId"]},
+        "sameAs": f"https://www.amazon.com/dp/{book['amazonId']}",
+    }
+    if book.get("subtitle"):
+        data["alternativeHeadline"] = book["subtitle"]
+    if book.get("blurb"):
+        data["description"] = book["blurb"]
+    if book.get("cover") and (ROOT / book["cover"]).is_file():
+        data["image"] = site["url"] + "/" + book["cover"]
+    group = next((g for g in site["book_groups"] if g.get("id") == book.get("group")), None)
+    number = re.match(r"^Book (\d+)", book.get("series") or "")
+    if group and number and group.get("title"):
+        data["isPartOf"] = {"@type": "BookSeries", "name": group["title"],
+                            "url": site["url"] + "/books/#" + group["id"]}
+        data["position"] = int(number.group(1))
+    return data
+
+
+def profile_page_node(site, posts, url, name, page_id):
+    """A ProfilePage whose mainEntity is the one Person, with name on that object.
+
+    mainEntity carries the Person itself. A bare @id does not satisfy Google's required
+    name on mainEntity when the reference is not expanded. dateModified is a full ISO 8601
+    datetime, which is what ProfilePage asks for.
+    """
+    page = {
+        "@type": "ProfilePage", "@id": page_id, "url": url, "name": name, "inLanguage": "en",
+        "isPartOf": {"@id": site["url"] + "/#website"},
+        "mainEntity": person_node(site),
+        "about": {"@id": person_id(site)},
+    }
+    newest = max((p["updated"] or p["day"] for p in posts), default=None)
+    if newest:
+        page["dateModified"] = iso_datetime(newest)
+    return page
+
+
+def home_schema(site, posts):
+    """WebSite and ProfilePage for the home page. The Person is mainEntity, defined once."""
+    if not site["url"]:
+        return ""
+    home = site["url"] + "/"
+    title = re.search(r"<title>(.*?)</title>", site["home"], re.S)
+    # Google reads this name from the home page. Use the person's name, not siteName:
+    # "Ashok Paudel, Author" reads as a tagline and Google ignores it. siteName stays
+    # the "| Ashok Paudel, Author" suffix on other pages' titles and in og:site_name.
+    website = {"@type": "WebSite", "@id": site["url"] + "/#website", "url": home,
+               "name": site["name"],
+               "alternateName": "ashokpaudel.com",
+               "inLanguage": "en", "publisher": {"@id": person_id(site)}, "author": {"@id": person_id(site)}}
+    page = profile_page_node(
+        site, posts, home,
+        html.unescape(title.group(1).strip()) if title else site["name"],
+        site["url"] + "/#webpage")
+    return json_ld({"@context": "https://schema.org", "@graph": [website, page]})
+
+
+def about_schema(site, posts):
+    """ProfilePage for /about/, the page whose subject is the person. Same Person @id."""
+    if not site["url"]:
+        return ""
+    name = site["name"]
+    title = f"About {name}" + (f", {site['credentials']}" if site["credentials"] else "")
+    page = profile_page_node(site, posts, site["url"] + "/about/", title, site["url"] + "/about/#profile")
+    return json_ld({"@context": "https://schema.org", "@graph": [page]})
+
+
 def render_page(site, path, title, description, main, kind="website", extra_head="", image="", index=True,
-                current=""):
-    root = root_for(path)
+                current="", image_alt="", crumbs=None, root=None, page_title=None, suffix=True):
+    """One finished page. title is the <title>; the site name is added after it unless suffix is
+    False (for titles that already contain the name). page_title, if given, replaces it in the
+    social tags. crumbs is the trail of (name, path) pairs for BreadcrumbList. root is the path
+    back to the site root; it is worked out from path unless given (the 404 page is served at any
+    address, so it uses "/")."""
+    root = root_for(path) if root is None else root
+    social_title = page_title or title
+    full_title = f"{title} | {site['siteName']}" if suffix else title
     head = [
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
-        f"<title>{esc(title)} | {esc(site['name'])}</title>",
+        f"<title>{esc(full_title)}</title>",
         f'<meta name="description" content="{esc(description)}">',
+        f'<meta name="author" content="{esc(site["name"])}">',
     ]
     if not index:
         head.append('<meta name="robots" content="noindex, follow">')
+    image = image or site["photo"]
+    if not image_alt:
+        image_alt = f"Portrait of {site['name']}" if image == site["photo"] else ""
     head += [
-        f'<meta property="og:title" content="{esc(title)}">',
+        f'<meta property="og:title" content="{esc(social_title)}">',
         f'<meta property="og:description" content="{esc(description)}">',
         f'<meta property="og:type" content="{kind}">',
-        f'<meta property="og:site_name" content="{esc(site["name"])}">',
+        f'<meta property="og:site_name" content="{esc(site["siteName"])}">',
+        '<meta property="og:locale" content="en_GB">',
         '<meta name="twitter:card" content="summary">',
+        f'<meta name="twitter:title" content="{esc(social_title)}">',
+        f'<meta name="twitter:description" content="{esc(description)}">',
         f'<link rel="stylesheet" href="{root}styles.css">',
         f'<link rel="icon" href="{root}assets/icons/monogram/favicon.ico" sizes="48x48">',
         f'<link rel="icon" href="{root}assets/icons/monogram/icon.svg" type="image/svg+xml">',
@@ -1175,11 +1648,18 @@ def render_page(site, path, title, description, main, kind="website", extra_head
     ]
     if site["url"]:
         address = site["url"] + "/" + page_url(path)
-        head.append(f'<link rel="canonical" href="{esc(address)}">')
+        if index:
+            head.append(f'<link rel="canonical" href="{esc(address)}">')
         head.append(f'<meta property="og:url" content="{esc(address)}">')
-        image = image or site["photo"]
         if image:
             head.append(f'<meta property="og:image" content="{esc(site["url"] + "/" + image)}">')
+            head.append(f'<meta name="twitter:image" content="{esc(site["url"] + "/" + image)}">')
+            if image_alt:
+                head.append(f'<meta property="og:image:alt" content="{esc(image_alt)}">')
+                head.append(f'<meta name="twitter:image:alt" content="{esc(image_alt)}">')
+        trail = breadcrumb_schema(site, crumbs)
+        if trail:
+            head.append(json_ld({"@context": "https://schema.org", **trail}))
     if extra_head:
         head.append(extra_head)
     script = f'\n  <script src="{root}signup.js"></script>' if site["form_action"] else ""
@@ -1290,23 +1770,20 @@ def render_post(site, post, posts, newer, older):
         </p>
       </div>
     </article>{newsletter_block(site)}"""
-    person = {"@type": "Person", "name": site["name"]}
-    if site["credentials"]:
-        person["honorificSuffix"] = site["credentials"]
+    # One Person on the page. The review points at that same @id rather than repeating him.
+    author = person_node(site) if site["url"] else person_ref(site)
+    author_ref = person_ref(site) if site["url"] else author
     article = {
         "@type": "BlogPosting",
         "headline": post["title"], "description": post["summary"],
         "datePublished": post["day"].isoformat(),
         "dateModified": (post["updated"] or post["day"]).isoformat(),
-        "inLanguage": "en", "keywords": post["tags"],
-        "author": person, "publisher": person,
+        "inLanguage": "en", "keywords": post["tags"], "articleSection": type_label,
+        "author": author, "publisher": author_ref,
     }
     graph = [article]
     if site["url"]:
         address = site["url"] + "/" + post["url"]
-        person.update({"@id": person_id(site), "url": site["url"] + "/"})
-        if site["photo"]:
-            person["image"] = site["url"] + "/" + site["photo"]
         article.update({"@id": address + "#article", "url": address, "mainEntityOfPage": address,
                         "isPartOf": {"@type": "WebSite", "@id": site["url"] + "/#website",
                                      "name": site["name"], "url": site["url"] + "/"}})
@@ -1321,26 +1798,25 @@ def render_post(site, post, posts, newer, older):
             book["image"] = site["url"] + "/" + post["cover"]
         verdict = {"@type": "Review", "name": post["title"], "reviewBody": post["summary"],
                    "datePublished": post["day"].isoformat(), "inLanguage": "en", "itemReviewed": book,
-                   "author": {"@id": person_id(site)} if site["url"] else person}
+                   "author": author_ref, "publisher": author_ref}
         if site["url"]:
             verdict["url"] = address
             verdict["mainEntityOfPage"] = address
-            verdict["publisher"] = {"@id": person_id(site)}
         if post["rating"]:
             verdict["reviewRating"] = {"@type": "Rating", "ratingValue": post["rating"],
                                        "bestRating": 5, "worstRating": 1}
         article["about"] = book
         graph.append(verdict)
-    data = {"@context": "https://schema.org", "@graph": graph}
-    # "<" is written as \u003c so nothing in a post can close the script tag.
-    extra = ('<script type="application/ld+json">'
-             + json.dumps(data, ensure_ascii=False).replace("<", "\\u003c") + "</script>")
+    extra = json_ld({"@context": "https://schema.org", "@graph": graph})
     extra += f'\n  <meta property="article:published_time" content="{post["day"].isoformat()}">'
     if post["updated"]:
         extra += f'\n  <meta property="article:modified_time" content="{post["updated"].isoformat()}">'
     extra += f'\n  <meta property="article:author" content="{esc(site["name"])}">'
+    image_alt = f"Cover of {post['book_title']}" if post["cover"] else post["image_alt"]
+    trail = [("Home", ""), ("Blog", "blog/"), (type_label, f"blog/{folder}/"), (post["title"], post["url"])]
     return path, render_page(site, path, post["title"], post["summary"], main, "article", extra,
-                             post["cover"] or post["image"], current=f"blog/{folder}/")
+                             post["cover"] or post["image"], current=f"blog/{folder}/", image_alt=image_alt,
+                             crumbs=trail)
 
 
 def render_listings(site, posts):
@@ -1351,14 +1827,36 @@ def render_listings(site, posts):
         for tag in post["tags"]:
             all_tags.setdefault(tag_slug(tag), [tag, 0])[1] += 1
 
-    views = [("blog/", "all", "Blog", "Opinion and book reviews", posts)]
+    name = site["name"]
+    # (folder, key, <title>, h1, one-line lede, meta description, the posts, breadcrumb trail)
+    views = [("blog/", "all", f"Blog: opinion pieces and book reviews by {name}", "Opinion and book reviews",
+              f"Opinion pieces and book reviews from {name}, newest first.",
+              f"Every opinion piece and book review by {name}, CPA, MBA: plain-English writing on investing, "
+              "corporate finance, business and the books worth reading about money.",
+              posts, [("Home", ""), ("Blog", "blog/")])]
     for kind, (folder, label) in TYPE_PAGES.items():
-        views.append((f"blog/{folder}/", kind, label, label, [p for p in posts if p["type"] == kind]))
+        subset = [p for p in posts if p["type"] == kind]
+        if kind == "review":
+            views.append((f"blog/{folder}/", kind, f"Book reviews by {name}: books on money, investing and business",
+                          label, f"Books on money, investing and business, reviewed by {name}. Newest first.",
+                          f"Book reviews by {name}, CPA, MBA: {len(subset)} plain-English reviews of books on "
+                          "investing, personal finance, business and economics, each with who it is for and what "
+                          "to be aware of.", subset, [("Home", ""), ("Blog", "blog/"), (label, f"blog/{folder}/")]))
+        else:
+            views.append((f"blog/{folder}/", kind, f"Opinion pieces by {name} on finance, business and the economy",
+                          label, f"Opinion pieces by {name} on finance, business and the economy. Newest first.",
+                          f"Opinion pieces by {name}, CPA, MBA: short essays on accounting, investing, corporate "
+                          "finance, technology and public policy, written in plain English.",
+                          subset, [("Home", ""), ("Blog", "blog/"), (label, f"blog/{folder}/")]))
     for slug, (tag, _count) in sorted(all_tags.items()):
+        subset = [p for p in posts if slug in [tag_slug(t) for t in p["tags"]]]
         views.append((f"blog/tag/{slug}/", "tag:" + slug, f"Tagged: {tag}", f"Tagged \u201C{tag}\u201D",
-                      [p for p in posts if slug in [tag_slug(t) for t in p["tags"]]]))
+                      f"Opinion pieces and book reviews from {name} tagged \u201C{tag}\u201D, newest first.",
+                      f"Posts and book reviews by {name} tagged \u201C{tag}\u201D: {len(subset)} "
+                      f"{'article' if len(subset) == 1 else 'articles'}.",
+                      subset, [("Home", ""), ("Blog", "blog/"), (f"Tagged: {tag}", f"blog/tag/{slug}/")]))
 
-    for base, key, title, heading, subset in views:
+    for base, key, title, heading, lede, description, subset, trail in views:
         chunks = [subset[i:i + POSTS_PER_PAGE] for i in range(0, len(subset), POSTS_PER_PAGE)] or [[]]
         for number, chunk in enumerate(chunks, start=1):
             path = base + ("index.html" if number == 1 else f"page/{number}/index.html")
@@ -1397,12 +1895,13 @@ def render_listings(site, posts):
                     pager += f'<a class="button button-quiet button-small" href="{page_href(number + 1)}">Older</a>'
                 pager += "</nav>"
 
+            page_trail = trail + ([(f"Page {number}", page_url(path))] if number > 1 else [])
             main = f"""
     <header class="page-head">
       <div class="wrap narrow">
-        <p class="eyebrow">Blog</p>
+        {crumbs_html(root, page_trail)}
         <h1 class="page-title">{esc(heading)}</h1>
-        <p class="page-lede">Opinion pieces and book reviews from {esc(site["name"])}, newest first.</p>
+        <p class="page-lede">{esc(lede)}</p>
         <nav class="filters" aria-label="Filter">{tabs}</nav>{tag_row}
       </div>
     </header>
@@ -1412,12 +1911,14 @@ def render_listings(site, posts):
       </div>
     </section>{newsletter_block(site)}"""
             page_title = title + (f" (page {number})" if number > 1 else "")
-            description = f"Opinion pieces and book reviews from {site['name']}." if key == "all" else \
-                f"{heading}: from the blog of {site['name']}."
-            # An empty list ("Nothing here yet") is a thin page: kept for visitors, hidden from search engines.
+            page_description = description + (f" Page {number} of {len(chunks)}." if number > 1 else "")
+            # An empty list ("Nothing here yet") and a tag with only one post are thin pages:
+            # kept for visitors, hidden from search engines and left out of the sitemap.
+            indexable = bool(chunk) and not (key.startswith("tag:") and len(subset) < MIN_TAG_POSTS)
             current = {"post": "blog/opinion/", "review": "blog/reviews/"}.get(key, "")
-            pages[path] = render_page(site, path, page_title, description, main, index=bool(chunk),
-                                      current=current)
+            pages[path] = render_page(site, path, page_title, page_description, main, index=indexable,
+                                      current=current, crumbs=page_trail, page_title=heading,
+                                      suffix=key.startswith("tag:"))
     return pages
 
 
@@ -1433,12 +1934,17 @@ def editor_showcase(site, posts):
         except ValueError:
             continue
         outlet = article.get("outlet") or "Published"
+        # An article with no url (see content.js) is listed by name only.
+        if re.match(r"^https?://", article.get("url", "")):
+            title = (f'<a href="{esc(article["url"])}" target="_blank" rel="noopener">'
+                     f'{esc(article["title"])}</a>')
+        else:
+            title = esc(article["title"])
         cards.append((day,
                       f'<li class="post-item post-press"><div class="post-item-body">'
                       f'<p class="post-kicker"><span class="badge">{esc(outlet)}</span> '
                       f'<time datetime="{day.isoformat()}">{pretty_date(day)}</time></p>'
-                      f'<h3 class="post-title"><a href="{esc(article["url"])}" target="_blank" rel="noopener">'
-                      f'{esc(article["title"])}</a></h3></div></li>'))
+                      f'<h3 class="post-title">{title}</h3></div></li>'))
     cards.sort(key=lambda row: row[0], reverse=True)
     if not cards:
         return ""
@@ -1447,22 +1953,145 @@ def editor_showcase(site, posts):
             + "".join(card for _day, card in cards) + "</ul>" + more)
 
 
-def content_page(site, path, title, description, body, current):
-    """A page such as Books or About. The text is filled in by content.js and main.js."""
+def content_page(site, path, title, description, body, current, extra_head="", crumbs=None, image="",
+                 suffix=True):
+    """A page such as Books or About. The text is written in by the build (fill_static) and, for the
+    parts that need it (Copy buttons), by main.js."""
     root = root_for(path)
     body = re.sub(r"<h2>", '<h1 class="page-title">', body, count=1)
     body = re.sub(r"</h2>", "</h1>", body, count=1)
-    body = re.sub(r'(src|href)="(assets/)', rf'\1="{root}\2', body)
+    body = re.sub(r'(src|href)="(assets/|blog/|books/|about/|for-editors/|contact/)', rf'\1="{root}\2', body)
+    body = fill_static(body, site, root)
     scripts = (f'\n    <script>window.SITE_ROOT="{root}";</script>'
                f'\n    <script src="{root}content.js"></script>'
                f'\n    <script src="{root}main.js"></script>')
-    return render_page(site, path, title, description, "\n" + body + scripts, current=current)
+    return render_page(site, path, title, description, "\n" + body + scripts, current=current,
+                       extra_head=extra_head, crumbs=crumbs, image=image, suffix=suffix)
+
+
+def book_titles(site):
+    """Every published title in one phrase: 'The Wheel Strategy; Rolling, Repair and Risk; ... and Inside FP&A'."""
+    titles = [b["title"] for b in site["books"] if b["url"]]
+    if not titles:
+        return ""
+    sep = "; " if any("," in t for t in titles) else ", "
+    return sep.join(titles[:-1]) + (" and " if len(titles) > 1 else "") + titles[-1]
+
+
+def render_book(site, book, posts):
+    """A page for one of Ashok's own books, written from content.js: title, subtitle, cover,
+    description, the Amazon buttons, the rest of its series and related posts from the blog."""
+    path = book["url"] + "index.html"
+    root = root_for(path)
+    name = site["name"]
+    group = next((g for g in site["book_groups"] if g.get("id") == book.get("group")), None)
+    in_series = bool(group and re.match(r"^Book \d+", book.get("series") or ""))
+    series_name = group["title"] if in_series else ""
+    kicker = f'{esc(book["series"].split(" · ")[0])} of {esc(series_name)}' if in_series else "A book by " + esc(name)
+    by = esc(name) + (f", {esc(site['credentials'])}" if site["credentials"] else "")
+
+    buttons = buy_buttons(site, book, long=True)
+    get = ""
+    if buttons:
+        get = ('<div class="bookbox-get"><p class="bookbox-get-label">Buy the book '
+               '<span class="aff-tag">Affiliate links</span></p>'
+               f'<p class="bookbox-buttons">{" ".join(buttons)}</p>'
+               '<p class="bookbox-small">No prices are shown here because they change. '
+               'Check the edition and format on the store page before you buy.</p></div>')
+    size = image_size(ROOT / book["cover"]) if book.get("cover") and (ROOT / book["cover"]).is_file() else None
+    cover = (f'<img class="bookbox-cover" src="{root}{esc(book["cover"])}" alt="Cover of {esc(book["title"])}"'
+             + (f' width="{size[0]}" height="{size[1]}"' if size else "") + ' decoding="async">') if size else ""
+    box = (f'<aside class="bookbox" aria-label="About this book">{cover}<div class="bookbox-main">'
+           f'<p class="bookbox-k">{kicker}</p><p class="bookbox-t">{esc(book["title"])}</p>'
+           f'<p class="bookbox-a">by {by}</p>{get}</div></aside>')
+    note = affiliate_note(site) if buttons else ""
+
+    series = ""
+    if in_series:
+        others = [b for b in site["books"] if b.get("group") == book.get("group")]
+        items = "".join(
+            f'<li>{esc(b.get("series", "").split(" · ")[0])}: '
+            + (f'<a href="{root}{b["url"]}">{esc(b["title"])}</a>' if b["url"] and b is not book
+               else f'<strong>{esc(b["title"])}</strong>' if b is book else esc(b["title"]))
+            + (f' <span class="book-subtitle-inline">{esc(b["subtitle"])}</span>' if b.get("subtitle") else "")
+            + "</li>" for b in others)
+        text = f'<p>{esc(group["text"])}</p>' if group.get("text") else ""
+        series = (f'<section class="book-series-list" aria-labelledby="series-h"><h2 id="series-h">{esc(series_name)}</h2>'
+                  f'{text}<ol>{items}</ol></section>')
+
+    related = ""
+    if book["tags"]:
+        wanted = {tag_slug(t) for t in book["tags"]}
+        matches = [p for p in posts if wanted & {tag_slug(t) for t in p["tags"]}][:BOOK_RELATED_POSTS]
+        if matches:
+            related = ('<section class="related" aria-labelledby="related-h"><h2 id="related-h">From the blog</h2>'
+                       f'<p>Reviews and posts by {esc(name)} on the same subjects.</p>'
+                       '<ul class="post-list related-list">' + "".join(post_item(p, root, "h3") for p in matches)
+                       + "</ul></section>")
+
+    trail = [("Home", ""), ("Books", "books/"), (book["title"], book["url"])]
+    main = f"""
+    <article class="book-page">
+      <header class="page-head">
+        <div class="wrap narrow">
+          {crumbs_html(root, trail)}
+          <h1 class="page-title">{esc(book["title"])}</h1>
+          {f'<p class="page-lede">{esc(book["subtitle"])}</p>' if book.get("subtitle") else ""}
+        </div>
+      </header>
+      <div class="wrap narrow">
+        <div class="post-top">{box}{note}</div>
+        <div class="prose">
+          {f'<p>{esc(book["blurb"])}</p>' if book.get("blurb") else ""}
+        </div>
+        {series}
+        {related}
+        <p class="post-cta">
+          <a class="button" href="{root}books/">All books by {esc(name)}</a>
+          <a class="button button-quiet" href="{root}blog/reviews/">Book reviews</a>
+        </p>
+      </div>
+    </article>"""
+    description = book.get("blurb") or f"{book['title']} by {name}."
+    if book.get("subtitle"):
+        description = f"{book['title']}: {book['subtitle']}. " + description
+    description = description[:300]
+    extra = json_ld({"@context": "https://schema.org", **book_schema(site, book)}) if site["url"] else ""
+    short_series = re.sub(r"^The |\s+series$", "", series_name)
+    title = f"{book['title']} by {name}" + (f" ({short_series} {book['series'].split(' · ')[0]})" if in_series else "")
+    return path, render_page(site, path, title, description, main, "book", extra, book.get("cover", ""),
+                             current="books/", image_alt=f"Cover of {book['title']}", crumbs=trail, suffix=False)
+
+
+def render_not_found(site):
+    """The page GitHub Pages shows for an address that does not exist. It is served at any path,
+    so every link on it starts from the site root."""
+    main = f"""
+    <header class="page-head">
+      <div class="wrap narrow">
+        <h1 class="page-title">Page not found</h1>
+        <p class="page-lede">There is no page at this address. It may have moved, or the link may have a typo.</p>
+        <p class="post-cta">
+          <a class="button" href="/">Home</a>
+          <a class="button button-quiet" href="/books/">Books by {esc(site["name"])}</a>
+          <a class="button button-quiet" href="/blog/reviews/">Book reviews</a>
+          <a class="button button-quiet" href="/blog/opinion/">Opinion</a>
+        </p>
+      </div>
+    </header>"""
+    return render_page(site, "404.html", "Page not found",
+                       f"There is no page at this address on {site['name']}'s site. Try the home page, "
+                       "the books or the blog.", main, index=False, root="/")
 
 
 def render_home(site, posts):
     page = re.sub(r"<!-- BUILD:EDITORS -->.*?<!-- /BUILD:EDITORS -->",
                   lambda m: "<!-- BUILD:EDITORS -->" + editor_showcase(site, posts) + "<!-- /BUILD:EDITORS -->",
                   site["home"], flags=re.S)
+    if site["url"] and "<!-- BUILD:SCHEMA -->" in page and "<!-- /BUILD:SCHEMA -->" in page:
+        page = re.sub(r"<!-- BUILD:SCHEMA -->.*?<!-- /BUILD:SCHEMA -->",
+                      lambda m: "<!-- BUILD:SCHEMA -->\n  " + home_schema(site, posts) + "\n  <!-- /BUILD:SCHEMA -->",
+                      page, flags=re.S)
     # Opinions and book reviews live on their own pages, not on the home page.
     page = re.sub(r"<!-- BUILD:LATEST -->.*?<!-- /BUILD:LATEST -->",
                   "<!-- BUILD:LATEST --><!-- /BUILD:LATEST -->",
@@ -1482,29 +2111,50 @@ def render_home(site, posts):
         page = re.sub(rf"<!-- PAGE:{name} -->.*?<!-- /PAGE:{name} -->", "", page, flags=re.S)
     page = page.replace("<!-- PAGE:books -->", "").replace("<!-- /PAGE:books -->", "")
     name = site["name"]
+    titles = book_titles(site)
+    published = [b for b in site["books"] if b["url"]]
+    # The Books page lists every book as structured data too; each book's own page repeats its entry.
+    books_head = ""
+    if site["url"] and published:
+        books_head = json_ld({"@context": "https://schema.org", "@graph": [
+            person_node(site),
+            {"@type": "CollectionPage", "@id": site["url"] + "/books/#webpage", "url": site["url"] + "/books/",
+             "name": f"Books by {name}", "isPartOf": {"@id": site["url"] + "/#website"},
+             "about": {"@id": person_id(site)},
+             "mainEntity": {"@type": "ItemList", "itemListElement": [
+                 {"@type": "ListItem", "position": n, "item": book_schema(site, b, embed_author=False)}
+                 for n, b in enumerate(published, start=1)]}}]})
     extras = {
         "books/index.html": content_page(
-            site, "books/index.html", "Books",
-            f"Plain-English finance books by {name}, including Own the Whole Market, The Wheel Strategy and Inside FP&A.",
-            bodies["books"], "books/"),
+            site, "books/index.html", f"Books by {name}: investing, options and corporate finance",
+            f"The books of {name}, CPA, MBA: {titles}. Plain-English guides to index funds, options "
+            "and corporate finance, each with a page of its own.",
+            bodies["books"], "books/", extra_head=books_head, crumbs=[("Home", ""), ("Books", "books/")],
+            image=published[0].get("cover", "") if published else "", suffix=False),
         "about/index.html": content_page(
-            site, "about/index.html", f"About {name}",
-            f"{name}, CPA, MBA, writes plain-English books on investing, options and corporate finance.",
-            bodies["about"], "about/"),
+            site, "about/index.html", f"About {name}, CPA, MBA",
+            " ".join(site["bio"])[:300] or f"About {name}.",
+            bodies["about"], "about/", extra_head=about_schema(site, posts),
+            crumbs=[("Home", ""), (f"About {name}", "about/")], suffix=False),
         "for-editors/index.html": content_page(
-            site, "for-editors/index.html", "For editors",
-            f"Recent writing, a short biography and a headshot of {name}, for editors and producers.",
-            bodies["editors"], "for-editors/"),
+            site, "for-editors/index.html", f"For editors: {name}, finance author and commentator",
+            f"Recent writing, a short and a longer biography and a headshot of {name}, CPA, MBA, "
+            "for editors, producers and podcast hosts.",
+            bodies["editors"], "for-editors/", crumbs=[("Home", ""), ("For editors", "for-editors/")],
+            suffix=False),
         "contact/index.html": content_page(
-            site, "contact/index.html", "Contact",
-            f"Email {name} about press, speaking, podcasts and rights.",
-            bodies["contact"], "contact/"),
+            site, "contact/index.html", f"Contact {name}",
+            f"Email {name} about press and media, speaking, podcasts, guest articles, bulk orders and rights.",
+            bodies["contact"], "contact/", crumbs=[("Home", ""), ("Contact", "contact/")], suffix=False),
     }
+    for book in published:
+        path, markup = render_book(site, book, posts)
+        extras[path] = markup
     if not site["form_action"]:
         page = re.sub(r'\s*<script src="signup\.js"></script>', "", page)
     if site["url"]:
         page = page.replace("</head>", f'  <link rel="canonical" href="{esc(site["url"] + "/")}">\n</head>', 1)
-    return fill_text(page, site), extras
+    return fill_static(fill_text(page, site), site, ""), extras
 
 
 def render_feed(site, posts):
@@ -1565,7 +2215,8 @@ def build():
         path, markup = render_post(site, post, posts, newer, older)
         pages[path] = markup
     pages.update(render_listings(site, posts))
-    extras = {"feed.xml": render_feed(site, posts), ".nojekyll": ""}
+    # The 404 page is not a real address, so it stays out of the sitemap.
+    extras = {"feed.xml": render_feed(site, posts), ".nojekyll": "", "404.html": render_not_found(site)}
     if site["url"]:
         extras["sitemap.xml"] = render_sitemap(site, pages, posts)
         extras["robots.txt"] = f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\n"
@@ -1577,6 +2228,10 @@ def build():
         shutil.copy2(ROOT / name, OUT / name)
     if (ROOT / "assets").is_dir():
         shutil.copytree(ROOT / "assets", OUT / "assets", ignore=shutil.ignore_patterns(".*"))
+    # Browsers and search engines also ask for /favicon.ico at the root, whatever the pages say.
+    favicon = ROOT / "assets" / "icons" / "monogram" / "favicon.ico"
+    if favicon.is_file():
+        shutil.copy2(favicon, OUT / "favicon.ico")
     if (ROOT / "CNAME").is_file():
         shutil.copy2(ROOT / "CNAME", OUT / "CNAME")
     for path, text in {**pages, **extras}.items():

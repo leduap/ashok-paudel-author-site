@@ -9,10 +9,11 @@ An author website with a blog. The home page is plain HTML, CSS and JavaScript. 
 | `content.js` | All site-wide text, links and lists: headline, bio, books, footer line, newsletter, contact. The file you edit to change the home page. |
 | `posts/` | One markdown file per blog post or book review. Adding a file here publishes it. |
 | `BOT_GUIDE.md` | Instructions for the bot that adds one post a day: file naming, fields, examples, rules. |
+| `SEO.md` | What the build already does for search engines, and the steps only you can do (Search Console, Bing, links from your profiles). |
 | `build.py` | Turns `posts/` into web pages and assembles the finished site in `_site/`. |
 | `index.html` | Home page structure: hero, books, latest writing, about, plus sections that stay hidden until they have content. Its header and footer are reused on every blog page. |
 | `styles.css` | Layout and the mint and teal theme matched to the book covers. Colours are variables at the top. |
-| `main.js` | Reads `content.js` and fills in the home page. |
+| `main.js` | Reads `content.js` and fills in the home page when it is opened straight from disk. On the published site the build has already written that content into the HTML (so search engines see it), and `main.js` only adds the parts that need a script, such as the Copy buttons on the For editors page. |
 | `signup.js` | Shows the thank-you message after a newsletter sign-up. Only used once the newsletter is switched on. |
 | `assets/` | Your own book covers (from the Amazon.de listings) and the author photo. |
 | `assets/covers/` | Covers of the books reviewed on the blog, one per review. |
@@ -25,11 +26,17 @@ What the build produces inside `_site/`:
 
 - `index.html`: the home page, with the profile and the books. Opinion, book reviews, For editors, Contact and About are each their own page
 - `books/`, `about/`, `for-editors/` and `contact/`: those parts of the site, each on its own page
+- `books/<title>/`: one page per published book (for example `books/own-the-whole-market/`), with its cover, description, Amazon buttons, the rest of its series and related posts. The address is the title in lower case with hyphens; `Inside FP&A` becomes `books/inside-fpa/`
 - `blog/`: the blog index, newest first
 - `blog/opinion/` and `blog/reviews/`: the same list filtered to opinion pieces or to book reviews
-- `blog/tag/<tag>/`: the list filtered to one tag
+- `blog/tag/<tag>/`: the list filtered to one tag (a tag with only one post is marked `noindex`, so search engines show the post rather than the list)
 - `blog/<file-name>/`: one page per post or review
 - `feed.xml`: the RSS feed
+- `sitemap.xml` and `robots.txt` (only when the site address is known, as it is on GitHub)
+- `404.html`: the page GitHub shows for an address that does not exist
+- `favicon.ico`: a copy of the tab icon at the root, where browsers and search engines look for it
+
+Every page carries a canonical address, Open Graph and Twitter tags, and structured data (Person and WebSite on the home page, Book on the book pages, Review and BlogPosting on posts, BreadcrumbList everywhere). `SEO.md` explains what that buys and what still has to be done by hand.
 
 ## Previewing on this computer
 
@@ -52,9 +59,11 @@ Open `content.js`, change the text between the quotes, save, and rebuild.
 - Lines marked `DRAFT` (the headline and tagline) were written for you; replace them with your own words.
 - Lines marked `PLACEHOLDER` (further social profiles, newsletter address) are waiting for your details.
 - **Empty means hidden.** While a value is `""` or a list is `[]`, that part of the page does not appear. The Newsletter and the Events and Press sections are switched off this way. Fill one in and it appears, together with its menu link where it has one.
-- **Articles published elsewhere.** The `articles` list holds pieces of yours that other publications have run (the first is the Fortune article of 10 November 2026). To add the next one, copy a whole block from `{` to `}`, paste it above the first one with a comma between them, and change its four lines: `title` (the headline exactly as printed), `outlet` (the publication's name), `date` (`YYYY-MM-DD`) and `url` (the article's full address). Each line must stay on its own line, as in the existing block. The article then appears on the About page and in For editors, newest first. Use the publication's name as text only, never its logo, and do not copy the article's text onto the site.
-- **Book rows and series.** The Books section shows one row per entry in `bookGroups` (the Wheel Strategy series, other finance books, other books). Each book's `group` line says which row it belongs to, and its optional `series` line (for example `"Book 2"`) is the small label above its title. Within a row, books keep the order of the `books` list.
-- **For editors.** This is its own page. The `editors` block fills the introduction, the two bios (each with a Copy button) and the headshot download. The build lists the opinion articles and the pieces in `articles` above that, newest first. The "Published in Fortune" line on the About page is made from the `articles` list, one link per publication.
+- **The bio.** The first paragraph of `bio` is the agreed wording ("Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune."). The same sentence is the short bio for editors. Nowhere on the site, including the opinion pieces, is an employer, a job title or a past project named; keep it that way when editing.
+- **Profiles.** `profiles` lists your own public profiles (LinkedIn, the Amazon author page and the Fortune author page). They go into the structured data as `sameAs`, together with any article in `articles` that has a real address. That is how search engines connect the site to you rather than to someone else with the same name. Never add a profile that is not yours. `location` is the city in the bio and is used the same way, at city level only.
+- **Articles published elsewhere.** The `articles` list holds pieces of yours that other publications have run (the first is the Fortune article of 10 November 2026). To add the next one, copy a whole block from `{` to `}`, paste it above the first one with a comma between them, and change its four lines: `title` (the headline exactly as printed), `outlet` (the publication's name), `date` (`YYYY-MM-DD`) and `url` (the article's full address, or `""` to list it by name without a link). Each line must stay on its own line, as in the existing block. The article then appears on the About page and in For editors, newest first. A real `url` also adds a "Featured in …" line under the biography. Use the publication's name as text only, never its logo, and do not copy the article's text onto the site.
+- **Book rows and series.** The Books section shows one row per entry in `bookGroups` (the Wheel Strategy series, other finance books, other books). Each book's `group` line says which row it belongs to, and its optional `series` line (for example `"Book 2"`) is the small label above its title. Within a row, books keep the order of the `books` list. Every book with an `amazonId` and no `status` line also gets its own page under `books/`; its `topics` line (blog tags, comma separated) decides which posts are linked from that page as further reading.
+- **For editors.** This is its own page. The `editors` block fills the introduction, the two bios (each with a Copy button) and the headshot download. The build lists the opinion articles and the pieces in `articles` above that, newest first. The "Featured in Fortune" line under the biography is made from the `articles` list, one link per publication.
 - **Books not yet for sale.** A book in the `books` list may carry the optional line `status: "Coming soon",`. Its card then shows that label and no buy button, and an empty `blurb` and `amazonId` leave no gap. "The Own the Whole Market Workbook" is set up this way, with a placeholder cover (`assets/own-the-whole-market-workbook-placeholder.svg`). Once the book is live: put the real cover in `assets/` and point `cover` at it, add the `blurb` and the book's `amazonId`, and delete the `status` line.
 - Dates use `YYYY-MM-DD`. Events sort themselves into Upcoming and Past.
 - A link without a real `https://` address is never shown as a link.
@@ -133,7 +142,7 @@ A static site cannot store email addresses, so the sign-up box hands the address
 
 ## Contact
 
-The Contact section shows one button with the email address from `contact.email` in `content.js`. Clicking it opens the visitor's email program. The four kinds of inquiry under it (`contact.inquiries`) are short descriptions only. Social profiles can be added to `contact.socials`; the list is empty at present and so is not shown.
+The Contact section shows one button with the email address from `contact.email` in `content.js`. Clicking it opens the visitor's email program. The four kinds of inquiry under it (`contact.inquiries`) are short descriptions only. Profile links are in `contact.socials` (LinkedIn at present) and appear as small buttons under the inquiries.
 
 ## The tab icon
 

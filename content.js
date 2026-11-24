@@ -15,6 +15,10 @@
 const SITE = {
   name: "Ashok Paudel",
 
+  // Name Google and social cards use for the site itself (og:site_name, WebSite schema).
+  // Keep name above for Person schema and author bylines.
+  siteName: "Ashok Paudel, Author",
+
   // Shown next to your name. As printed on the book covers. Leave "" to hide.
   credentials: "CPA, MBA",
 
@@ -26,9 +30,34 @@ const SITE = {
   tagline: "Plain-English books on investing, options and corporate finance.",
 
   // "About" text. Each item is one paragraph.
-  // This is the "About the author" text from the back cover of Inside FP&A, word for word.
+  // The first paragraph is the agreed short bio and stays as it is. Never add an
+  // employer, a job title or a claim about past projects here or anywhere else on the site.
   bio: [
-    "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He writes plain, practical guides that turn complex finance into steps anyone can use."
+    "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune and The Himalayan Times.",
+    "He writes plain-English books on investing, options and corporate finance, including Own the Whole Market, The Wheel Strategy series and Inside FP&A, and reviews books on money and business on this site."
+  ],
+
+  // The one-line description in Person structured data. Not a job title.
+  personDescription: "Finance professional based in Munich, Germany; CPA, MBA",
+
+  // Where he is based, as it appears in the bio. City and country only: the structured data
+  // uses this as homeLocation and address, and must not add a street or a postcode.
+  location: "Munich, Germany",
+
+  // College, written as alumniOf with type CollegeOrUniversity. alumniOfUrl was checked
+  // against the live site. Leave the url "" if you are not sure of it.
+  alumniOf: "ESMT Berlin",
+  alumniOfUrl: "https://esmt.berlin/",
+
+  // His own public profiles, used for the sameAs list in the structured data.
+  // Only profiles that exist and are his. Never add a profile of another person
+  // of the same name. The Amazon address is his Author Central vanity URL.
+  // An article with a url in the articles list below is added to sameAs as well.
+  profiles: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela" },
+    { label: "Amazon", url: "https://www.amazon.com/author/ashokpaudel" },
+    { label: "Goodreads", url: "https://www.goodreads.com/author/show/17965536.Ashok_Paudel" },
+    { label: "Fortune", url: "https://fortune.com/author/ashok-paudel/" }
   ],
 
   // Your own photo. It is shown as a square, cropped around the centre.
@@ -74,6 +103,10 @@ const SITE = {
   // group decides which row of the Books section a book appears in: one of the
   // ids in bookGroups below. series is the small label above the title, e.g. "Book 2".
   // Within a row, books appear in the order they are listed here.
+  //
+  // Every published book also gets its own page at /books/<title-as-a-slug>/, built from
+  // the lines below. topics lists blog tags (comma separated) whose reviews and posts are
+  // linked from that page as further reading. Leave it "" for none.
   bookGroups: [
     { id: "wheel", title: "The Wheel Strategy series", text: "Selling options for income, one step at a time. Read them in order." },
     { id: "finance", title: "Investing and corporate finance", text: "" },
@@ -88,7 +121,8 @@ const SITE = {
       subtitle: "From Zero to Hero",
       cover: "assets/the-wheel-strategy.jpg",
       blurb: "The wheel options strategy explained from zero. You do not need to know what an option is. The book walks through the wheel one step at a time, with order tickets, payoff tables and worked examples, including the parts that are easy to get wrong.",
-      amazonId: "B0HQPBQVBJ"
+      amazonId: "B0HQPBQVBJ",
+      topics: "options, investing"
     },
     {
       group: "wheel",
@@ -97,7 +131,8 @@ const SITE = {
       subtitle: "The Wheel Strategy Playbook for Real Markets",
       cover: "assets/rolling-repair-and-risk.jpg",
       blurb: "Most wheel trades end quietly. This book is about the ones that do not. A practical guide to rolling, repairing stuck positions and managing risk, for readers who already know how the wheel works.",
-      amazonId: "B0HQVRJQ1P"
+      amazonId: "B0HQVRJQ1P",
+      topics: "options, investing"
     },
     {
       group: "wheel",
@@ -106,7 +141,8 @@ const SITE = {
       subtitle: "The Wheel Strategy Playbook for Smaller Accounts",
       cover: "assets/leaps-and-the-poor-mans-covered-call.jpg",
       blurb: "A long-dated call, a LEAPS, can stand in for 100 shares at a fraction of the cash. That is the poor man's covered call, and it is a leveraged trade. The book shows the worst case first, then the rules that keep the trade sound, for readers who know the wheel and want to run it with less capital.",
-      amazonId: "B0HRRW92Y3"
+      amazonId: "B0HRRW92Y3",
+      topics: "options, investing"
     },
     {
       group: "wheel",
@@ -115,7 +151,8 @@ const SITE = {
       subtitle: "How to Get Paid to Buy Stocks at Your Price",
       cover: "assets/cash-secured-puts.jpg",
       blurb: "A cash-secured put is a promise to buy a stock at a price you choose, and you are paid for making it. Book 4 of The Wheel Strategy series shows how to pick the stock, the price and the strike, ladder puts over time and plan for every outcome, with the downside shown in dollars in every example.",
-      amazonId: "B0GX32LW9S"
+      amazonId: "B0GX32LW9S",
+      topics: "options, investing"
     },
     {
       group: "finance",
@@ -123,7 +160,8 @@ const SITE = {
       subtitle: "A Plain-English Playbook for Building Wealth with Low-Cost Index Funds, from First Paycheck to Financial Freedom",
       cover: "assets/own-the-whole-market.jpg",
       blurb: "Most people are never taught how money actually grows. This book fixes that in plain English, with real data and worked numbers, and without hype, from your first paycheck to the day your investments can pay for your life.",
-      amazonId: "B0HRS8HQWT"
+      amazonId: "B0HRS8HQWT",
+      topics: "index funds, investing, personal finance"
     },
     {
       // NOT YET PUBLISHED. The cover is a placeholder and there is no description yet.
@@ -143,7 +181,8 @@ const SITE = {
       subtitle: "How Planning, Forecasting and Analysis Really Work in Large Companies",
       cover: "assets/inside-fpa.jpg",
       blurb: "FP&A is learned on the job, one deadline at a time. Follow one fictional company through a full planning year, from the plan and the forecast call to the board pack, with worked numbers that tie out from chapter to chapter.",
-      amazonId: "B0HQW1LKZB"
+      amazonId: "B0HQW1LKZB",
+      topics: "corporate finance, accounting"
     },
     {
       group: "other",
@@ -151,7 +190,8 @@ const SITE = {
       subtitle: "365 Sudokus & 365 Questions for the Soul",
       cover: "assets/the-mindful-grid.jpg",
       blurb: "A daily ritual for the mindful thinker: one Sudoku to focus your attention and one open-ended question for reflection, every day for a year. Questions are presented in English, German, Spanish, French and Italian.",
-      amazonId: "B0HQP95S6B"
+      amazonId: "B0HQP95S6B",
+      topics: ""
     }
   ],
 
@@ -236,11 +276,14 @@ const SITE = {
   //   title   the headline, exactly as the publication printed it
   //   outlet  the name of the publication
   //   date    the day it was published, in the form YYYY-MM-DD
-  //   url     the full https:// address of the article
+  //   url     the full https:// address of the article, or "" to list it without a link
   // To add the next one, copy a whole block, from { to }, paste it above the
   // first one, and change the four lines. Keep a comma between blocks.
   // The newest article is shown first.
   // While the list is empty the section and its menu link are hidden.
+  //
+  // The Fortune article is linked. Its live page was fetched on 22 November 2026 before
+  // the url was filled in. "Featured in Fortune" and sameAs both use this url.
   articles: [
     {
       title: "Before data centres come, Kathmandu needs a water meter: Regular report of water use to the public is a must",
@@ -262,8 +305,8 @@ const SITE = {
   // photo is the headshot offered for download (use a large, sharp file). Leave "" to hide it.
   editors: {
     intro: "Working on a story about investing, saving or corporate finance? Here is recent writing. I also give comment, usually at short notice.",
-    shortBio: "Ashok Paudel, CPA, MBA, is a finance professional and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A.",
-    longBio: "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use. His commentary has appeared in Fortune and The Himalayan Times.",
+    shortBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune and The Himalayan Times.",
+    longBio: "Ashok Paudel (CPA, MBA) is a finance professional based in Munich, Germany, and the author of books on finance and investing. His commentary has appeared in Fortune and The Himalayan Times. His books include Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use, and he reviews books on money and business at ashokpaudel.com.",
     photo: "assets/author-photo.jpg"
   },
 
@@ -304,6 +347,7 @@ const SITE = {
     // Optional: profile links, shown as small buttons under the contact details.
     // To add one, remove the // in front of a line and put in the full address.
     socials: [
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/paudela" },
       // { label: "Goodreads", url: "https://www.goodreads.com/author/show/..." },
     ],
 

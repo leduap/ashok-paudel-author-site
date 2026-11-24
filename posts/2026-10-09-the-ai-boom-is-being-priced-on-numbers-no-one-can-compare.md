@@ -1,6 +1,7 @@
 ---
 title: The A.I. Boom Is Being Priced on Numbers No One Can Compare
 date: 2026-10-09
+updated: 2026-11-16
 type: post
 tags: ai, accounting, investing
 summary: OpenAI's $20 billion revenue gap is not a scandal. Accounting rules written before prepaid tokens and circular chip deals cannot measure this industry, and a listing will not fix that.
@@ -14,7 +15,7 @@ On Oct. 8, a definitional question knocked billions of dollars off the market va
 
 Both companies' methods comply with generally accepted accounting principles (Axios). That is the problem.
 
-I run global controlling for a manufacturing business in Munich. From Deloitte to Boston Consulting Group to an industrial company, my working life has turned on one unglamorous question: What does a reported number actually mean? When I moved finance teams in seven countries onto a single Oracle Fusion system, the hardest part was not the software. It was getting an accountant in Sweden and another in China to book the same transaction the same way. Until they did, a figure could be precise, fully reconciled and still not comparable. The A.I. industry now has that problem at the scale of the stock market.
+I work in corporate finance in Munich, and my working life has turned on one unglamorous question: What does a reported number actually mean? Whenever a company moves its finance teams onto a single system, the hardest part is not the software. It is getting an accountant in one country and another somewhere else to book the same transaction the same way. Until they do, a figure can be precise, fully reconciled and still not comparable. The A.I. industry now has that problem at the scale of the stock market.
 
 The rules that govern revenue, ASC 606 in the United States and its international twin, IFRS 15, were issued together in May 2014 with an explicit promise to "improve comparability of revenue recognition practices across entities, industries, jurisdictions, and capital markets" (FASB, ASU 2014-09). They are good standards. But they hinge on a judgment about control. A company reports the full price a customer pays only if it controls the product before the customer gets it; otherwise it reports only its cut (ASC 606-10-55-36 through 55-40). When a business buys a frontier model through a cloud marketplace, who controls the product: the lab that trained the model, or the cloud provider that hosts it, bills for it and owns the customer relationship? The two leading labs, reading the same paragraphs in good faith, have landed on opposite answers for their partner sales (Axios). Each answer can be audited. Neither can be compared with the other.
 
@@ -32,7 +33,7 @@ Boards need not wait. Every audit committee whose forecast depends on A.I. deman
 
 Twenty-six years ago, standard-setters settled gross versus net within months, when the gap at a company like Priceline ran to hundreds of millions of dollars. Today the gap at a single company is $20 billion. We should write the rule before the listings, not after the restatements.
 
-I am a CPA with an MBA from ESMT Berlin, and I work as head of global controlling, where revenue recognition, reporting comparability and audit are core to my daily work. I lead finance teams across seven countries, and my career includes BCG and Deloitte, where I advised companies on financial reporting and performance. The essay's argument, that gross-versus-net revenue recognition makes AI companies' numbers incomparable, comes directly from applying these accounting standards in practice.
+I am a CPA with an MBA, and I work in corporate finance, where revenue recognition, reporting comparability and audit are part of daily work. The essay's argument, that gross-versus-net revenue recognition makes AI companies' numbers incomparable, comes directly from applying these accounting standards in practice.
 
 ## Sources
 

@@ -672,9 +672,11 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
   text-transform: uppercase; letter-spacing: 0.07em; color: var(--green-label);
 }
 
-/* "Published in Fortune" under the About text */
+/* "Featured in Fortune" under the About text */
 .featured-in { margin-top: 1.25rem; font-family: var(--display); font-weight: 600; color: var(--green-label); }
 .featured-in a { color: inherit; }
+.amazon-author { margin: 1.25rem 0 0; font-family: var(--display); font-weight: 600; }
+#amazon-author a + a { margin-left: 1.25rem; }
 
 /* For editors */
 #editors .lede { font-size: 1.1rem; }
@@ -687,3 +689,20 @@ nav a:hover { color: var(--green-label); text-decoration: underline; text-decora
 }
 .bio-block p { margin: 0 0 0.75rem; }
 .editor-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+
+/* Links under the Books section to the reviews and the opinion pieces */
+.books-more { font-size: 1rem; color: var(--ink-soft); }
+.book h4 a { color: inherit; text-decoration: none; }
+.book h4 a:hover { text-decoration: underline; }
+
+/* A book's own page (books/<title>/): the box with cover and store buttons, then its series */
+.book-page .bookbox { grid-template-columns: 10.5rem 1fr; }
+@media (max-width: 30rem) { .book-page .bookbox { grid-template-columns: 6.5rem 1fr; gap: 1rem; } }
+.book-page .post-top .aff-note { margin: 0.75rem 0 0; font-size: 0.875rem; line-height: 1.5; }
+.book-page .prose { padding-top: 2rem; }
+.book-series-list { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--mint-line); }
+.book-series-list h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.book-series-list ol { padding-left: 1.4rem; margin: 1rem 0 0; }
+.book-series-list li { margin-bottom: 0.6rem; }
+.book-series-list li::marker { color: var(--green-bright); font-weight: 700; }
+.book-subtitle-inline { display: block; color: var(--ink-soft); font-size: 0.9rem; }

@@ -1,6 +1,7 @@
 ---
 title: Your Index Fund Is About to Buy Anthropic
 date: 2026-11-04
+updated: 2026-11-16
 type: post
 tags: investing, index funds, ai
 summary: Retirement savers will own the AI boom's biggest IPO within weeks of its debut, at whatever price it trades. The index that makes new listings wait a year has the better rule.
@@ -24,7 +25,7 @@ S&P Dow Jones Indices understood this. After a market consultation, it announced
 
 The index providers' case for speed deserves a hearing. An index that leaves out a giant for a year tracks the market less faithfully, and if the newcomer soars, its investors miss the gain. Traders can also front-run an addition at 12 months just as easily as at 15 days. All true. But a tracking gap is temporary and bounded, and it closes when the stock joins. Buying the thinnest float at the newest price, all on the same day, is concentrated risk taken on behalf of people who never chose it.
 
-I run global controlling at an aerospace manufacturer. When we buy a business, the accounting rules put its actual results in our books from day one. Its forecast is another matter: it doesn't carry full weight in the group plan until a few quarters of closed books show the pitch-deck numbers were real. That isn't distrust; it keeps one optimistic number from steering everyone else's decisions. Seasoning does the same job for an index.
+I work in corporate finance. When a company buys a business, the accounting rules put its actual results in the buyer's books from day one. Its forecast is another matter: it doesn't carry full weight in the group plan until a few quarters of closed books show the pitch-deck numbers were real. That isn't distrust; it keeps one optimistic number from steering everyone else's decisions. Seasoning does the same job for an index.
 
 Savers are already heavily exposed. By Morningstar's count, five giants made up about 30% of the S&P 500 in September, and Morgan Stanley puts AI-related stocks near 45% of the index. Fast entry adds the riskiest piece: a newly listed company at its newest price, bought when the fewest of its shares trade.
 
