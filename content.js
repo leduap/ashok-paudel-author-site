@@ -243,6 +243,12 @@ const SITE = {
   // While the list is empty the section and its menu link are hidden.
   articles: [
     {
+      title: "Before data centres come, Kathmandu needs a water meter: Regular report of water use to the public is a must",
+      outlet: "The Himalayan Times",
+      date: "2026-11-24",
+      url: "https://thehimalayantimes.com/opinion/before-data-centres-come-kathmandu-needs-a-water-meter-regular-report-of-water-use-to-the-public-is-a-must"
+    },
+    {
       title: "60 million children got Trump Accounts. Fewer than 1% were claimed in the first week",
       outlet: "Fortune",
       date: "2026-11-10",
@@ -257,7 +263,7 @@ const SITE = {
   editors: {
     intro: "Working on a story about investing, saving or corporate finance? Here is recent writing. I also give comment, usually at short notice.",
     shortBio: "Ashok Paudel, CPA, MBA, is a finance professional and the author of plain-English books on investing and corporate finance, including Own the Whole Market and Inside FP&A.",
-    longBio: "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use. His commentary has appeared in Fortune.",
+    longBio: "Ashok Paudel is a senior finance professional holding CPA and MBA credentials. He has spent years in management consulting and corporate finance, building forecasts, closing the books and helping leaders make better decisions with numbers. He is the author of Own the Whole Market, Inside FP&A and The Wheel Strategy series, plain-English guides that turn complex finance into steps anyone can use. His commentary has appeared in Fortune and The Himalayan Times.",
     photo: "assets/author-photo.jpg"
   },
 
